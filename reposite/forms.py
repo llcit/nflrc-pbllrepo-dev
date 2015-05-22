@@ -74,6 +74,7 @@ class ProjectPrototypeCreateForm(ProjectPrototypeForm):
                         prototype_project=self.instance, element_type=i, element_data=j)
                     pm.save()
 
+
         return self.instance
 
 

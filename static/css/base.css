@@ -50,6 +50,10 @@ dt { white-space: normal; }
 
 .badge-important{background-color: orange; color: black;}
 
+.popover-content {background-color: #dff0d8; font-size: 1.2em;}
+
+
+
 /*.nav-pills>li.active>a { background-color: #dff0d8; color: black; }
 .nav-pills>li>a { background-color: #eee; }
 */

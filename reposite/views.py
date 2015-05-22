@@ -4,6 +4,8 @@ from collections import OrderedDict
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http.response import HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import ProjectPrototype, ProjectTask
 from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm
@@ -89,11 +91,13 @@ class ProjectPrototypeDetailView(DetailView):
         return context
 
 
-class ProjectPrototypeCreateView(CreateView):
+class ProjectPrototypeCreateView(SuccessMessageMixin, CreateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
     context_object_name = 'project_prototype'
     form_class = ProjectPrototypeCreateForm
+    success_message = "Your new project looks great! Perhaps you can put your mind to the tasks :)!"
+
 
     def get_initial(self):
         """ Returns the initial data to use for forms on this view. """

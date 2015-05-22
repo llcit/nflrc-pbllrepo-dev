@@ -10,11 +10,14 @@
             <a href="{% url 'list_prototypes' %}" class="static_a_display">
                 <button class=" btn btn-xs"><i class="fa fa-caret-left"></i> browse <i class="fa fa-list"></i></button>
             </a>
+            <a href="{% url 'create_prototype' %}" class="static_a_display">
+                <button class=" btn btn-xs btn-success"><i class="fa fa-plus"></i> create another</button>
+            </a>
         </p>
         <p class="lead">
 
 
-            {{ project_prototype.title }}
+            <h2>{{ project_prototype.title }}</h2>
             <a href="{% url 'docview_prototype' project_prototype.id %}" class="static_a_display">
                 <button class="btn btn-xs"><i class="fa fa-file-text-o"></i> view</button>
             </a>
@@ -68,15 +71,19 @@
 
     <div class="col-md-4 col-md-offset-1">
         <p>
+
+            <a href="#" tabindex="0" role="button" class="addatask static_a_display" selector="#addbtn" data-toggle="popover" data-placement="left" data-trigger="focus" data-content="{% for message in messages %}{{message}}{% endfor %}"></a>
+
             <a href="{% url 'create_task' project_prototype.id %}" class="static_a_display">
-                <button class=" btn btn-xs btn-success"> add a task</i></button>
+                <button id="addbtn" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> add a task </button>
             </a>
+
             <a href="{% url 'view_all_tasks' project_prototype.id %}" class="static_a_display">
-                <button class=" btn btn-xs"> view all <i class="fa fa-list"></i></button>
+                <button class=" btn btn-xs"> manage tasks <i class="fa fa-list"></i></button>
             </a>
         </p>
         <p class="lead">
-            {{ project_prototype.title }} Tasks
+            <h2>Tasks</h2>
         </p>
 
         <ul class="list-unstyled">
@@ -106,6 +113,16 @@
         </ul>
     </div>
 </div>
-
-
 {% endblock content_container %}
+
+{% block js_include %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".addatask").popover("show");
+
+        $("body").on("click", function () {
+            $(".addatask").popover("hide");
+        })
+    });
+</script>
+{% endblock js_include %}
