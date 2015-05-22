@@ -1,0 +1,20 @@
+<!-- task_create.html -->
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content_container %}
+
+<div class="row"><div class="col-md-8 col-md-offset-2 block-center">
+    <p class="lead">
+        Adding a new task to {{ prototype_project }}
+
+        <form method="post" action=".">{% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-lg btn-success">Add New Task</button>
+        </form>
+    </p>
+</div></div>
+
+
+{% endblock content_container %}

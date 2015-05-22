@@ -1,0 +1,66 @@
+<!-- task_detail.html -->
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content_container %}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display lead"><i class="fa fa-caret-left"></i> {{ prototype_project }}</a>
+    </div>
+
+    <div class="col-sm-4 col-sm-offset-1 block-center " role="tabpanel">
+        <h3>Project Tasks <a href="{% url 'create_task' prototype_project.id %}"><button class="btn btn-xs btn-success "><i class="fa fa-plus"></i> New Task</button></a></h3>
+        <ul class="nav nav-pills nav-stacked">
+        {% for i in task_list %}
+            {% ifchanged i.get_task_category_display %}
+                <h4> {% if not i.get_task_category_display %}<small>No category specified</small>{% else %}{{ i.get_task_category_display }}{% endif %}
+                </h4>
+
+            {% endifchanged %}
+
+            <li role="presentation" class="{% if i.id == project_task.id %}active{% endif %}">
+                <a href="#task_detail_{{i.id}}" aria-controls="task_detail_{{i.id}}" role="tab" data-toggle="tab" class="static_a_display">
+                    <span>{{ forloop.counter }}. {{ i.title }}</span>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-sm-6 tab-content">
+
+
+        {% for i in task_list %}
+        <div id="task_detail_{{i.id}}" class="tab-pane {% if i.id == project_task.id %}active{% endif %}" role="tabpanel">
+            <h3>{{ forloop.counter }}. {{ i.title }}
+                {% if user == i.prototype_project.creator %}
+                <a href="{% url 'update_task' i.prototype_project.id i.id %}" class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                </a>
+
+                <a href="{% url 'delete_task' i.prototype_project.id i.id %}" class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                </a>
+                {% endif %}
+            </h3>
+
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-info lead">{{ i.get_task_category_display }} </li>
+                <li class="list-group-item list-group-item-info">sequence order - {{ i.sequence_order }} </li>
+                <li class="list-group-item list-group-item-info">prototype project - {{ i.prototype_project }} </li>
+                <li class="list-group-item list-group-item-info">description - {{ i.description }} </li>
+                <li class="list-group-item list-group-item-info">task type - {{ i.task_type }} </li>
+                <li class="list-group-item list-group-item-info">task focus - {{ i.task_focus }} </li>
+                <li class="list-group-item list-group-item-info">task time - {{ i.task_time }} </li>
+                <li class="list-group-item list-group-item-info">task extension - {{ i. }} </li>
+                <li class="list-group-item list-group-item-info">technology tips - {{ i.technology_tips }} </li>
+                <li class="list-group-item list-group-item-info">potential hurdles - {{ i.potential_hurdles }} </li>
+            </ul>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock content_container %}

@@ -1,0 +1,89 @@
+<!-- project_prototype_doc.html -->
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content_container %}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <p>
+            <a href="{% url 'list_prototypes' %}" class="static_a_display">
+                <button class=" btn btn-xs"><i class="fa fa-caret-left"></i> more prototypes <i class="fa fa-list"></i></button>
+            </a>
+        </p>
+        <!-- PROJECT HEAD -->
+        <p>
+            <h1>
+                {{ project_prototype.title }}
+                <small>
+                    <a href="{% url 'flip_prototype' project_prototype.id %}" class="static_a_display">
+                        <button class="btn btn-xs"><i class="fa fa-files-o"></i> flip</button>
+                    </a>
+
+
+                    {% if project_prototype.creator == user %}
+                    <a href="{% url 'update_prototype' project_prototype.id %}" class="static_a_display">
+                        <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                    </a>
+
+                    <a href="{% url 'delete_prototype' project_prototype.id %}" class="static_a_display">
+                        <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                    </a>
+                    {% endif %}
+                </small>
+            </h1>
+
+            <p><h4>A Project Prototype created with love and care by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</h4></p>
+
+            {% if project_prototype.origin %}
+            <p>based on <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></p>
+            {% endif %}
+
+        </p>
+        <!-- END PROJECT HEAD -->
+
+        <!-- PROJECT MAIN BODY -->
+        <p>
+            <dl>
+                <!-- PROJECT DESCRIPTION -->
+                <dt id="project_description" class="lead"><h2>Project Description</h2></dt>
+                <dd>{{ description }}</dd>
+
+
+                <!-- PROJECT SEQUENCE OVERVIEW TABLE OF CONTENTS -->
+                <dt id="project_sequence" class="lead"><h2>Project Sequence</h2></dt>
+                <dd>
+                    {% for category, tasks in tasks.items %}
+                        <h3>{{ category }}</h3>
+                        {% for task in tasks %}
+                            <p><span>{{ forloop.counter }}.</span> {{ task.title }} - <em>{{ task.short_description }}</em></p>
+                        {% endfor %}
+                    {% endfor %}
+                </dd>
+
+
+                <!-- PROJECT TASKS DETAIL -->
+                {% for category, tasks in tasks.items %}
+                <dt id="{{ category }}" class="lead"><h2>{{ category }}</h2></dt>
+                <dd>
+                    {% for task in tasks %}
+                        <p>
+                            <h3><span>{{ forloop.counter }}.</span> {{ task }}</h3>
+                            <p>{{ task.description }}</p>
+                            <h5>Technology Tips</h5><p>{{ task.technology_tips }}</p>
+                            <h5>Task Extension</h5><p>{{ task.task_extension }}</p>
+                        </p>
+                    {% endfor %}
+                </dd>
+                {% endfor %}
+
+            </dl>
+
+        </p>
+        <!-- END PROJECT MAIN BODY -->
+
+    </div>
+</div>
+
+
+{% endblock content_container %}

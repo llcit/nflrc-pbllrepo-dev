@@ -1,0 +1,55 @@
+/*base.css*/
+
+body {
+  padding-top: 80px;
+  padding-bottom: 75px;
+  font-family: 'Roboto', 'Open Sans Condensed', sans-serif;
+}
+
+.static_a_display:link {color: #000; text-decoration: none;}
+.static_a_display:visited {color: #000; text-decoration: none;}
+.static_a_display:hover {color: #666; text-decoration: none;}
+.static_a_display:active {color: #000; text-decoration: none;}
+
+.header {
+    background-color: white;
+    height: 80px;
+    border: none;
+}
+
+.header img {
+    height: 60px;
+}
+
+
+dt { white-space: normal; }
+
+.brick { width: 250px; }
+.subbrick { width: 200px; overflow-x: nowrap; }
+
+.block {
+    /*position: relative;*/
+    width: 250px;
+    /*float: left;*/
+    /*margin: 5px*/
+}
+
+.blocks-wide {
+    position: relative;
+    width: 40%;
+    float: left;
+    margin: 10px;
+    padding: 20px;
+}
+
+/*COLORS*/
+/*bootstraps light green = #dff0d8*/
+
+.bs-bg-light-green { background: #dff0d8; }
+.bs-bg-white { background: #fff; }
+
+.badge-important{background-color: orange; color: black;}
+
+/*.nav-pills>li.active>a { background-color: #dff0d8; color: black; }
+.nav-pills>li>a { background-color: #eee; }
+*/

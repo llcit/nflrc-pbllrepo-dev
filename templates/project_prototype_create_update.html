@@ -1,0 +1,161 @@
+<!-- project_prototype_create.html -->
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load form_utils %}
+
+{% block content_container %}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 block-center">
+    <div class+"row">
+        <h1>{{ edit_text }} {{ project_prototype }}</h1>
+    </div>
+
+
+    <ul class="nav nav-tabs" role="tablist">
+    {% for tab in form.Meta.label_groups %}
+        <li role="presentation" class="{% if forloop.first %}active{% endif %}" data-toggle="button">
+            <a href="#{{ tab|slugify }}" class="static_a_display tab" aria-controls="{{ tab|slugify }}" role="tab" data-toggle="tab">
+                <span class="error_indicator"></span> {{ tab }} <i class="fa fa-caret-right"></i>
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+    </div>
+
+    <div class="col-md-10 col-md-offset-1 block-center">
+
+        <form method="post" action="." class="form-horizontal">{% csrf_token %}
+            {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+
+
+            <div class="col-md-12"><h1></h1><button type="submit" class="btn btn-md btn-success pull-right">Save</button></div>
+
+
+        <!-- Base Fields -->
+
+            <!-- Tabs container -->
+            <div class="tab-content clearfix">
+
+
+
+            {% for f in form.visible_fields %}
+
+
+
+            <!-- Detect change in form section to generate a new section (tab)-->
+                {% ifchanged f.label %}
+                    {% if not forloop.first %}</div>{% endif %}<div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{f.label|slugify}}">
+                    <h2>{{f.label}}</h2>
+                {% endifchanged %}
+                <div class="row form-group"><!-- Begin form row -->
+
+            <!-- Determine what kind of input selection we need to render, opts = single choice or multiple choice -->
+
+            <!-- Single value form field -->
+                {% if f|length == 1 %}
+                    <div class="col-md-2 {% if f.errors %}badge-important{% endif %}">
+                        <h4>{{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}</h4>
+                        <small>{{ f.help_text }}</small>
+                        <ul class="list-unstyled">{% for e in f.errors %} <li class="error"><strong>{{ e }}</strong></li> {% endfor %} </ul>
+                    </div>
+                    <div class="col-md-10">{{ f }}</div>
+
+            <!-- OR Multivalue form field -->
+                {% else %}
+                    <div class="col-md-2 {% if f.errors %}badge-important{% endif %}">
+                        <h4>{{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}</h4>
+                        <small>{{ f.help_text }}</small>
+                        <ul class="list-unstyled">{% for e in f.errors %} <li class="error"><strong>{{ e }}</strong></li> {% endfor %} </ul>
+                    </div>
+
+                    <div class="col-md-10 data_input well">
+                        {% if f|is_multiple %}
+                            {% if f|length > 50 %}
+                                <div class="option_toggle">
+                                    <a class="static_a_display btn bg-success" data-toggle="collapse" href="#form_{{f.field.label_suffix|slugify}}" aria-expanded="false" aria-controls="form_{{f.field.label_suffix|slugify}}">
+                                        Click to view {% if f.value %}more{% endif %} options <i class="fa fa-caret-right"></i>
+                                    </a>
+                                    <div class="selected">{% for selected in f.value %} {{ selected }}, {% endfor %}</div>
+                                </div>
+
+                                <div id="form_{{f.field.label_suffix|slugify}}" class="collapse">
+                                {% if f|is_multiple %}
+                                    <label class="btn btn-sm bg-primary"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
+                                {% endif %}
+
+                                <ul class="list-unstyled list-inline">
+                                    {% for choice in f %}<li class="selector col-xs-12 col-sm-6 col-md-4 ">{{ choice }}</li>{% endfor %}
+                                </ul>
+                                </div>
+                            {% else %}
+                                {% if f|is_multiple %}
+                                    <label class="btn btn-sm bg-primary"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
+                                {% endif %}
+
+                                <ul class="list-unstyled list-inline">
+                                    {% for choice in f %}<li class="selector col-xs-12 col-sm-6 col-md-4 ">{{ choice }}</li>{% endfor %}
+                                </ul>
+                            {% endif %}
+
+                        {% else %}
+
+                            <ul class="list-unstyled list-inline">
+                                {% for choice in f %}<li class="selector col-xs-12 col-sm-6 col-md-4 ">{{ choice }}</li>{% endfor %}
+                            </ul>
+
+                        {% endif %}
+
+
+                    </div>
+                {% endif %}
+                <!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 " style="padding-top: 10px"></div> -->
+                </div> <!-- End form row -->
+
+            {% endfor %}
+                </div> <!--  Closing Tab section -->
+            </div><!-- End Tabs container -->
+            <div class="col-md-12"><button type="submit" class="btn btn-md btn-success pull-right">Save</button></div>
+        </form>
+    </div>
+</div>
+
+{% endblock content_container %}
+
+{% block js_include %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".selectall").click(function(){
+            $("input[name="+$(this).attr("data-value")+"]").prop( "checked", $(this).is(':checked') )
+        });
+
+        // User has clicked on single checkbox.
+        $(".selector").find("input").click(function(){
+            var field_container = $(this).parents(".data_input")
+            var selected_display = $(field_container).find(".selected");
+
+            // This resets selections in the selected label.
+            $(selected_display).html("");
+            $(field_container).find("input:checkbox:checked").each(function () {
+                $(selected_display).append($(this).val() + ", ");
+            });
+
+            // This clears the select all checkbox.
+            $("#"+$(this).attr("name")).prop( "checked", false);
+        });
+
+        $(".tab").each(function () {
+            // This gathers any form errors loaded from each tab section.
+            // The tab section is id'd in the attribute: aria-controls
+            target = $("#"+$(this).attr("aria-controls"));
+            elist = $(target).find("li.error")
+            if(elist.length) {
+                $(this).find(".error_indicator").html("<span class='badge badge-important'>"+  elist.length + "</span>");
+            }
+
+        });
+
+    });
+</script>
+{% endblock js_include %}
+

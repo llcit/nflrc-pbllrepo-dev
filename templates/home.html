@@ -1,0 +1,99 @@
+<!-- home.html -->
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700,300italic' rel='stylesheet' type='text/css'>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NFLRC PBLL Repository</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Site-wide css -->
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <!-- Include all site-wide javascript below -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <!-- Isotope visual filtering library -->
+    <script src="{% static 'js/packery.pkgd.min.js' %}"></script>
+
+
+    <!-- Placeholder for page-level css includes -->
+    {% block css_include %} {% endblock css_include %}
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12 center-block">
+                <h1 style="font-size: 6.0em">Pebbles</h1>
+                <p class="lead">
+                    Project Based Language Learning Prototypes
+                </p>
+                <p>
+                    <a href="{% url 'list_prototypes' %}" class="static_a_display"><button class=" btn btn-md">browse <i class="fa fa-list"></i></button></a>
+
+                    <a href="{% url 'create_prototype' %}" class="static_a_display"><button class=" btn btn-md btn-success"><i class="fa fa-plus"></i> create</button></a>
+
+                </p>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 center-block" id="brickwall">
+
+            {% for i in prototype_list %}
+                <div class="brick well bs-bg-white ">
+
+                    <div class="">
+                        <h2><a href="{% url 'docview_prototype' i.id %}" class="static_a_display">{{ i }}</a></h2>
+                        <a href="{% url 'view_prototype' i.id %}" class="btn btn-default btn-xs text-right">details</a>
+                        <a href="{% url 'flip_prototype' i.id %}" class="btn btn-default btn-xs text-left">flip</a>
+                        <p></p>
+                    </div>
+                    {% for j in i.tasks.all %}
+                        <div class="subbrick">
+                            <p><a class="static_a_display" href="{{ j.get_absolute_url }}"><button class="btn btn-block" style="text-align: left">{{ j }}</button></a></p>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            {% endfor %}
+
+            </div>
+        </div>
+
+
+    </div>
+
+<script type="text/javascript">
+    var $container = $('#brickwall');
+    // init
+    $container.packery({
+      itemSelector: '.brick',
+      gutter: 10,
+    });
+</script>
+</body>
