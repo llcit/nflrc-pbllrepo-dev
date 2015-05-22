@@ -33,7 +33,7 @@
     <!-- Include all site-wide javascript below -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-    <!-- Isotope visual filtering library -->
+    <!-- Packery layout library -->
     <script src="{% static 'js/packery.pkgd.min.js' %}"></script>
 
 
@@ -46,9 +46,11 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-md-12 center-block">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV3bLtm6U3A9dSTfnr53H9KPC-u0sJSFobh3Z_M9Ybfel7UdP_">
-                <h1 style="font-size: 6.0em">Pebbles</h1>
+            <div class="col-xs-2">
+                <p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV3bLtm6U3A9dSTfnr53H9KPC-u0sJSFobh3Z_M9Ybfel7UdP_"  width="100%"></p>
+            </div>
+            <div class="col-xs-10">
+                <p class="lead" style="font-size: 4.0em">Pebbles</p>
                 <p class="lead">
                     Project Based Language Learning Prototypes
                 </p>
@@ -58,11 +60,11 @@
                     <a href="{% url 'create_prototype' %}" class="static_a_display"><button class=" btn btn-md btn-success"><i class="fa fa-plus"></i> create</button></a>
 
                 </p>
-
             </div>
         </div>
 
         <div class="row">
+            <p></p>
             <div class="col-md-12 center-block" id="brickwall">
 
             {% for i in prototype_list %}
