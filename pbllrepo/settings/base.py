@@ -70,3 +70,5 @@ USE_TZ = True
 STATICFILES_DIRS = (PROJECT_DIR.child('static'),)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+LOGIN_REDIRECT_URL = '/prototypes'

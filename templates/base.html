@@ -60,11 +60,15 @@
 
         </div>
 
-        <!-- <div class="collapse navbar-collapse pull-right" style="background-color: white">
+        <div class="collapse navbar-collapse pull-right" style="background-color: white">
           <ul class="nav navbar-nav navbar-right">
-
+            {% if not user.is_authenticated %}
+              <a href="{% url 'login' %}"> <i class="fa fa-sign-in"></i> </a>
+            {% else %}
+              <a href="{% url 'logout' %}">{{ user }}</a>
+            {% endif %}
           </ul>
-        </div> --><!--/.nav-collapse -->
+        </div>
       </div>
     </div>
     <!-- End navbar content -->
