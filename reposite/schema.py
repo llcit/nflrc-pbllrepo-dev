@@ -237,7 +237,7 @@ class PrototypeMetadataForm(forms.Form):
     subject = forms.MultipleChoiceField(
         choices=SUBJECT_AREAS,
         label='Subject Area',
-        label_suffix='Subject Areas',
+        label_suffix='Subject Area(s)',
         help_text='(Check all that apply)',
         widget=forms.CheckboxSelectMultiple(attrs={}),
         required=True)
@@ -369,7 +369,7 @@ class PrototypeMetadataForm(forms.Form):
         required=False)
     cs_like_career_skills = forms.MultipleChoiceField(
         choices=CENTURY_SKILLS['like-career-skills'],
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'input-lg'}),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
         label='21st Century Skills',
         label_suffix='Life and Career Skills',
         help_text='(Check all that apply)',

@@ -11,13 +11,22 @@
                 <button class=" btn btn-xs"><i class="fa fa-caret-left"></i> browse <i class="fa fa-list"></i></button>
             </a>
             <a href="{% url 'create_prototype' %}" class="static_a_display">
-                <button class=" btn btn-xs btn-success"><i class="fa fa-plus"></i> create another</button>
+                <button class=" btn btn-xs btn-success"><i class="fa fa-plus"></i> create another project</button>
             </a>
         </p>
+
+
+
         <p class="lead">
 
 
-            <h2>{{ project_prototype.title }}</h2>
+            <h2>{{ project_prototype.title }}
+
+            <small> by {{ project_prototype.creator }} </small>
+            {% if project_prototype.origin %}
+            <small> derived from <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></small>
+            {% endif %}
+            </h2>
             <a href="{% url 'docview_prototype' project_prototype.id %}" class="static_a_display">
                 <button class="btn btn-xs"><i class="fa fa-file-text-o"></i> view</button>
             </a>
@@ -40,20 +49,14 @@
 
         </p>
 
-        <p> by {{ project_prototype.creator }} </p>
-        {% if project_prototype.origin %}
-        <p> derived from <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></p></p>
-        {% endif %}
-
-
 
         <dl class="dl-horizontal">
-            <dt>description</dt> <dd><span> {{ project_prototype.description }} </span></dd>
-            <dt>publisher</dt><dd><span> {{ project_prototype.publisher }} </span></dd>
-            <dt>publish_date</dt><dd><span> {{ project_prototype.publish_date }} </span></dd>
-            <dt>Contributors:</dt><dd><span> {{ project_prototype.contributors }} </span></dd>
-            <dt>copyright</dt><dd><span> {{ project_prototype.rights }} </span></dd>
-            <dt>uri</dt><dd><span> {{ project_prototype.uri }} </span></dd>
+            <dt>description:</dt> <dd><span> {{ project_prototype.description }} </span></dd>
+            <dt>publisher:</dt><dd><span> {{ project_prototype.publisher }} </span></dd>
+            <dt>publish_date:</dt><dd><span> {{ project_prototype.publish_date }} </span></dd>
+            <dt>contributors:</dt><dd><span> {{ project_prototype.contributors }} </span></dd>
+            <dt>copyright:</dt><dd><span> {{ project_prototype.rights }} </span></dd>
+            <dt>uri:</dt><dd><span> {{ project_prototype.uri }} </span></dd>
 
             {% for i, j in prototype_data.items %}
                 {% ifchanged j.metaprefix %}<h4> {{ j.metaprefix }} </h4> {% endifchanged %}
@@ -61,7 +64,7 @@
                     <dt></dt><dd>{% for k in j.datalist %}<span>{{ k }}</span>{% if not forloop.last %},{% endif %} {% endfor %}</dd>
                 {% else %}
                     <dt style="white-space: normal">
-                        {{ j.displayname }}
+                        {{ j.displayname }}:
                     </dt>
                     <dd>{% for k in j.datalist %}<span>{{ k }}</span>{% if not forloop.last %},{% endif %} {% endfor %}</dd>
                 {% endif %}
@@ -74,6 +77,7 @@
 
             <a href="#" tabindex="0" role="button" class="addatask static_a_display" selector="#addbtn" data-toggle="popover" data-placement="left" data-trigger="focus" data-content="{% for message in messages %}{{message}}{% endfor %}"></a>
 
+            {% if user == project_prototype.creator %}
             <a href="{% url 'create_task' project_prototype.id %}" class="static_a_display">
                 <button id="addbtn" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> add a task </button>
             </a>
@@ -81,6 +85,7 @@
             <a href="{% url 'view_all_tasks' project_prototype.id %}" class="static_a_display">
                 <button class=" btn btn-xs"> manage tasks <i class="fa fa-list"></i></button>
             </a>
+            {% endif %}
         </p>
         <p class="lead">
             <h2>Tasks</h2>

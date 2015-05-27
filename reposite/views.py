@@ -7,6 +7,8 @@ from django.http.response import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
+from braces.views import LoginRequiredMixin
+
 from .models import ProjectPrototype, ProjectTask
 from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm
 
@@ -45,7 +47,7 @@ class ProjectPrototypeDocumentView(DetailView):
         return context
 
 
-class CloneProjectView(DetailView):
+class CloneProjectView(LoginRequiredMixin, DetailView):
     model = ProjectPrototype
     template_name = 'project_prototype_detail.html'
     context_object_name = 'project_prototype'
@@ -91,7 +93,7 @@ class ProjectPrototypeDetailView(DetailView):
         return context
 
 
-class ProjectPrototypeCreateView(SuccessMessageMixin, CreateView):
+class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
     context_object_name = 'project_prototype'
@@ -112,14 +114,14 @@ class ProjectPrototypeCreateView(SuccessMessageMixin, CreateView):
         return context
 
 
-class ProjectPrototypeUpdateView(UpdateView):
+class ProjectPrototypeUpdateView(LoginRequiredMixin, UpdateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
     context_object_name = 'project_prototype'
     form_class = ProjectPrototypeUpdateForm
 
     def get_initial(self):
-        """ Returns the initial data to use for forms on this view. """
+        """ Returns the initial metadata to use for forms on this view. """
         choice_fields = self.get_object().meta_data_schema().multiple_choice_fields()
 
         initial = self.initial.copy()
@@ -137,11 +139,12 @@ class ProjectPrototypeUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(
             ProjectPrototypeUpdateView, self).get_context_data(**kwargs)
+
         context['edit_text'] = 'Updating'
         return context
 
 
-class ProjectPrototypeDeleteView(DeleteView):
+class ProjectPrototypeDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectPrototype
     template_name = 'project_prototype_delete_confirm.html'
     context_object_name = 'project_prototype'
@@ -175,9 +178,9 @@ class ProjectTaskDetailView(DetailView):
         return context
 
 
-class ProjectTaskCreateView(CreateView):
+class ProjectTaskCreateView(LoginRequiredMixin, CreateView):
     model = ProjectTask
-    template_name = 'task_create.html'
+    template_name = 'task_create_update.html'
     context_object_name = 'project_task'
     form_class = TaskCreateForm
     project = None
@@ -201,14 +204,14 @@ class ProjectTaskCreateView(CreateView):
         return context
 
 
-class ProjectTaskUpdateView(UpdateView):
+class ProjectTaskUpdateView(LoginRequiredMixin, UpdateView):
     model = ProjectTask
-    template_name = 'task_update.html'
+    template_name = 'task_create_update.html'
     context_object_name = 'project_task'
     form_class = TaskUpdateForm
 
 
-class ProjectTaskDeleteView(DeleteView):
+class ProjectTaskDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectTask
     template_name = 'task_delete_confirm.html'
     context_object_name = 'project_task'

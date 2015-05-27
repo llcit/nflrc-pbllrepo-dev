@@ -9,6 +9,7 @@
     <div class="col-md-10 col-md-offset-1 block-center">
     <div class+"row">
         <h1>{{ edit_text }} {{ project_prototype }}</h1>
+        <p class="lead"> by: {% if form.instance.creator == user %} you{% else %}{{ form.instance.creator }} {% endif %}{% if form.instance.origin %} and derived from {{ form.instance.origin }} {% endif %}</p>
     </div>
 
 
@@ -25,11 +26,9 @@
 
     <div class="col-md-10 col-md-offset-1 block-center">
 
-        <form method="post" action="." class="form-horizontal">{% csrf_token %}
-            {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
-
-
-            <div class="col-md-12"><h1></h1><button type="submit" class="btn btn-md btn-success pull-right">Save</button></div>
+        <form method="post" action="" class="form-horizontal">{% csrf_token %}
+            {% for hidden in form.hidden_fields %} {{hidden}} {% endfor %}
+            <div class="col-md-12"><h1></h1><button type="submit" class="btn btn-md btn-success btn-block">Save</button></div>
 
 
         <!-- Base Fields -->
@@ -115,7 +114,7 @@
             {% endfor %}
                 </div> <!--  Closing Tab section -->
             </div><!-- End Tabs container -->
-            <div class="col-md-12"><button type="submit" class="btn btn-md btn-success pull-right">Save</button></div>
+            <div class="col-md-12"><button type="submit" class="btn btn-md btn-success btn-block">Save</button></div>
         </form>
     </div>
 </div>
@@ -147,8 +146,10 @@
         $(".tab").each(function () {
             // This gathers any form errors loaded from each tab section.
             // The tab section is id'd in the attribute: aria-controls
+
             target = $("#"+$(this).attr("aria-controls"));
-            elist = $(target).find("li.error")
+            elist = $(target).find("li.error");
+
             if(elist.length) {
                 $(this).find(".error_indicator").html("<span class='badge badge-important'>"+  elist.length + "</span>");
             }
