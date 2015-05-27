@@ -52,7 +52,7 @@ class CloneProjectView(LoginRequiredMixin, DetailView):
     template_name = 'project_prototype_detail.html'
     context_object_name = 'project_prototype'
 
-    def dispatch(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         clone = self.get_object().clone_project(self.request.user)
         if clone:
             return HttpResponseRedirect(reverse('update_prototype', args=[clone.id]))
