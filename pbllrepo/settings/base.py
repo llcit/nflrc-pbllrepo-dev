@@ -12,6 +12,8 @@ PROJECT_DIR = Path(__file__).ancestor(3)
 ADMINS = (('LLCIT', 'llcit@hawaii.edu'),)
 
 INSTALLED_APPS = (
+    'grappelli',
+    'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

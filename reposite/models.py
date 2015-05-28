@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from model_utils.models import TimeStampedModel
+from filebrowser.fields import FileBrowseField
 
 from .schema import PrototypeMetadataForm
 
@@ -25,6 +26,8 @@ class ProjectPrototype(TimeStampedModel):
     uri = models.CharField(max_length=512, null=True, blank=True)
     active = models.BooleanField(
         default=False, help_text="Hide/unhide this project")
+    icon = models.FileField(
+        upload_to='uploads', null=True, blank=True)
 
     def clone_project(self, user):
         rstr = ''.join(
@@ -164,8 +167,16 @@ class ProjectTask(models.Model):
         ordering = ['task_category', 'sequence_order']
 
 
+class ProjectFile(TimeStampedModel):
+    project_file = models.FileField(
+        upload_to='uploads', null=True, blank=True)
+    project = models.ForeignKey(ProjectPrototype, related_name='project_files')
+
+
 class TaskFile(TimeStampedModel):
-    file_upload = models.FileField(
-        upload_to='documents', null=True, blank=True)
-    accessURL = models.URLField(max_length=200, blank=True, null=True)
-    project_task = models.ForeignKey(ProjectTask, related_name='files')
+    task_file = models.FileField(
+        upload_to='uploads', null=True, blank=True)
+    project_task = models.ForeignKey(ProjectTask, related_name='task_files')
+
+
+

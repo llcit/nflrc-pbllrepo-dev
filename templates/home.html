@@ -71,7 +71,12 @@
                 <div class="brick well bs-bg-white ">
 
                     <div class="">
-                        <h2><a href="{% url 'docview_prototype' i.id %}" class="static_a_display">{{ i }}</a></h2>
+
+                        <h2>
+                            {% if i.icon %}<div style="width: 220px"><img width="100%" src="{{ i.icon.url }}"></div>{% endif %}
+                            <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">{{ i }}</a>
+
+                        </h2>
                         <a href="{% url 'view_prototype' i.id %}" class="btn btn-default btn-xs text-right">details</a>
                         <a href="{% url 'flip_prototype' i.id %}" class="btn btn-default btn-xs text-left">flip</a>
                         <p></p>

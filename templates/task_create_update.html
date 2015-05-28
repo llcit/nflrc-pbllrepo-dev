@@ -5,16 +5,33 @@
 
 {% block content_container %}
 
-<div class="row"><div class="col-md-8 col-md-offset-2 block-center">
-    <p class="lead">
-        Adding a new task to {{ prototype_project }}
+<div class="row">
+    <div class="col-md-8 block-center">
+        <p class="lead">
+            Adding a new task to {{ prototype_project }}
 
-        <form method="post" action=".">{% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-lg btn-success btn-block">Save</button>
-        </form>
-    </p>
-</div></div>
+            <form method="post" action=".">{% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-lg btn-success btn-block">Save</button>
+            </form>
+        </p>
+    </div>
+
+    <div class="col-md-4 block-center">
+        <p> AJAX THIS
+            <form method="post" action="{% url 'upload_task_file' project_task.id %}" enctype="multipart/form-data">{% csrf_token %}
+                {{ upload_form|crispy }}
+                <button type="submit" class="btn btn-lg btn-success">Upload</button>
+            </form>
+        </p>
+
+        <ul class="list-unstyled">
+        {% for file in filelisting %}
+            <li class=""><img src="{{ file.task_file.url }}" width="50px"> <strong>{{ file.task_file.url }}</strong></li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
 
 
 {% endblock content_container %}

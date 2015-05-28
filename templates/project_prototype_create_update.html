@@ -8,12 +8,12 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1 block-center">
     <div class+"row">
-        <h1>{{ edit_text }} {{ project_prototype }}</h1>
+        <h1 id="project_head">{{ edit_text }} {{ project_prototype }}</h1>
         <p class="lead"> by: {% if form.instance.creator == user %} you{% else %}{{ form.instance.creator }} {% endif %}{% if form.instance.origin %} and derived from {{ form.instance.origin }} {% endif %}</p>
     </div>
 
 
-    <ul class="nav nav-tabs" role="tablist">
+    <ul id="form_sects" class="nav nav-tabs" role="tablist">
     {% for tab in form.Meta.label_groups %}
         <li role="presentation" class="{% if forloop.first %}active{% endif %}" data-toggle="button">
             <a href="#{{ tab|slugify }}" class="static_a_display tab" aria-controls="{{ tab|slugify }}" role="tab" data-toggle="tab">
@@ -26,9 +26,9 @@
 
     <div class="col-md-10 col-md-offset-1 block-center">
 
-        <form method="post" action="" class="form-horizontal">{% csrf_token %}
+        <form method="post" action="" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
             {% for hidden in form.hidden_fields %} {{hidden}} {% endfor %}
-            <div class="col-md-12"><h1></h1><button type="submit" class="btn btn-md btn-success btn-block">Save</button></div>
+            <div id="message_panel" class="col-md-12"><h1></h1><button type="submit" class="btn btn-md btn-success btn-block">Save</button></div>
 
 
         <!-- Base Fields -->
@@ -54,16 +54,20 @@
             <!-- Single value form field -->
                 {% if f|length == 1 %}
                     <div class="col-md-2 {% if f.errors %}badge-important{% endif %}">
-                        <h4>{{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}</h4>
+                        <h4>
+                            {{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}
+                        </h4>
                         <small>{{ f.help_text }}</small>
                         <ul class="list-unstyled">{% for e in f.errors %} <li class="error"><strong>{{ e }}</strong></li> {% endfor %} </ul>
                     </div>
-                    <div class="col-md-10">{{ f }}</div>
+                    <div class="col-md-10" id="{{f.field.label_suffix|slugify}}" data-container="#{{f.field.label_suffix|slugify}}" data-toggle="popover" data-content="{% for message in messages %}{{message}}{% endfor %}" data-placement="top">{{ f }}</div>
 
             <!-- OR Multivalue form field -->
                 {% else %}
                     <div class="col-md-2 {% if f.errors %}badge-important{% endif %}">
-                        <h4>{{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}</h4>
+                        <h4>
+                            {{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}
+                        </h4>
                         <small>{{ f.help_text }}</small>
                         <ul class="list-unstyled">{% for e in f.errors %} <li class="error"><strong>{{ e }}</strong></li> {% endfor %} </ul>
                     </div>
@@ -117,6 +121,7 @@
             <div class="col-md-12"><button type="submit" class="btn btn-md btn-success btn-block">Save</button></div>
         </form>
     </div>
+
 </div>
 
 {% endblock content_container %}
@@ -156,6 +161,12 @@
 
         });
 
+
+        $("#project-title").popover("show");
+
+        $("body").on("click", function () {
+            $("#project-title").popover("hide");
+        })
     });
 </script>
 {% endblock js_include %}

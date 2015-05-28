@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from filebrowser.sites import site
+
 from reposite.views import (
     HomeView,
     ProjectPrototypeCreateView, ProjectPrototypeDetailView,
@@ -23,7 +25,8 @@ from reposite.views import (
     ProjectPrototypeListView, CloneProjectView,
     ProjectTaskDetailView, ProjectTaskCreateView,
     ProjectTaskUpdateView, ProjectTaskDeleteView,
-    ProjectTaskListView, ProjectPrototypeDocumentView
+    ProjectTaskListView, ProjectPrototypeDocumentView,
+    ProjectFileUploadView, TaskFileUploadView
 
 )
 
@@ -47,8 +50,14 @@ urlpatterns = [
     url(r'^prototype/(?P<project>[-\d]+)/task/edit/(?P<pk>[-\d]+)/$', ProjectTaskUpdateView.as_view(), name='update_task'),
     url(r'^prototype/(?P<project>[-\d]+)/task/delete/(?P<pk>[-\d]+)/$', ProjectTaskDeleteView.as_view(), name='delete_task'),
 
+    url(r'^prototype/project-file-upload/(?P<project>[-\d]+)/$', ProjectFileUploadView.as_view(), name='upload_project_file'),
+    url(r'^prototype/task-file-upload/(?P<task>[-\d]+)/$', TaskFileUploadView.as_view(), name='upload_task_file'),
+
+
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
 
+    url(r'^admin/filebrowser/', include(site.urls)),
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ]

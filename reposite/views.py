@@ -8,9 +8,11 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from braces.views import LoginRequiredMixin
+from filebrowser.sites import site
+from filebrowser.base import FileListing
 
-from .models import ProjectPrototype, ProjectTask
-from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm
+from .models import ProjectPrototype, ProjectTask, ProjectFile, TaskFile
+from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, ProjectFileUploadForm, TaskFileUploadForm
 
 
 class HomeView(TemplateView):
@@ -55,13 +57,16 @@ class CloneProjectView(LoginRequiredMixin, DetailView):
     def get(self, request, *args, **kwargs):
         clone = self.get_object().clone_project(self.request.user)
         if clone:
+            objstr = self.get_object().title
+            messages.add_message(request, messages.INFO, 'You have just flipped ' + objstr + '! You might want to rename it to give it your special stamp.')
             return HttpResponseRedirect(reverse('update_prototype', args=[clone.id]))
 
-        return super(CloneProjectView, self).dispatch(request, *args, **kwargs)
+        return super(CloneProjectView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(CloneProjectView, self).get_context_data(**kwargs)
         context['prototype_data'] = self.get_object().get_data_dict()
+
         return context
 
 
@@ -125,6 +130,8 @@ class ProjectPrototypeUpdateView(LoginRequiredMixin, UpdateView):
         choice_fields = self.get_object().meta_data_schema().multiple_choice_fields()
 
         initial = self.initial.copy()
+
+        """ Initialize from metadata values """
         for i in self.get_object().data.all():
             if i.element_type in choice_fields:
                 try:
@@ -210,6 +217,21 @@ class ProjectTaskUpdateView(LoginRequiredMixin, UpdateView):
     context_object_name = 'project_task'
     form_class = TaskUpdateForm
 
+    def filter_filelisting(item):
+        # item is a FileObject
+        return item.filetype != "Folder"
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ProjectTaskUpdateView, self).get_context_data(**kwargs)
+
+        context['upload_form'] = TaskFileUploadForm()
+        context['prototype_project'] = self.get_object().prototype_project
+
+        # context['filelisting'] = FileListing('uploads', filter_func=self.filter_filelisting, sorting_by='date', sorting_order='desc')
+        context['filelisting'] = self.get_object().task_files.all()
+        return context
+
 
 class ProjectTaskDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectTask
@@ -219,3 +241,37 @@ class ProjectTaskDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('view_prototype', args=[self.get_object().prototype_project.id, ])
+
+
+class ProjectFileUploadView(LoginRequiredMixin, CreateView):
+    model = ProjectFile
+    template_name = 'file_upload.html'
+    project = None
+    form_class = ProjectFileUploadForm
+    success_url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        self.project = ProjectPrototype.objects.get(pk=kwargs['project'])
+        return super(ProjectFileUploadView, self).get(request, *args, **kwargs)
+
+
+class TaskFileUploadView(LoginRequiredMixin, CreateView):
+    model = TaskFile
+    template_name = 'file_upload.html'
+    task = None
+    form_class = TaskFileUploadForm
+    success_url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        self.task = ProjectTask.objects.get(pk=kwargs['task'])
+        return super(TaskFileUploadView, self).get(request, *args, **kwargs)
+
+    def get_success_url(self):
+        task = ProjectTask.objects.get(pk=self.kwargs['task'])
+        return reverse('update_task', args=[task.prototype_project.id, task.id, ])
+
+
+
+
+
+

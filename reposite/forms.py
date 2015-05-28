@@ -1,7 +1,9 @@
 # forms_py
 from django import forms
 
-from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask
+from filebrowser.widgets import ClearableFileInput
+
+from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile, TaskFile
 from .schema import PrototypeMetadataForm
 
 
@@ -27,8 +29,8 @@ class ProjectPrototypeForm(forms.ModelForm):
     class Meta:
         model = ProjectPrototype
 
-        """ Base model fields (i.e., descriptors NOT specified in schema) """
-        fields = ('title', 'creator', 'origin', 'publisher', 'publish_date',  'contributors', 'rights', 'uri', 'active', 'description')
+        """ Base model fields (i.e., these descriptors are NOT specified in schema but with the model) """
+        fields = ('title', 'icon', 'creator', 'origin', 'publisher', 'publish_date',  'contributors', 'rights', 'uri', 'active', 'description')
 
         """ Label groups identify related groups. These are assigned in init or in PrototypeMetadataForm """
         label_groups = ['General', 'Subject Area', 'Description', 'Language', 'Instructional Context', 'Language Proficiency', 'World Readiness', '21st Century Skills']
@@ -36,6 +38,7 @@ class ProjectPrototypeForm(forms.ModelForm):
         """ Label  suffixes are used to label each item within a label group """
         label_suffixes = {
             'title': 'Project Title',
+            'icon': 'Project Icon',
             'creator': 'Author',
             'origin': 'Derived from?',
             'description': 'Description',
@@ -57,6 +60,7 @@ class ProjectPrototypeForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'icon': ClearableFileInput(attrs={'class': 'form-control'}),
             'creator': forms.HiddenInput(),
             'origin': forms.HiddenInput(),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
@@ -77,10 +81,9 @@ class ProjectPrototypeCreateForm(ProjectPrototypeForm):
     def save(self):
         super(ProjectPrototypeCreateForm, self).save()
 
-        """ Create metadata objects from form data skipping base fields """
+        """ Create metadata objects from form data skipping fields listed in self.Meta.fields (base fields) """
         for i, j in self.cleaned_data.items():
-
-            if i not in ['title', 'creator', 'origin', 'description', 'publisher', 'publish_date', 'contributors', 'rights', 'uri', 'active'] and j:
+            if i not in self.Meta.fields and j:
                 if type(j) == list:
                     for k in j:
                         pm = PrototypeMetaElement(
@@ -104,10 +107,10 @@ class ProjectPrototypeUpdateForm(ProjectPrototypeForm):
         for i in prev_metadata:
             i.delete()
 
-        """ Reassign metadata objects from form data skipping base fields """
+        """ Reassign metadata objects from form data skipping fields listed in self.Meta.fields (base fields) """
         for i, j in self.cleaned_data.items():
 
-            if i not in ['title', 'creator', 'origin', 'description', 'publisher', 'publish_date', 'contributors', 'rights', 'uri', 'active'] and j:
+            if i not in self.Meta.fields and j:
                 if type(j) == list:
                     for k in j:
                         pm = PrototypeMetaElement(
@@ -138,6 +141,20 @@ class TaskUpdateForm(forms.ModelForm):
         fields = ('title', 'prototype_project', 'short_description', 'description', 'sequence_order', 'task_category', 'task_type', 'task_focus', 'task_time', 'technology_tips',
                   'task_extension', 'potential_hurdles')
         labels = {'title': 'Task Title'}
+
+
+class ProjectFileUploadForm(forms.ModelForm):
+
+    class Meta:
+        model = ProjectFile
+        fields = ('project_file', 'project')
+
+
+class TaskFileUploadForm(forms.ModelForm):
+
+    class Meta:
+        model = TaskFile
+        fields = ('task_file', 'project_task')
 
 
 
