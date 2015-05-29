@@ -8,11 +8,10 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from braces.views import LoginRequiredMixin
-from filebrowser.sites import site
-from filebrowser.base import FileListing
 
-from .models import ProjectPrototype, ProjectTask, ProjectFile, TaskFile
-from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, ProjectFileUploadForm, TaskFileUploadForm
+from core.mixins import ListUserFilesMixin
+from .models import ProjectPrototype, ProjectTask, ProjectFile
+from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, FileUploadForm
 
 
 class HomeView(TemplateView):
@@ -98,7 +97,7 @@ class ProjectPrototypeDetailView(DetailView):
         return context
 
 
-class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, ListUserFilesMixin, CreateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
     context_object_name = 'project_prototype'
@@ -119,7 +118,7 @@ class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, Create
         return context
 
 
-class ProjectPrototypeUpdateView(LoginRequiredMixin, UpdateView):
+class ProjectPrototypeUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
     context_object_name = 'project_prototype'
@@ -172,7 +171,7 @@ class ProjectTaskListView(DetailView):
         return context
 
 
-class ProjectTaskDetailView(DetailView):
+class ProjectTaskDetailView(ListUserFilesMixin, DetailView):
     model = ProjectTask
     template_name = 'task_detail.html'
     context_object_name = 'project_task'
@@ -185,7 +184,7 @@ class ProjectTaskDetailView(DetailView):
         return context
 
 
-class ProjectTaskCreateView(LoginRequiredMixin, CreateView):
+class ProjectTaskCreateView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
     model = ProjectTask
     template_name = 'task_create_update.html'
     context_object_name = 'project_task'
@@ -207,29 +206,21 @@ class ProjectTaskCreateView(LoginRequiredMixin, CreateView):
         context = super(
             ProjectTaskCreateView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.project
-
+        context['edit_text'] = 'Adding a new task to'
         return context
 
 
-class ProjectTaskUpdateView(LoginRequiredMixin, UpdateView):
+class ProjectTaskUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateView):
     model = ProjectTask
     template_name = 'task_create_update.html'
     context_object_name = 'project_task'
     form_class = TaskUpdateForm
 
-    def filter_filelisting(item):
-        # item is a FileObject
-        return item.filetype != "Folder"
-
     def get_context_data(self, **kwargs):
         context = super(
             ProjectTaskUpdateView, self).get_context_data(**kwargs)
-
-        context['upload_form'] = TaskFileUploadForm()
         context['prototype_project'] = self.get_object().prototype_project
-
-        # context['filelisting'] = FileListing('uploads', filter_func=self.filter_filelisting, sorting_by='date', sorting_order='desc')
-        context['filelisting'] = self.get_object().task_files.all()
+        context['edit_text'] = 'Updating a task for'
         return context
 
 
@@ -237,41 +228,29 @@ class ProjectTaskDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectTask
     template_name = 'task_delete_confirm.html'
     context_object_name = 'project_task'
-    success_url = reverse_lazy('home')
 
     def get_success_url(self):
         return reverse('view_prototype', args=[self.get_object().prototype_project.id, ])
 
 
-class ProjectFileUploadView(LoginRequiredMixin, CreateView):
+class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
     model = ProjectFile
     template_name = 'file_upload.html'
-    project = None
-    form_class = ProjectFileUploadForm
-    success_url = reverse_lazy('home')
+    form_class = FileUploadForm
+    success_url = reverse_lazy('upload_file')
 
-    def get(self, request, *args, **kwargs):
-        self.project = ProjectPrototype.objects.get(pk=kwargs['project'])
-        return super(ProjectFileUploadView, self).get(request, *args, **kwargs)
-
-
-class TaskFileUploadView(LoginRequiredMixin, CreateView):
-    model = TaskFile
-    template_name = 'file_upload.html'
-    task = None
-    form_class = TaskFileUploadForm
-    success_url = reverse_lazy('home')
-
-    def get(self, request, *args, **kwargs):
-        self.task = ProjectTask.objects.get(pk=kwargs['task'])
-        return super(TaskFileUploadView, self).get(request, *args, **kwargs)
-
-    def get_success_url(self):
-        task = ProjectTask.objects.get(pk=self.kwargs['task'])
-        return reverse('update_task', args=[task.prototype_project.id, task.id, ])
+    def get_initial(self):
+        initial = self.initial.copy()
+        try:
+            initial['user'] = self.request.user
+        except:
+            pass
+        return initial
 
 
-
-
+class ProjectFileDeleteView(LoginRequiredMixin, ListUserFilesMixin, DeleteView):
+    model = ProjectFile
+    template_name = 'project_file_delete_confirm.html'
+    success_url = reverse_lazy('upload_file')
 
 

@@ -14,7 +14,7 @@ from .schema import PrototypeMetadataForm
 
 class ProjectPrototype(TimeStampedModel):
     title = models.CharField(max_length=512, unique=True)
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, related_name='projects')
     origin = models.ForeignKey(
         'self', null=True, blank=True, related_name='flips')
     description = models.TextField(default='Describe your project here.')
@@ -170,13 +170,8 @@ class ProjectTask(models.Model):
 class ProjectFile(TimeStampedModel):
     project_file = models.FileField(
         upload_to='uploads', null=True, blank=True)
-    project = models.ForeignKey(ProjectPrototype, related_name='project_files')
-
-
-class TaskFile(TimeStampedModel):
-    task_file = models.FileField(
-        upload_to='uploads', null=True, blank=True)
-    project_task = models.ForeignKey(ProjectTask, related_name='task_files')
+    project = models.ForeignKey(ProjectPrototype, null=True, blank=True, related_name='project_files')
+    user = models.ForeignKey(User, related_name='uploaded_files')
 
 
 

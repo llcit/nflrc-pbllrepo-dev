@@ -4,25 +4,21 @@
 {% load crispy_forms_tags %}
 
 {% block content_container %}
-
 <div class="row">
-    <div class="col-md-8 block-center">
+
+    <div class="col-md-2 col-md-offset-1 block-center">
         <p class="lead">
-            <form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+            <form id="ajaxform" method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">{% csrf_token %}
+                {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-lg btn-success btn-block">Save</button>
+                <button type="submit" class="btn btn-lg btn-success btn-block">Upload</button>
             </form>
         </p>
     </div>
 
-    <div class="col-md-4 block-center">
-        <ul>
-        {% for file in filelisting.walk %}
-            <li>{{ file }}</li>
-        {% endfor %}
-        </ul>
-    </div>
+    <div class="col-md-6 col-md-offset-2 block-center">{% include 'file_listing_template.html' %}</div>
+
 </div>
-
-
 {% endblock content_container %}
+
+{% block js_include %}{% endblock js_include %}

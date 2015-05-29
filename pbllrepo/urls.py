@@ -26,7 +26,7 @@ from reposite.views import (
     ProjectTaskDetailView, ProjectTaskCreateView,
     ProjectTaskUpdateView, ProjectTaskDeleteView,
     ProjectTaskListView, ProjectPrototypeDocumentView,
-    ProjectFileUploadView, TaskFileUploadView
+    FileUploadView, ProjectFileDeleteView
 
 )
 
@@ -50,9 +50,11 @@ urlpatterns = [
     url(r'^prototype/(?P<project>[-\d]+)/task/edit/(?P<pk>[-\d]+)/$', ProjectTaskUpdateView.as_view(), name='update_task'),
     url(r'^prototype/(?P<project>[-\d]+)/task/delete/(?P<pk>[-\d]+)/$', ProjectTaskDeleteView.as_view(), name='delete_task'),
 
-    url(r'^prototype/project-file-upload/(?P<project>[-\d]+)/$', ProjectFileUploadView.as_view(), name='upload_project_file'),
-    url(r'^prototype/task-file-upload/(?P<task>[-\d]+)/$', TaskFileUploadView.as_view(), name='upload_task_file'),
+    # url(r'^prototype/project-file-upload/(?P<project>[-\d]+)/$', ProjectFileUploadView.as_view(), name='upload_project_file'),
+    # url(r'^prototype/task-file-upload/(?P<task>[-\d]+)/$', TaskFileUploadView.as_view(), name='upload_task_file'),
 
+    url(r'^prototype/file-upload/$', FileUploadView.as_view(), name='upload_file'),
+    url(r'^prototype/project-file/delete/(?P<pk>[-\d]+)/$', ProjectFileDeleteView.as_view(), name='delete_file'),
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),

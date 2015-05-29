@@ -3,7 +3,7 @@ from django import forms
 
 from filebrowser.widgets import ClearableFileInput
 
-from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile, TaskFile
+from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile
 from .schema import PrototypeMetadataForm
 
 
@@ -143,18 +143,16 @@ class TaskUpdateForm(forms.ModelForm):
         labels = {'title': 'Task Title'}
 
 
-class ProjectFileUploadForm(forms.ModelForm):
+class FileUploadForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+
+        super(FileUploadForm, self).__init__(*args, **kwargs)
+        # self.Meta.fields['project'].choices = self.request.user.projects.all()
 
     class Meta:
         model = ProjectFile
-        fields = ('project_file', 'project')
-
-
-class TaskFileUploadForm(forms.ModelForm):
-
-    class Meta:
-        model = TaskFile
-        fields = ('task_file', 'project_task')
+        fields = ('project_file', 'project', 'user')
+        widgets = {'user': forms.HiddenInput(), 'project_file': ClearableFileInput()}
 
 
 

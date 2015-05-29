@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from reposite.models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile, TaskFile
+from reposite.models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile
 
 
 class ProjectPrototypeAdmin(admin.ModelAdmin):
@@ -24,4 +24,3 @@ admin.site.register(ProjectPrototype, ProjectPrototypeAdmin)
 admin.site.register(PrototypeMetaElement, PrototypeMetaElementAdmin)
 admin.site.register(ProjectTask, ProjectTaskAdmin)
 admin.site.register(ProjectFile)
-admin.site.register(TaskFile)
