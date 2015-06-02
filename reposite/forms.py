@@ -149,8 +149,12 @@ class TaskUpdateForm(forms.ModelForm):
         labels = {'title': 'Task Title'}
         widgets = {
             'prototype_project': forms.HiddenInput(),
-            'description': forms.Textarea(attrs={'class': 'form-control content-editor'})
+            'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'})
         }
+
 
 class FileUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
