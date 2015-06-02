@@ -63,7 +63,7 @@ class ProjectPrototypeForm(forms.ModelForm):
             'icon': ClearableFileInput(attrs={'class': 'form-control'}),
             'creator': forms.HiddenInput(),
             'origin': forms.HiddenInput(),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
             'publisher': forms.TextInput(attrs={'class': 'form-control'}),
             'publish_date': forms.DateInput(attrs={'size': '40', 'type': 'date', 'placeholder': 'MM/DD/YYY'}),
             'contributors': forms.TextInput(attrs={'class': 'form-control'}),
@@ -131,7 +131,13 @@ class TaskCreateForm(forms.ModelForm):
         fields = ('title', 'prototype_project', 'short_description', 'description', 'sequence_order', 'task_category', 'task_type', 'task_focus', 'task_time', 'technology_tips',
                   'task_extension', 'potential_hurdles')
         labels = {'title': 'Task Title'}
-        widgets = {'prototype_project': forms.HiddenInput()}
+        widgets = {
+            'prototype_project': forms.HiddenInput(),
+            'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'})
+        }
 
 
 class TaskUpdateForm(forms.ModelForm):
@@ -141,7 +147,10 @@ class TaskUpdateForm(forms.ModelForm):
         fields = ('title', 'prototype_project', 'short_description', 'description', 'sequence_order', 'task_category', 'task_type', 'task_focus', 'task_time', 'technology_tips',
                   'task_extension', 'potential_hurdles')
         labels = {'title': 'Task Title'}
-
+        widgets = {
+            'prototype_project': forms.HiddenInput(),
+            'description': forms.Textarea(attrs={'class': 'form-control content-editor'})
+        }
 
 class FileUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

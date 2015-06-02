@@ -47,7 +47,7 @@
             <dl>
                 <!-- PROJECT DESCRIPTION -->
                 <dt id="project_description" class="lead"><h2>Project Description</h2></dt>
-                <dd>{{ description }}</dd>
+                <dd>{{ description|safe}}</dd>
 
 
                 <!-- PROJECT SEQUENCE OVERVIEW TABLE OF CONTENTS -->
@@ -68,10 +68,24 @@
                 <dd>
                     {% for task in tasks %}
                         <p>
-                            <h3><span>{{ forloop.counter }}.</span> {{ task }}</h3>
-                            <p>{{ task.description }}</p>
-                            <h5>Technology Tips</h5><p>{{ task.technology_tips }}</p>
-                            <h5>Task Extension</h5><p>{{ task.task_extension }}</p>
+                            <h3>
+                                <span>{{ forloop.counter }}.</span> {{ task }}
+                                <small>
+                                {% if project_prototype.creator == user %}
+                                <a href="{% url 'update_task' task.prototype_project.id task.id %}" class="static_a_display">
+                                    <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                                </a>
+
+                                <a href="{% url 'delete_task' task.prototype_project.id task.id %}" class="static_a_display">
+                                    <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                                </a>
+                                {% endif %}
+                                </small>
+
+                            </h3>
+                            <p>{{ task.description|safe }}</p>
+                            <h5>Technology Tips</h5><p>{{ task.technology_tips|safe }}</p>
+                            <h5>Task Extension</h5><p>{{ task.task_extension|safe }}</p>
                         </p>
                     {% endfor %}
                 </dd>
