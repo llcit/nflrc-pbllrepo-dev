@@ -6,51 +6,65 @@
 {% block content_container %}
 
 <div class="row">
-    <div class="col-md-10 col-md-offset-1 block-center">
-    <div class="row">
-        <h1 id="project_head">{{ edit_text }} {{ project_prototype }}</h1>
-        <p class="lead"> by: {% if form.instance.creator == user %} you{% else %}{{ form.instance.creator }} {% endif %}{% if form.instance.origin %} and derived from {{ form.instance.origin }} {% endif %}</p>
+
+    {% if project_prototype %}
+    <div class="col-xs-10 col-xs-offset-1">
+        <a href="{% url 'view_prototype' project_prototype.id %}" class="static_a_display lead"> <button class="btn btn-xs"> <i class="fa fa-caret-left"></i> {{ project_prototype }}</button></a>
+    </div>
+    {% endif %}
+
+    <div class="col-xs-10 col-xs-offset-1">
+        <h2 id="project_head">{% if project_prototype %} Edit {{ project_prototype }} {% else %} New Project  {% endif %}
+            <button id="savebtn" type="submit" class="btn btn-md btn-success">Save</button>
+        </h2>
+    </div>
+
+    <div class="col-xs-2 col-xs-offset-1 block-center">
+        <ul id="form_sects" class="nav nav-tab nav-sidebar list-unstyled" role="tablist">
+        {% if project_prototype %}
+            <li>
+                <a href="{% url 'view_all_tasks' project_prototype.id %}" class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit/add project tasks <i class="fa fa-caret-right"></i></button>
+                </a>
+            </li>
+        {% endif %}
+
+        {% for tab in form.Meta.label_groups %}
+            <li role="presentation" class="{% if forloop.first %}active{% endif %}" data-toggle="button">
+                <a href="#{{ tab|slugify }}" class="static_a_display tab" aria-controls="{{ tab|slugify }}" role="tab" data-toggle="tab">
+                    <span class="error_indicator"></span> {{ tab }} <i class="fa fa-caret-right"></i>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
     </div>
 
 
-    <ul id="form_sects" class="nav nav-tabs" role="tablist">
-    {% for tab in form.Meta.label_groups %}
-        <li role="presentation" class="{% if forloop.first %}active{% endif %}" data-toggle="button">
-            <a href="#{{ tab|slugify }}" class="static_a_display tab" aria-controls="{{ tab|slugify }}" role="tab" data-toggle="tab">
-                <span class="error_indicator"></span> {{ tab }} <i class="fa fa-caret-right"></i>
-            </a>
-        </li>
-    {% endfor %}
-    </ul>
-    </div>
+    <div class="col-xs-8 block-center">
 
-
-    <div class="col-md-10 col-md-offset-1 block-center">
-
-        <form method="post" action="" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
+        <form id="projectform" method="post" action="" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
             {% for hidden in form.hidden_fields %} {{hidden}} {% endfor %}
-            <div id="message_panel" class="col-md-12"><h1></h1><button type="submit" class="btn btn-md btn-success btn-block">Save</button></div>
 
+            <a href="#filebrowser" data-toggle="collapse" aria-expanded="false" aria-controls="filebrowser" class="static_a_display"><button class="btn">Browse uploaded files</button></a>
+            <a href="{% url 'upload_file' %}?p={{project_prototype.id}}" class="static_a_display">Upload a new file</a>
+            <div id="filebrowser" class="collapse">
+                <div>{% include "file_listing_template.html" %}</div>
+            </div>
 
         <!-- Base Fields -->
 
             <!-- Tabs container -->
             <div class="tab-content clearfix">
-
-
-
             {% for f in form.visible_fields %}
-
-
 
             <!-- Detect change in form section to generate a new section (tab)-->
                 {% ifchanged f.label %}
                     {% if not forloop.first %}</div>{% endif %}<div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{f.label|slugify}}">
-                    <h2>{{f.label}}</h2>
+                    <h3>{{f.label}}</h3>
                 {% endifchanged %}
                 <div class="row form-group"><!-- Begin form row -->
 
-            <!-- Determine what kind of input selection we need to render, opts = single choice or multiple choice -->
+        <!-- Determine what kind of input selection we need to render, opts = single choice or multiple choice -->
 
             <!-- Single value form field -->
                 {% if f|length == 1 %}
@@ -85,7 +99,7 @@
 
                                 <div id="form_{{f.field.label_suffix|slugify}}" class="collapse">
                                 {% if f|is_multiple %}
-                                    <label class="btn btn-sm bg-primary"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
+                                    <label class="btn btn-sm btn-default"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
                                 {% endif %}
 
                                 <ul class="list-unstyled list-inline">
@@ -94,7 +108,7 @@
                                 </div>
                             {% else %}
                                 {% if f|is_multiple %}
-                                    <label class="btn btn-sm bg-primary"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
+                                    <label class="btn btn-sm btn-default"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
                                 {% endif %}
 
                                 <ul class="list-unstyled list-inline">
@@ -110,16 +124,14 @@
 
                         {% endif %}
 
-
                     </div>
                 {% endif %}
-                <!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 " style="padding-top: 10px"></div> -->
+
                 </div> <!-- End form row -->
 
             {% endfor %}
                 </div> <!--  Closing Tab section -->
             </div><!-- End Tabs container -->
-            <div class="col-md-12"><button type="submit" class="btn btn-md btn-success btn-block">Save</button></div>
         </form>
     </div>
 
@@ -130,11 +142,16 @@
 {% block js_include %}
 <script type="text/javascript">
     $(document).ready(function(){
+        $("#savebtn").on("click", function(e) {
+            $("#projectform").submit()
+        });
+
+        // Handle the select all checkbox for various fields
         $(".selectall").click(function(){
             $("input[name="+$(this).attr("data-value")+"]").prop( "checked", $(this).is(':checked') )
         });
 
-        // User has clicked on single checkbox.
+        // User has clicked on single checkbox in a field
         $(".selector").find("input").click(function(){
             var field_container = $(this).parents(".data_input")
             var selected_display = $(field_container).find(".selected");

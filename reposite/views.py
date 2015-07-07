@@ -100,10 +100,8 @@ class ProjectPrototypeDetailView(DetailView):
 class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, ListUserFilesMixin, CreateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
-    context_object_name = 'project_prototype'
     form_class = ProjectPrototypeCreateForm
     success_message = "Your new project looks great! Perhaps you can put your mind to the tasks :)!"
-
 
     def get_initial(self):
         """ Returns the initial data to use for forms on this view. """
@@ -114,7 +112,6 @@ class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, ListUs
     def get_context_data(self, **kwargs):
         context = super(
             ProjectPrototypeCreateView, self).get_context_data(**kwargs)
-        context['edit_text'] = 'Adding New Project'
         return context
 
 
@@ -145,8 +142,8 @@ class ProjectPrototypeUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateV
     def get_context_data(self, **kwargs):
         context = super(
             ProjectPrototypeUpdateView, self).get_context_data(**kwargs)
-
-        context['edit_text'] = 'Updating'
+        # context['tasks'] = self.get_object().tasks.all()
+        # context['edit_text'] = 'Edit'
         return context
 
 
@@ -154,7 +151,7 @@ class ProjectPrototypeDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectPrototype
     template_name = 'project_prototype_delete_confirm.html'
     context_object_name = 'project_prototype'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('list_prototypes')
 
 
 class ProjectTaskListView(DetailView):
@@ -240,9 +237,12 @@ class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
     success_url = reverse_lazy('upload_file')
 
     def get_initial(self):
+        project = self.request.GET.get('p', None)
         initial = self.initial.copy()
         try:
             initial['user'] = self.request.user
+            if project:
+                initial['project'] = ProjectPrototype.objects.get(pk=project)
         except:
             pass
         return initial

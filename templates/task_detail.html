@@ -10,7 +10,7 @@
     </div>
 
     <div class="col-sm-4 col-sm-offset-1 block-center " role="tabpanel">
-        <h3>Project Tasks
+        <h3>{{ prototype_project }} Tasks
             {% if user == prototype_project.creator %}
             <a href="{% url 'create_task' prototype_project.id %}"><button id="addbtn" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> add a task </button></a>
             {% endif %}
@@ -55,7 +55,7 @@
                 <li class="list-group-item list-group-item-info lead">{{ i.get_task_category_display }} </li>
                 <li class="list-group-item list-group-item-info">sequence order - {{ i.sequence_order }} </li>
                 <li class="list-group-item list-group-item-info">prototype project - {{ i.prototype_project }} </li>
-                <li class="list-group-item list-group-item-info">description - {{ i.description }} </li>
+                <li class="list-group-item list-group-item-info">description - {{ i.description|safe }} </li>
                 <li class="list-group-item list-group-item-info">task type - {{ i.task_type }} </li>
                 <li class="list-group-item list-group-item-info">task focus - {{ i.task_focus }} </li>
                 <li class="list-group-item list-group-item-info">task time - {{ i.task_time }} </li>

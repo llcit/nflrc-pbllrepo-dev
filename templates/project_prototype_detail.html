@@ -23,7 +23,7 @@
             <h2>
                 {% if project_prototype.icon %}<span><img src="{{ project_prototype.icon.url }}" height="50px"></span>{% endif %}
                 {{ project_prototype.title }}
-                <small> by {{ project_prototype.creator }} </small>
+                <small> by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</small>
                 {% if project_prototype.origin %}
                 <small> derived from <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></small>
                 {% endif %}
@@ -37,13 +37,13 @@
 
             {% if user == project_prototype.creator %}
 
-            <a href="{% url 'update_prototype' project_prototype.id %}"class="static_a_display">
-                <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
-            </a>
+                <a href="{% url 'update_prototype' project_prototype.id %}"class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                </a>
 
-            <a href="{% url 'delete_prototype' project_prototype.id %}" class="static_a_display">
-                <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
-            </a>
+                <a href="{% url 'delete_prototype' project_prototype.id %}" class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                </a>
 
             {% endif %}
 
@@ -52,7 +52,7 @@
 
 
         <dl class="dl-horizontal">
-            <dt>description:</dt> <dd><span> {{ project_prototype.description }} </span></dd>
+            <dt>description:</dt> <dd><span> {{ project_prototype.description|safe }} </span></dd>
             <dt>publisher:</dt><dd><span> {{ project_prototype.publisher }} </span></dd>
             <dt>publish_date:</dt><dd><span> {{ project_prototype.publish_date }} </span></dd>
             <dt>contributors:</dt><dd><span> {{ project_prototype.contributors }} </span></dd>
@@ -96,25 +96,26 @@
             {% for i in prototype_tasks %}
                 <li>
                     <p>
-
-                    <a href="{% url 'view_task' project_prototype.id i.id %}" class="static_a_display">
-                        <h4 class="">{{ forloop.counter }}. {{ i }}</h4>
-                    </a>
+                        <a href="{% url 'view_task' project_prototype.id i.id %}" class="static_a_display">
+                            <h4 class="">{{ forloop.counter }}. {{ i }}</h4>
+                        </a>
                     </p>
 
                     {% if user == project_prototype.creator %}
                     <p>
-                    <a href="{% url 'update_task' project_prototype.id i.id %}"class="static_a_display">
-                        <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
-                    </a>
+                        <a href="{% url 'update_task' project_prototype.id i.id %}"class="static_a_display">
+                            <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                        </a>
 
-                    <a href="{% url 'delete_task' project_prototype.id i.id %}" class="static_a_display">
-                        <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
-                    </a>
+                        <a href="{% url 'delete_task' project_prototype.id i.id %}" class="static_a_display">
+                            <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                        </a>
                     </p>
                     {% endif %}
 
                 </li>
+            {% empty %}
+                <li>No tasks have been created yet. Click <button id="addbtn" class="btn btn-xs btn-success disabled"><i class="fa fa-plus"></i> add a task </button></li>
             {% endfor %}
         </ul>
     </div>

@@ -16,10 +16,13 @@
             <h1>
                 {{ project_prototype.title }}
                 <small>
+                    <a href="{% url 'view_prototype' project_prototype.id %}" class="static_a_display">
+                        <button class="btn btn-xs"><i class="fa fa-info"></i> info </i></button>
+                    </a>
+
                     <a href="{% url 'flip_prototype' project_prototype.id %}" class="static_a_display">
                         <button class="btn btn-xs"><i class="fa fa-files-o"></i> flip</button>
                     </a>
-
 
                     {% if project_prototype.creator == user %}
                     <a href="{% url 'update_prototype' project_prototype.id %}" class="static_a_display">

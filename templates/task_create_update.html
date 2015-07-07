@@ -6,15 +6,22 @@
 {% block content_container %}
 
 <div class="row">
-    <div class="col-md-8 block-center">
+    <div class="col-md-12">
+        <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display lead"> <button class="btn btn-xs"> <i class="fa fa-caret-left"></i> {{ prototype_project }}</button></a>
+    </div>
+    <div class="col-md-12">
         <p class="lead">
             {{ edit_text }} {{ prototype_project }}
-
-            <form method="post" action=".">{% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-lg btn-success btn-block">Save</button>
-            </form>
+            <button id="savebtn" type="submit" class="btn btn-success ">Save</button>
         </p>
+    </div>
+
+    <div class="col-md-8 block-center">
+
+        <form id="taskform" method="post" action=".">{% csrf_token %}
+            {{ form|crispy }}
+        </form>
+
     </div>
 
     <div class="col-md-4 block-center">
@@ -28,3 +35,12 @@
 
 
 {% endblock content_container %}
+{% block js_include %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#savebtn").on("click", function(e) {
+            $("#taskform").submit()
+        });
+    });
+</script>
+{% endblock js_include %}
