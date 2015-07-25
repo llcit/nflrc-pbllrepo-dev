@@ -23,8 +23,10 @@ INSTALLED_APPS = (
 
     'crispy_forms',
     'form_utils',
+    'social.apps.django_app.default',
 
     'reposite',
+    'discussions',
     'core',
 )
 
@@ -38,6 +40,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
+
 
 ROOT_URLCONF = 'pbllrepo.urls'
 

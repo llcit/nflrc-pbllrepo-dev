@@ -9,6 +9,8 @@ from django.core.urlresolvers import reverse
 from model_utils.models import TimeStampedModel
 from filebrowser.fields import FileBrowseField
 
+from discussions.models import Post
+
 from .schema import PrototypeMetadataForm
 
 
@@ -92,6 +94,16 @@ class ProjectPrototype(TimeStampedModel):
 
         return data_dict
 
+    def save(self, *args, **kwargs):
+        """ Create comment thread if one does not exist"""
+        if not ProjectComment.objects.filter(project=self):
+            thread = Post(text='Project Comments', creator=self.creator, subject='Comments for project')
+            thread.save()
+            print self
+            ProjectComment(thread=thread, project=self).save()
+
+        super(ProjectPrototype, self).save(*args, **kwargs)
+
     def get_absolute_url(self):
         return reverse('view_prototype', args=[self.id])
 
@@ -174,4 +186,12 @@ class ProjectFile(TimeStampedModel):
     user = models.ForeignKey(User, related_name='uploaded_files')
 
 
+class ProjectComment(models.Model):
+    thread = models.ForeignKey(Post, related_name='project_thread')
+    project = models.ForeignKey(ProjectPrototype, related_name='project_discussion')
 
+    class Meta:
+        verbose_name = 'Project / Discussion Pair'
+
+    def __unicode__(self):
+        return '%s --> %s' % (self.project, self.thread)

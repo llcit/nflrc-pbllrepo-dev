@@ -54,18 +54,28 @@
 
           </button> -->
 
-          <a class="static_a_display pull-left" href="{% url 'home' %}">
+          <a class="static_a_display navbar-left" href="{% url 'home' %}">
             <img src="{% static 'img/pbllrepo-icon.jpg' %}"> <span class="lead" style="font-size: 2.0em;">PBLL Repository</span>
           </a>
+
+
 
         </div>
 
         <div class="nav navbar-right">
 
+            <a href="{% url 'list_prototypes' %}" class="navbar-link">
+                <i class="fa fa-list"></i> browse
+            </a>
+            |
+            <a href="{% url 'create_prototype' %}" class="navbar-link">
+                <i class="fa fa-plus"></i> create
+            </a>
+            |
             {% if not user.is_authenticated %}
-              <a href="{% url 'login' %}"  class="btn btn-xs btn-warning"> login </a>
+              <a href="{% url 'login' %}"  class="navbar-link"> login </a>
             {% else %}
-              <a href="{% url 'logout' %}" class="btn btn-xs btn-warning"> logout {{ user }} </a>
+              <a href="{% url 'logout' %}" class="navbar-link"> logout {{ user }} </a>
             {% endif %}
 
         </div>

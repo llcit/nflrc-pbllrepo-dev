@@ -6,12 +6,12 @@
     {% for file in filelisting %}
     <div class="media">
         <div class="media-left media-top">
-            <a href="#">
+            <a href="{{ file.project_file.url }}" target="_blank">
                 <img class="media-object" src="{{ file.project_file.url }}" alt="..." width="48px">
             </a>
         </div>
         <div class="media-body">
-            {% if file.project %}<h4 class="media-heading">{{ file.project }}</h4>{% endif %}
+            {% if file.project %}<h4 class="media-heading"><a href="{% url 'view_prototype' file.project.id %}">{{ file.project }}</a></h4>{% endif %}
             {{ file.project_file.url }}
             <div>
                 <a href="{% url 'delete_file' file.id %}" class="static_a_display">

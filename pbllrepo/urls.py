@@ -27,12 +27,13 @@ from reposite.views import (
     ProjectTaskUpdateView, ProjectTaskDeleteView,
     ProjectTaskListView, ProjectPrototypeDocumentView,
     FileUploadView, ProjectFileDeleteView
-
 )
 
-urlpatterns = [
-    url(r'^$', HomeView.as_view(), name='home'),
+from discussions.views import DiscussionListView, DiscussionView, PostCreateView, PostDeleteView, PostUpdateView
 
+urlpatterns = [
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^$', HomeView.as_view(), name='home'),
 
     url(r'^prototypes/$', ProjectPrototypeListView.as_view(), name='list_prototypes'),
     url(r'^prototype/doc/(?P<pk>[-\d]+)/$', ProjectPrototypeDocumentView.as_view(), name='docview_prototype'),
@@ -55,6 +56,14 @@ urlpatterns = [
 
     url(r'^prototype/file-upload/$', FileUploadView.as_view(), name='upload_file'),
     url(r'^prototype/project-file/delete/(?P<pk>[-\d]+)/$', ProjectFileDeleteView.as_view(), name='delete_file'),
+
+    url(r'^discussions/(?P<slug>[-\w]+)/$', DiscussionView.as_view(), name='discussion_select'),
+    url(r'^discussions/$', DiscussionListView.as_view(), name='discussion'),
+    url(r'^discussions/post/add/$', PostCreateView.as_view(), name='create_post'),
+    url(r'^discussions/post/delete/$', PostDeleteView.as_view(), name='delete_post'),
+    url(r'^discussions/post/(?P<pk>[-\w]+)/edit/$', PostUpdateView.as_view(), name='edit_post'),
+
+
 
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),

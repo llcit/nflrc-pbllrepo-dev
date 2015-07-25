@@ -10,7 +10,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from braces.views import LoginRequiredMixin
 
 from core.mixins import ListUserFilesMixin
-from .models import ProjectPrototype, ProjectTask, ProjectFile
+from discussions.forms import PostReplyForm
+
+from .models import ProjectPrototype, ProjectTask, ProjectFile, ProjectComment
 from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, FileUploadForm
 
 
@@ -42,9 +44,19 @@ class ProjectPrototypeDocumentView(DetailView):
                 tasks[i.get_task_category_display()] = []
                 tasks[i.get_task_category_display()].append(i)
 
+        thread = ProjectComment.objects.get(project=project).thread or None
+        initial_post_data = {}
+        initial_post_data['creator'] = self.request.user
+        initial_post_data['subject'] = 'Re: %s' % project.title
+        initial_post_data['parent_post'] = thread
+        form = PostReplyForm(initial=initial_post_data)
+
         context['tasks'] = tasks
         context['description'] = project.description
-
+        context['thread'] = ProjectComment.objects.get(project=project).thread
+        context['comments'] = thread.replies.filter(deleted=False)
+        context['postform'] = form
+        context['filelisting'] = self.request.user.uploaded_files.filter(project=project)
         return context
 
 
