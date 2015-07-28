@@ -106,13 +106,6 @@ class PostCreateView(LoginRequiredMixin, CsrfExemptMixin, JSONResponseMixin, Aja
     template_name = 'discussions.html'
     form_class = PostReplyForm
 
-    def get_success_url(self):
-        thread = self.parent_post
-        project = ProjectComment.objects.get(thread=thread)
-        if project:
-            return reverse('docview_prototype', args=[project.id])
-        return reverse('list_prototypes')
-
     def post_ajax(self, request, *args, **kwargs):
         postform = PostReplyForm(request.POST)
         if postform.is_valid():
