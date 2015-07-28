@@ -104,7 +104,14 @@ class PostUpdateView(LoginRequiredMixin, CsrfExemptMixin, UpdateView):
 class PostCreateView(LoginRequiredMixin, CsrfExemptMixin, JSONResponseMixin, AjaxResponseMixin, CreateView):
     model = Post
     template_name = 'discussions.html'
-    form_class= PostReplyForm
+    form_class = PostReplyForm
+
+    def get_success_url(self):
+        thread = self.get_object().parent_post
+        project = ProjectComment.objects.get(thread=thread)
+        if project:
+            return reverse('docview_prototype', args=[project.id])
+        return reverse('list_prototypes')
 
     def post_ajax(self, request, *args, **kwargs):
         postform = PostReplyForm(request.POST)
