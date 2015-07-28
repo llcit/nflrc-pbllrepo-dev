@@ -73,7 +73,7 @@
             </a>
             |
             {% if not user.is_authenticated %}
-              <a href="{% url 'login' %}"  class="navbar-link"> login </a>
+              <a href="/login/google-oauth2/"  class="navbar-link"> login </a>
             {% else %}
               <a href="{% url 'logout' %}" class="navbar-link"> logout {{ user }} </a>
             {% endif %}

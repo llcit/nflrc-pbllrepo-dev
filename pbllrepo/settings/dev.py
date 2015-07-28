@@ -24,3 +24,20 @@ MEDIA_URL = 'http://localhost/media/pbllrepo/'
 DIRECTORY = 'uploads'
 FILEBROWSER_VERSIONS_BASEDIR = '_versions'
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']  # This is the Client ID (not a key)
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+
+    'core.utils.nflrc_auth_allowed',
+    # 'core.utils.nflrc_social_user',
+
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+)
+
+LOGIN_URL = '/login/google-oauth2/'

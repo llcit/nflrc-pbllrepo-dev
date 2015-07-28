@@ -33,6 +33,9 @@ from discussions.views import DiscussionListView, DiscussionView, PostCreateView
 
 urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('django.contrib.auth.urls', namespace='auth')),
+
+
     url(r'^$', HomeView.as_view(), name='home'),
 
     url(r'^prototypes/$', ProjectPrototypeListView.as_view(), name='list_prototypes'),
@@ -65,7 +68,7 @@ urlpatterns = [
 
 
 
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
+    # url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
 
     url(r'^admin/filebrowser/', include(site.urls)),
