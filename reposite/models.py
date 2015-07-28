@@ -96,13 +96,13 @@ class ProjectPrototype(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         """ Create comment thread if one does not exist"""
+
+
+        super(ProjectPrototype, self).save(*args, **kwargs)
         if not ProjectComment.objects.filter(project=self):
             thread = Post(text='Project Comments', creator=self.creator, subject='Comments for project')
             thread.save()
-            print self
             ProjectComment(thread=thread, project=self).save()
-
-        super(ProjectPrototype, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('view_prototype', args=[self.id])
