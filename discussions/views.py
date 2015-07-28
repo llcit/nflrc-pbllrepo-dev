@@ -107,7 +107,7 @@ class PostCreateView(LoginRequiredMixin, CsrfExemptMixin, JSONResponseMixin, Aja
     form_class = PostReplyForm
 
     def get_success_url(self):
-        thread = self.get_object().parent_post
+        thread = self.parent_post
         project = ProjectComment.objects.get(thread=thread)
         if project:
             return reverse('docview_prototype', args=[project.id])
