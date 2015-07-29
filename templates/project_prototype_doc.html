@@ -149,6 +149,7 @@
     <!-- COMMENTS -->
     <div class="col-md-8 col-md-offset-2">
         <h2>Comments</h2>
+        {% if user.is_authenticated %}
         <!-- comment post form -->
         <div class="well" style="background: #fff">
             <form id="{{project_prototype.id}}-postform" class="postform" action="{% url 'create_post'%}" method="post" data-reply_target="{{project_prototype.id}}-replies">{% csrf_token %}
@@ -158,6 +159,7 @@
                 <div style="text-align: right"><input id="post_submit_btn" type="submit" class="btn btn-success btn-sm btn-block" value="Add Post"/></div>
             </form>
         </div>
+        {% endif %}
 
     <!-- comments -->
         <dl id="{{project_prototype.id}}-replies" class="reply-block">
