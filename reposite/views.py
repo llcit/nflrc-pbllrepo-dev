@@ -56,7 +56,10 @@ class ProjectPrototypeDocumentView(DetailView):
         context['thread'] = ProjectComment.objects.get(project=project).thread
         context['comments'] = thread.replies.filter(deleted=False)
         context['postform'] = form
-        context['filelisting'] = self.request.user.uploaded_files.filter(project=project)
+        try:
+            context['filelisting'] = project.project_files.all()
+        except:
+            context['filelisting'] = None
         return context
 
 
