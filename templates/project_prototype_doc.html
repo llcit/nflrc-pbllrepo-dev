@@ -100,7 +100,50 @@
     <!-- PROJECT FILES -->
     <div class="col-md-8 col-md-offset-2">
         <h2>Files</h2>
-        <div>{% include "file_listing_template.html" %}</div>
+        {% for file in filelisting %}
+        <div class="media">
+            <div class="media-left media-top">
+                <a href="{{ file.project_file.url }}" target="_blank">
+                    <img class="media-object" src="{{ file.project_file.url }}" alt="..." width="48px">
+                </a>
+            </div>
+            <div class="media-body">
+                {% if file.project %}<h4 class="media-heading"><a href="{% url 'view_prototype' file.project.id %}">{{ file.project }}</a></h4>{% endif %}
+                {{ file.project_file.url }}
+                <div>
+                    <a href="{% url 'delete_file' file.id %}" class="static_a_display">
+                        <button type="button" class="btn btn btn-xs" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-close"></i> remove</button>
+                    </a>
+
+                <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{file.id}}_link_display">
+                      copy/insert link
+                    </button>
+
+                <!-- Modal -->
+                    <div class="modal fade" id="{{file.id}}_link_display" tabindex="-1" role="dialog" aria-labelledby="link_title" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="link_title">Click, copy, and paste  </h4>
+                          </div>
+                          <div class="modal-body" editable="true">
+
+                                <input type="text" name="text_area" size="40" value="{{ file.project_file.url }}" onClick="javascript:this.focus();this.select();">
+
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                <!-- End Modal -->
+                </div>
+
+
+            </div>
+        </div>
+        {% endfor %}
     </div>
 
     <!-- COMMENTS -->
