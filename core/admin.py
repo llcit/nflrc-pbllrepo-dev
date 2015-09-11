@@ -21,10 +21,14 @@ class ProjectTaskAdmin(admin.ModelAdmin):
     list_filter = ['prototype_project']
     list_editable = ['task_category', 'title', 'sequence_order']
 
+
+class ProjectFileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'project_file', 'project')
+
 admin.site.register(ProjectPrototype, ProjectPrototypeAdmin)
 admin.site.register(PrototypeMetaElement, PrototypeMetaElementAdmin)
 admin.site.register(ProjectTask, ProjectTaskAdmin)
-admin.site.register(ProjectFile)
+admin.site.register(ProjectFile, ProjectFileAdmin)
 admin.site.register(ProjectComment)
 
 admin.site.register(Post)
