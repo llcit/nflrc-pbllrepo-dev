@@ -9,6 +9,15 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'nflrc-repo-dev',
+    #     'USER': 'postgres',
+    #     'PASSWORD': '1',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
+    # }
+
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(PROJECT_DIR.child('pbllrepo'), 'pbllrepo-dev-db.sqlite3'),
