@@ -77,7 +77,9 @@
                                 {{ i }}
                             </h2>
                             <h5>by {{ i.creator.first_name }} {{ i.creator.last_name }}</h5>
+                            {% comment %}
                             <a href="{% url 'flip_prototype' i.id %}" class="static_a_display"> <button class="btn btn-xs btn-block btn-success"><i class="fa fa-files-o"></i> flip</button></a>
+                            {% endcomment %}
                         </div>
                     </a>
 
