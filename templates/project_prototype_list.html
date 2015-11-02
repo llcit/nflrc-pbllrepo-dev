@@ -27,10 +27,11 @@
                 <button class="btn btn-xs"><i class="fa fa-info"></i> info </i></button>
             </a>
 
+            {% comment %}
             <a href="{% url 'flip_prototype' project_prototype.0.id %}" class="static_a_display">
                 <button class="btn btn-xs"><i class="fa fa-files-o"></i> flip</button>
             </a>
-
+            {% endcomment %}
 
             {% if project_prototype.0.creator == user %}
             <a href="{% url 'update_prototype' project_prototype.0.id %}" class="static_a_display">
