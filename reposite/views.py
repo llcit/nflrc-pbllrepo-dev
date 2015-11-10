@@ -169,7 +169,7 @@ class ProjectPrototypeDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('list_prototypes')
 
 
-class ProjectTaskListView(DetailView):
+class ProjectTaskListView(LoginRequiredMixin, DetailView):
     model = ProjectPrototype
     template_name = 'task_detail.html'
 
@@ -183,7 +183,7 @@ class ProjectTaskListView(DetailView):
         return context
 
 
-class ProjectTaskDetailView(ListUserFilesMixin, DetailView):
+class ProjectTaskDetailView(LoginRequiredMixin, ListUserFilesMixin, DetailView):
     model = ProjectTask
     template_name = 'task_detail.html'
     context_object_name = 'project_task'
