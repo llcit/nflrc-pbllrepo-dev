@@ -84,10 +84,13 @@
                     </a>
 
                     <p></p>
+                    <p>{{ i.description | truncatewords:140 }}</p>
 
+                    {% comment %}
                     {% for j in i.tasks.all %}
                         <p><a class="static_a_display" href="{{ j.get_absolute_url }}"><button class="btn btn-block">{{ j|truncatechars:24}}</button></a></p>
                     {% endfor %}
+                    {% endcomment %}
 
                 </div>
                 <p></p>
