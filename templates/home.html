@@ -84,7 +84,7 @@
                     </a>
 
                     <p></p>
-                    <p>{{ i.description | truncatewords:140 }}</p>
+                    <p>{{ i.description | truncatechars_html:140 }}</p>
 
                     {% comment %}
                     {% for j in i.tasks.all %}
