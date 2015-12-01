@@ -20,7 +20,7 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR.child('pbllrepo'), 'pbllrepo-dev.sqlite3'),
+        'NAME': os.path.join(PROJECT_DIR.child('pbllrepo'), 'pbllrepo-dev-nov-30.sqlite3'),
     }
 }
 
