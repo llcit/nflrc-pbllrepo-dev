@@ -47,7 +47,7 @@ class ProjectPrototypeForm(forms.ModelForm):
             'contributors': 'Contributors',
             'rights': 'Rights',
             'uri': 'URI',
-            'active': 'Private'
+            'active': 'Public'
         }
 
         """
@@ -71,7 +71,7 @@ class ProjectPrototypeForm(forms.ModelForm):
             'uri': forms.TextInput(attrs={'class': 'form-control'}),
         }
         help_texts = {
-            'active': 'Do Not Display on Web',
+            'active': 'Display on Web',
             'contributors': 'Separate names with a comma'
         }
 

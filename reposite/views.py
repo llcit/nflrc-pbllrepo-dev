@@ -22,7 +22,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         #context['prototype_list'] = ProjectPrototype.objects.all() <-- modified 6/23/2016 to filter by active (display on web only public ones)
-        context['prototype_list'] = ProjectPrototype.objects.all().filter(active=False)
+        context['prototype_list'] = ProjectPrototype.objects.all().filter(active=True)
         return context
 
 
@@ -93,7 +93,7 @@ class ProjectPrototypeListView(TemplateView):
             ProjectPrototypeListView, self).get_context_data(**kwargs)
         prototypes = []
         #for i in ProjectPrototype.objects.all().order_by('-active'): <-- modified 6/23/2016 filter by active (display on web only public ones)
-        for i in ProjectPrototype.objects.all().filter(active=False):
+        for i in ProjectPrototype.objects.all().filter(active=True):
             proto = (i, i.get_data_dict())
             prototypes.append(proto)
 
