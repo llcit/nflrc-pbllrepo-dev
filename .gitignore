@@ -4,6 +4,7 @@ __pycache__/
 
 # C extensions
 *.so
+.DS_Store
 
 # Distribution / packaging
 .Python
@@ -56,4 +57,5 @@ target/
 # Project Specific
 prod-*
 *.sqlite3
+pbllrepo-dev-sample.sqlite3
 
