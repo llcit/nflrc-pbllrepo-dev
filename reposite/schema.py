@@ -47,6 +47,78 @@ EXTENDED (These descriptors are defined here, as a metadat schema for ProjectPro
     lp_ilr_scale.writing
 """
 
+"""
+The following tuples are used by reposite.models.PrototypeMetaElement 
+to enforce the definition of metadata types and categories. New metadata 
+definitions and or categories should be added to these tuples to ensure
+they are enforced in the PrototypeMetaElement model and relevant table.
+
+Format: <metadata identifier>, <metadata display string>
+
+Note: each of the types listed below must have a corresponding form definition
+added to PrototypeMetadataForm defined in this file. This ensures that the relative
+form used to create metadata elements are properly associated. 
+
+Additionally, a controlled vocabulary may be defined for each metatdata type to constrain the data. 
+"""
+
+METADATA_CATEGORIES = (
+    ('subject', 'Subject Area'),
+    ('language', 'Language'),
+    ('world_readiness', 'World Readiness Standards'),
+    ('21st_century_skills', '21st Century Skills'),
+    ('instructional_context', 'Instructional Context'),
+    ('language_proficiency', 'Language Proficiency'),
+)
+
+METADATA_TYPES = (
+    ('subject', 'Subject Area(s)'), 
+    ('language', 'Language(s)'), 
+    ('ic_heritage_learners', 'Heritage Learners'), 
+    ('ic_target_audience_description', 'Target Audience Description'), 
+    ('ic_target_audience_role', 'Audience Role'), 
+    ('ic_target_audience_location', 'Audience Location'), 
+    ('ic_product_description', 'Product Description'), 
+    ('ic_product_target_culture', 'Product Target Culture'), 
+    ('lp_actfl_scale', 'ACTFL Scale'), 
+    ('lp_ilr_scale_listening', 'ILR Scale Listening'), 
+    ('lp_ilr_scale_reading', 'ILR Scale Reading'), 
+    ('lp_ilr_scale_speaking', 'ILR Scale Speaking'), 
+    ('lp_ilr_scale_writing', 'ILR Scale Writing'), 
+    ('wr_goal_area_communication', 'Communication'), 
+    ('wr_goal_area_cultures', 'Cultures'), 
+    ('wr_goal_area_connections', 'Connections'), 
+    ('wr_goal_area_comparisons', 'Comparisons'), 
+    ('wr_goal_area_communities', 'Communities'), 
+    ('cs_interdisciplinary_themes', 'Interdisciplinary Themes'), 
+    ('cs_info_media_technology_skills', 'Information, Media, and Technology Skills'), 
+    ('cs_like_career_skills', 'Life and Career Skills'),
+)
+
+METADATA_TYPES_TO_CATEGORIES = {
+    'subject': 'subject',
+    'language': 'language',
+    'ic_heritage_learners': 'instructional_context',
+    'ic_target_audience_description': 'instructional_context',
+    'ic_target_audience_role': 'instructional_context',
+    'ic_target_audience_location': 'instructional_context',
+    'ic_product_description': 'instructional_context',
+    'ic_product_target_culture': 'instructional_context',
+    'lp_actfl_scale': 'language_proficiency',
+    'lp_ilr_scale_listening': 'language_proficiency',
+    'lp_ilr_scale_reading': 'language_proficiency',
+    'lp_ilr_scale_speaking': 'language_proficiency',
+    'lp_ilr_scale_writing': 'language_proficiency',
+    'wr_goal_area_communication': 'world_readiness',
+    'wr_goal_area_cultures': 'world_readiness',
+    'wr_goal_area_connections': 'world_readiness',
+    'wr_goal_area_comparisons': 'world_readiness',
+    'wr_goal_area_communities': 'world_readiness',
+    'cs_interdisciplinary_themes': '21st_century_skills',
+    'cs_info_media_technology_skills': '21st_century_skills',
+    'cs_like_career_skills': '21st_century_skills', 
+}
+
 
 """
 CONTROLLED VOCABULARLY FOR BASE AND EXTENDED DESCRIPTORS
@@ -226,6 +298,8 @@ how these fields are used.
 Note that the form fields defined below are based on the metadata schema illustrated above (and its related choices
 or 'vocabulary'). If there are additions, deletions, or modifications to the
 schema above, they need to be reflected and/or edited in the relevant form field definitions defined here.
+
+Alert: the category attribute is required for each form widget. This should reflect one of the items in METADATA_CATEGORIES above.
 """
 
 from django import forms
@@ -240,7 +314,8 @@ class PrototypeMetadataForm(forms.Form):
         label_suffix='Subject Area(s)',
         help_text='(Check all that apply)',
         widget=forms.CheckboxSelectMultiple(attrs={}),
-        required=True)
+        required=True,
+        )
     language = forms.MultipleChoiceField(
         choices=LANGUAGES_NISO,
         label='Language',
@@ -320,35 +395,35 @@ class PrototypeMetadataForm(forms.Form):
     wr_goal_area_communication = forms.MultipleChoiceField(
         choices=WR_GOAL_AREA['communication'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness',
+        label='World Readiness Standards',
         label_suffix='Communication',
         help_text='(Check all that apply)',
         required=False)
     wr_goal_area_cultures = forms.MultipleChoiceField(
         choices=WR_GOAL_AREA['cultures'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness',
+        label='World Readiness Standards',
         label_suffix='Cultures',
         help_text='(Check all that apply)',
         required=False)
     wr_goal_area_connections = forms.MultipleChoiceField(
         choices=WR_GOAL_AREA['connections'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness',
+        label='World Readiness Standards',
         label_suffix='Connections',
         help_text='(Check all that apply)',
         required=False)
     wr_goal_area_comparisons = forms.MultipleChoiceField(
         choices=WR_GOAL_AREA['comparisons'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness',
+        label='World Readiness Standards',
         label_suffix='Comparisons',
         help_text='(Check all that apply)',
         required=False)
     wr_goal_area_communities = forms.MultipleChoiceField(
         choices=WR_GOAL_AREA['communities'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness',
+        label='World Readiness Standards',
         label_suffix='Communities',
         help_text='(Check all that apply)',
         required=False)
@@ -378,6 +453,9 @@ class PrototypeMetadataForm(forms.Form):
     def multiple_choice_fields(self):
         return [field_name for field_name, field_type in self.fields.items() if type(field_type) == forms.MultipleChoiceField]
 
+    
     def display_order_fields(self):
         """ Returns the definition order of the field names. """
         return self.fields.keys()
+
+

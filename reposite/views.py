@@ -109,8 +109,19 @@ class ProjectPrototypeDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(
             ProjectPrototypeDetailView, self).get_context_data(**kwargs)
-        context['prototype_data'] = self.get_object().get_data_dict()
-        context['prototype_tasks'] = self.get_object().tasks.all()
+        
+        context['prototype_data'] = self.get_object().get_data()
+        
+        tasks = OrderedDict()
+        for i in self.get_object().tasks.all():
+            try:
+                tasks[i.get_task_category_display()].append(i)
+            except:
+                tasks[i.get_task_category_display()] = []
+                tasks[i.get_task_category_display()].append(i)
+
+        context['prototype_tasks'] = tasks  # self.get_object().tasks.all()
+        context['task_list'] = self.get_object().tasks.all()
         return context
 
 

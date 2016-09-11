@@ -11,7 +11,7 @@ from filebrowser.fields import FileBrowseField
 
 from discussions.models import Post
 
-from .schema import PrototypeMetadataForm
+from .schema import PrototypeMetadataForm, METADATA_CATEGORIES, METADATA_TYPES, METADATA_TYPES_TO_CATEGORIES
 
 
 class ProjectPrototype(TimeStampedModel):
@@ -94,10 +94,18 @@ class ProjectPrototype(TimeStampedModel):
 
         return data_dict
 
+    def get_data(self):
+        data_dict = {}
+        for i in self.data.all().order_by('element_category'):
+            try:
+                data_dict[i.element_category].append((i.get_element_type_display, i.element_data))
+            except:
+                data_dict[i.element_category] = []
+                data_dict[i.element_category].append((i.get_element_type_display, i.element_data))        
+        return data_dict
+
     def save(self, *args, **kwargs):
         """ Create comment thread if one does not exist"""
-
-
         super(ProjectPrototype, self).save(*args, **kwargs)
         if not ProjectComment.objects.filter(project=self):
             thread = Post(text='Project Comments', creator=self.creator, subject='Comments for project')
@@ -110,12 +118,20 @@ class ProjectPrototype(TimeStampedModel):
     def __unicode__(self):
         return self.title
 
-
 class PrototypeMetaElement(models.Model):
     prototype_project = models.ForeignKey(
         ProjectPrototype, related_name='data')
-    element_type = models.CharField(max_length=512)
+    element_type = models.CharField(max_length=512, choices=METADATA_TYPES)
     element_data = models.TextField()
+    element_category = models.CharField(max_length=512, blank=True, null=True, choices=METADATA_CATEGORIES)
+
+    def save(self, *args, **kwargs):
+        super(PrototypeMetaElement, self).save(*args, **kwargs)
+        try:
+            self.element_category = METADATA_TYPES_TO_CATEGORIES[self.element_type]
+            super(PrototypeMetaElement, self).save(*args, **kwargs)
+        except:
+            print 'Error while trying to assign a category to element. Refer to schema.py'
 
     class Meta:
         unique_together = (
@@ -123,9 +139,9 @@ class PrototypeMetaElement(models.Model):
 
 
 TASK_CATEGORIES = (
-    ('0_preparing', 'Preparing'),
-    ('1_launching', 'Launching'),
-    ('2_managing', 'Managing'),
+    ('0_preparing', 'Preparing for the Project'),
+    ('1_launching', 'Launching the Project'),
+    ('2_managing', 'Managing the Project'),
     ('3_assessment', 'Assessment')
 )
 

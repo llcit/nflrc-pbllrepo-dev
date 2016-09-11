@@ -5,10 +5,8 @@
 {% block content_container %}
 
 <div class="row">
-    <div class="col-md-4 col-md-offset-1">
+    <div class="col-md-10 col-md-offset-1">
          <p class="lead">
-
-
             <h2>
                 {% if project_prototype.icon %}<span><img src="{{ project_prototype.icon.url }}" height="50px"></span>{% endif %}
                 {{ project_prototype.title }}
@@ -17,14 +15,17 @@
                 <small> derived from <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></small>
                 {% endif %}
             </h2>
+            
             <a href="{% url 'docview_prototype' project_prototype.id %}" class="static_a_display">
                 <button class="btn btn-xs"><i class="fa fa-file-text-o"></i> view</button>
             </a>
+
             {% comment %}
             <a href="{% url 'flip_prototype' project_prototype.id %}" class="static_a_display">
                 <button class="btn btn-xs"><i class="fa fa-files-o"></i> flip</button>
             </a>
             {% endcomment %}
+
             {% if user == project_prototype.creator %}
 
                 <a href="{% url 'update_prototype' project_prototype.id %}"class="static_a_display">
@@ -40,9 +41,8 @@
                     <button class="btn btn-xs"><i class="fa fa-close"></i> Cannot remove because there are multiple derivations</button>
                 </a>
                 {% endif %}
+            
             {% endif %}
-
-
         </p>
 
 
@@ -53,22 +53,83 @@
             <dt>contributors:</dt><dd><span> {{ project_prototype.contributors }} </span></dd>
             <dt>copyright:</dt><dd><span> {{ project_prototype.rights }} </span></dd>
             <dt>uri:</dt><dd><span> {{ project_prototype.uri }} </span></dd>
+        </dl>
+    </div>
+    
+    <hr>
+    <!-- COLUMN 1 -->
+    <div class="col-md-4 col-md-offset-1">        
+        <dl class="">
+            <dt>Language(s):</dt><dd>{% for i in prototype_data.language %} {{ i.1 }}{% if not forloop.last %}, {% endif %} {% endfor %}</dd>
+        
+            <dt>Subject Area(s):</dt><dd>{% for i in prototype_data.subject %} {{ i.1 }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd>
 
-            {% for i, j in prototype_data.items %}
-                {% ifchanged j.metaprefix %}<h4> {{ j.metaprefix }} </h4> {% endifchanged %}
-                {% if not j.displayname %}
-                    <dt></dt><dd>{% for k in j.datalist %}<span>{{ k }}</span>{% if not forloop.last %},{% endif %} {% endfor %}</dd>
-                {% else %}
-                    <dt style="white-space: normal">
-                        {{ j.displayname }}:
-                    </dt>
-                    <dd>{% for k in j.datalist %}<span>{{ k }}</span>{% if not forloop.last %},{% endif %} {% endfor %}</dd>
-                {% endif %}
+            <hr>
+            <h4>Instructional Context</h4>
+            <hr>
+            {% for i in prototype_data.instructional_context %} 
+                {% ifchanged i.0 %}<h2></h2><dt> {{ i.0 }}: </dt>{% endifchanged %} 
+                <dd class="">{{ i.1 }}</dd>
+            {% empty %}
+                <h5>not specified</h5>
+            {% endfor %}
+        </dl>            
+    </div>
+
+    <!-- COLUMN 2 -->
+    <div class="col-md-4 col-md-offset-1">
+        <dl class="">
+            <h4>Language Proficiency</h4>
+            <hr>
+            {% for i in prototype_data.language_proficiency %} 
+                {% ifchanged i.0 %}<h2></h2><dt> {{ i.0 }}: </dt>{% endifchanged %} 
+                <dd class="">{{ i.1 }}</dd>
+            {% empty %}
+                <h5>not specified</h5>
+            {% endfor %}
+            <hr>
+        
+            <h4>World Readiness Standards</h4>
+            <hr>
+            {% for i in prototype_data.world_readiness %} 
+                {% ifchanged i.0 %}<h2></h2><dt> {{ i.0 }} </dt>{% endifchanged %} 
+                <dd class="">{{ i.1 }}</dd>
+            {% empty %}
+                <h5>not specified</h5>
+            {% endfor %}
+            <hr>
+
+            <h4>21<sup>st</sup> Century Skills</h4>
+            <hr>
+            {% for i in prototype_data.21st_century_skills %} 
+                {% ifchanged i.0 %}<h2></h2><dt> {{ i.0 }} </dt>{% endifchanged %} 
+                <dd class="">{{ i.1 }}</dd>
+            {% empty %}
+                <h5>not specified</h5>
             {% endfor %}
         </dl>
     </div>
 
-    <div class="col-md-4 col-md-offset-1">
+    <div class="col-md-10 col-md-offset-1">
+        <dl>
+            <!-- PROJECT SEQUENCE OVERVIEW TABLE OF CONTENTS -->
+            <dt id="project_sequence" class="lead"><h2>Project Sequence</h2></dt>
+            <dd>
+                {% for category, tasks in prototype_tasks.items %}
+                    <h3>{{ category }}</h3>
+                    {% for task in tasks %}
+                        <p>
+                            <span>{{ forloop.counter }}.</span> {{ task.title }} - <em>{{ task.short_description }}</em>
+                            <a href="{% url 'view_task' project_prototype.id task.id %}">more detail</a>
+                        </p>
+                    {% endfor %}
+                {% endfor %}
+            </dd>
+        </dl>
+    </div>
+
+{% comment %}
+    <div class="col-md-10 col-md-offset-1">
         <p>
 
             <a href="#" tabindex="0" role="button" class="addatask static_a_display" selector="#addbtn" data-toggle="popover" data-placement="left" data-trigger="focus" data-content="{% for message in messages %}{{message}}{% endfor %}"></a>
@@ -88,7 +149,7 @@
         </p>
 
         <ul class="list-unstyled">
-            {% for i in prototype_tasks %}
+            {% for i in task_list %}
                 <li>
                     <p>
                         <a href="{% url 'view_task' project_prototype.id i.id %}" class="static_a_display">
@@ -114,6 +175,7 @@
             {% endfor %}
         </ul>
     </div>
+    {% endcomment %}
 </div>
 {% endblock content_container %}
 

@@ -33,7 +33,7 @@ class ProjectPrototypeForm(forms.ModelForm):
         fields = ('title', 'icon', 'creator', 'origin', 'publisher', 'publish_date',  'contributors', 'rights', 'uri', 'active', 'description')
 
         """ Label groups identify related groups. These are assigned in init or in PrototypeMetadataForm """
-        label_groups = ['General', 'Subject Area', 'Description', 'Language', 'Instructional Context', 'Language Proficiency', 'World Readiness', '21st Century Skills']
+        label_groups = ['General', 'Subject Area', 'Description', 'Language', 'Instructional Context', 'Language Proficiency', 'World Readiness Standards', '21st Century Skills']
 
         """ Label  suffixes are used to label each item within a label group """
         label_suffixes = {
