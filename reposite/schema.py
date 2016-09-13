@@ -59,66 +59,142 @@ Note: each of the types listed below must have a corresponding form definition
 added to PrototypeMetadataForm defined in this file. This ensures that the relative
 form used to create metadata elements are properly associated. 
 
-Additionally, a controlled vocabulary may be defined for each metatdata type to constrain the data. 
+Additionally, a controlled vocabulary may be defined for each metatdata form to constrain the data. 
 """
 
-METADATA_CATEGORIES = (
-    ('subject', 'Subject Area'),
-    ('language', 'Language'),
-    ('world_readiness', 'World Readiness Standards'),
-    ('21st_century_skills', '21st Century Skills'),
-    ('instructional_context', 'Instructional Context'),
-    ('language_proficiency', 'Language Proficiency'),
+from collections import OrderedDict, namedtuple
+
+MetaElementDef = namedtuple('MetaElementDef', 'id id_display category category_display')
+
+CATEGORY_DEFINITIONS = OrderedDict()
+CATEGORY_DEFINITIONS['subject'] = 'Subject Area'
+CATEGORY_DEFINITIONS['language'] = 'Language'
+CATEGORY_DEFINITIONS['instructional_context'] = 'Instructional Context'
+CATEGORY_DEFINITIONS['language_proficiency'] = 'Language Proficiency'
+CATEGORY_DEFINITIONS['world_readiness'] = 'World Readiness Standards'
+CATEGORY_DEFINITIONS['21st_century_skills'] = '21st Century Skills'
+
+
+METADATA = (
+    MetaElementDef(
+        id='subject',
+        id_display='Subject Area(s)',
+        category='subject',
+        category_display=CATEGORY_DEFINITIONS['subject']), 
+    MetaElementDef(
+        id='language',
+        id_display='Language(s)',
+        category='language',
+        category_display=CATEGORY_DEFINITIONS['language']), 
+    MetaElementDef(
+        id='ic_heritage_learners',
+        id_display='Heritage Learners',
+        category='instructional_context',
+        category_display=CATEGORY_DEFINITIONS['instructional_context']), 
+    MetaElementDef(
+        id='ic_target_audience_description',
+        id_display='Target Audience Description',
+        category='instructional_context',
+        category_display=CATEGORY_DEFINITIONS['instructional_context']), 
+    MetaElementDef(
+        id='ic_target_audience_role',
+        id_display='Audience Role',
+        category='instructional_context',
+        category_display=CATEGORY_DEFINITIONS['instructional_context']), 
+    MetaElementDef(
+        id='ic_target_audience_location',
+        id_display='Audience Location',
+        category='instructional_context',
+        category_display=CATEGORY_DEFINITIONS['instructional_context']), 
+    MetaElementDef(
+        id='ic_product_description',
+        id_display='Product Description',
+        category='instructional_context',
+        category_display=CATEGORY_DEFINITIONS['instructional_context']), 
+    MetaElementDef(
+        id='ic_product_target_culture',
+        id_display='Product Target Culture',
+        category='instructional_context',
+        category_display=CATEGORY_DEFINITIONS['instructional_context']), 
+    MetaElementDef(
+        id='lp_actfl_scale',
+        id_display='ACTFL Scale',
+        category='language_proficiency',
+        category_display=CATEGORY_DEFINITIONS['language_proficiency']), 
+    MetaElementDef(
+        id='lp_ilr_scale_listening',
+        id_display='ILR Scale Listening',
+        category='language_proficiency',
+        category_display=CATEGORY_DEFINITIONS['language_proficiency']), 
+    MetaElementDef(
+        id='lp_ilr_scale_reading',
+        id_display='ILR Scale Reading',
+        category='language_proficiency',
+        category_display=CATEGORY_DEFINITIONS['language_proficiency']), 
+    MetaElementDef(
+        id='lp_ilr_scale_speaking',
+        id_display='ILR Scale Speaking',
+        category='language_proficiency',
+        category_display=CATEGORY_DEFINITIONS['language_proficiency']), 
+    MetaElementDef(
+        id='lp_ilr_scale_writing',
+        id_display='ILR Scale Writing',
+        category='language_proficiency',
+        category_display=CATEGORY_DEFINITIONS['language_proficiency']), 
+    MetaElementDef(
+        id='wr_goal_area_communication',
+        id_display='Communication',
+        category='world_readiness',
+        category_display=CATEGORY_DEFINITIONS['world_readiness']), 
+    MetaElementDef(
+        id='wr_goal_area_cultures',
+        id_display='Cultures',
+        category='world_readiness',
+        category_display=CATEGORY_DEFINITIONS['world_readiness']), 
+    MetaElementDef(
+        id='wr_goal_area_connections',
+        id_display='Connections',
+        category='world_readiness',
+        category_display=CATEGORY_DEFINITIONS['world_readiness']), 
+    MetaElementDef(
+        id='wr_goal_area_comparisons',
+        id_display='Comparisons',
+        category='world_readiness',
+        category_display=CATEGORY_DEFINITIONS['world_readiness']), 
+    MetaElementDef(
+        id='wr_goal_area_communities',
+        id_display='Communities',
+        category='world_readiness',
+        category_display=CATEGORY_DEFINITIONS['world_readiness']), 
+    MetaElementDef(
+        id='cs_interdisciplinary_themes',
+        id_display='Interdisciplinary Themes',
+        category='21st_century_skills',
+        category_display=CATEGORY_DEFINITIONS['21st_century_skills']), 
+    MetaElementDef(
+        id='cs_info_media_technology_skills',
+        id_display='Information, Media, and Technology Skills',
+        category='21st_century_skills',
+        category_display=CATEGORY_DEFINITIONS['21st_century_skills']), 
+    MetaElementDef(
+        id='cs_like_career_skills',
+        id_display='Life and Career Skills',
+        category='21st_century_skills',
+        category_display=CATEGORY_DEFINITIONS['21st_century_skills']),
 )
 
-METADATA_TYPES = (
-    ('subject', 'Subject Area(s)'), 
-    ('language', 'Language(s)'), 
-    ('ic_heritage_learners', 'Heritage Learners'), 
-    ('ic_target_audience_description', 'Target Audience Description'), 
-    ('ic_target_audience_role', 'Audience Role'), 
-    ('ic_target_audience_location', 'Audience Location'), 
-    ('ic_product_description', 'Product Description'), 
-    ('ic_product_target_culture', 'Product Target Culture'), 
-    ('lp_actfl_scale', 'ACTFL Scale'), 
-    ('lp_ilr_scale_listening', 'ILR Scale Listening'), 
-    ('lp_ilr_scale_reading', 'ILR Scale Reading'), 
-    ('lp_ilr_scale_speaking', 'ILR Scale Speaking'), 
-    ('lp_ilr_scale_writing', 'ILR Scale Writing'), 
-    ('wr_goal_area_communication', 'Communication'), 
-    ('wr_goal_area_cultures', 'Cultures'), 
-    ('wr_goal_area_connections', 'Connections'), 
-    ('wr_goal_area_comparisons', 'Comparisons'), 
-    ('wr_goal_area_communities', 'Communities'), 
-    ('cs_interdisciplinary_themes', 'Interdisciplinary Themes'), 
-    ('cs_info_media_technology_skills', 'Information, Media, and Technology Skills'), 
-    ('cs_like_career_skills', 'Life and Career Skills'),
-)
 
-METADATA_TYPES_TO_CATEGORIES = {
-    'subject': 'subject',
-    'language': 'language',
-    'ic_heritage_learners': 'instructional_context',
-    'ic_target_audience_description': 'instructional_context',
-    'ic_target_audience_role': 'instructional_context',
-    'ic_target_audience_location': 'instructional_context',
-    'ic_product_description': 'instructional_context',
-    'ic_product_target_culture': 'instructional_context',
-    'lp_actfl_scale': 'language_proficiency',
-    'lp_ilr_scale_listening': 'language_proficiency',
-    'lp_ilr_scale_reading': 'language_proficiency',
-    'lp_ilr_scale_speaking': 'language_proficiency',
-    'lp_ilr_scale_writing': 'language_proficiency',
-    'wr_goal_area_communication': 'world_readiness',
-    'wr_goal_area_cultures': 'world_readiness',
-    'wr_goal_area_connections': 'world_readiness',
-    'wr_goal_area_comparisons': 'world_readiness',
-    'wr_goal_area_communities': 'world_readiness',
-    'cs_interdisciplinary_themes': '21st_century_skills',
-    'cs_info_media_technology_skills': '21st_century_skills',
-    'cs_like_career_skills': '21st_century_skills', 
-}
+METADATA_CATEGORIES             = tuple([(k, v) for k, v in CATEGORY_DEFINITIONS.items()])
 
+METADATA_TYPES                  = tuple([(m.id, m.id_display) for m in METADATA])
+
+METADATA_TYPES_TO_CATEGORIES    = {m.id: m.category for m in METADATA}
+
+def meta_lookup(element_identifier=None):
+    for e in METADATA:
+        if e.id == element_identifier:
+            return e
+    return None
 
 """
 CONTROLLED VOCABULARLY FOR BASE AND EXTENDED DESCRIPTORS
@@ -304,149 +380,184 @@ Alert: the category attribute is required for each form widget. This should refl
 
 from django import forms
 
-
 class PrototypeMetadataForm(forms.Form):
     default_input_size = '60'
 
+    element = meta_lookup('subject')
     subject = forms.MultipleChoiceField(
         choices=SUBJECT_AREAS,
-        label='Subject Area',
-        label_suffix='Subject Area(s)',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         widget=forms.CheckboxSelectMultiple(attrs={}),
-        required=True,
-        )
+        required=True)
+
+    element = meta_lookup('language')
     language = forms.MultipleChoiceField(
         choices=LANGUAGES_NISO,
-        label='Language',
-        label_suffix='Language(s)',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         widget=forms.CheckboxSelectMultiple(attrs={}),
         required=False)
 
+    element = meta_lookup('ic_heritage_learners')
     ic_heritage_learners = forms.ChoiceField(
         choices=INSTRUCTIONAL_CONTEXTS['heritage-learners'],
-        label='Instructional Context',
-        label_suffix='Heritage Learners',
+        label=element.category_display,
+        label_suffix=element.id_display,
         widget=forms.RadioSelect(attrs={'class': ''}),
         required=False)
+
+    element = meta_lookup('ic_target_audience_description')
     ic_target_audience_description = forms.CharField(
-        label='Instructional Context',
-        label_suffix='Target Audience Description',
+        label=element.category_display,
+        label_suffix=element.id_display,
         widget=forms.Textarea(attrs={'class': 'form-control'}),
         required=False)
+
+    element = meta_lookup('ic_target_audience_role')
     ic_target_audience_role = forms.CharField(
-        label='Instructional Context',
-        label_suffix='Audience Role',
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        required=False)
-    ic_target_audience_location = forms.CharField(
-        label='Instructional Context',
-        label_suffix='Audience Location',
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        required=False)
-    ic_product_description = forms.CharField(
-        label='Instructional Context',
-        label_suffix='Product Description',
-        widget=forms.Textarea(attrs={'class': 'form-control'}),
-        required=False)
-    ic_product_target_culture = forms.CharField(
-        label='Instructional Context',
-        label_suffix='Product Target Culture',
+        label=element.category_display,
+        label_suffix=element.id_display,
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         required=False)
 
+    element = meta_lookup('ic_target_audience_location')
+    ic_target_audience_location = forms.CharField(
+        label=element.category_display,
+        label_suffix=element.id_display,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+
+    element = meta_lookup('ic_product_description')
+    ic_product_description = forms.CharField(
+        label=element.category_display,
+        label_suffix=element.id_display,
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        required=False)
+
+    element = meta_lookup('ic_product_target_culture')
+    ic_product_target_culture = forms.CharField(
+        label=element.category_display,
+        label_suffix=element.id_display,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+
+    element = meta_lookup('lp_actfl_scale')
     lp_actfl_scale = forms.MultipleChoiceField(
         choices=LANGUAGE_PROFICIENCY['actfl'],
-        label='Language Proficiency',
-        label_suffix='ACTFL Scale',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
         required=False)
+
+    element = meta_lookup('lp_ilr_scale_listening')
     lp_ilr_scale_listening = forms.MultipleChoiceField(
         choices=LANGUAGE_PROFICIENCY['ilr-listening'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='Language Proficiency',
-        label_suffix='ILR Scale Listening',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
+
+    element = meta_lookup('lp_ilr_scale_reading')
     lp_ilr_scale_reading = forms.MultipleChoiceField(
         choices=LANGUAGE_PROFICIENCY['ilr-reading'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='Language Proficiency',
-        label_suffix='ILR Scale Reading',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
+
+    element = meta_lookup('lp_ilr_scale_speaking')
     lp_ilr_scale_speaking = forms.MultipleChoiceField(
         choices=LANGUAGE_PROFICIENCY['ilr-speaking'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='Language Proficiency',
-        label_suffix='ILR Scale Speaking',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
+
+    element = meta_lookup('lp_ilr_scale_writing')
     lp_ilr_scale_writing = forms.MultipleChoiceField(
         choices=LANGUAGE_PROFICIENCY['ilr-writing'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='Language Proficiency',
-        label_suffix='ILR Scale Writing',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
 
+    element = meta_lookup('wr_goal_area_communication')
     wr_goal_area_communication = forms.MultipleChoiceField(
         choices=WR_GOAL_AREA['communication'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness Standards',
-        label_suffix='Communication',
-        help_text='(Check all that apply)',
-        required=False)
-    wr_goal_area_cultures = forms.MultipleChoiceField(
-        choices=WR_GOAL_AREA['cultures'],
-        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness Standards',
-        label_suffix='Cultures',
-        help_text='(Check all that apply)',
-        required=False)
-    wr_goal_area_connections = forms.MultipleChoiceField(
-        choices=WR_GOAL_AREA['connections'],
-        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness Standards',
-        label_suffix='Connections',
-        help_text='(Check all that apply)',
-        required=False)
-    wr_goal_area_comparisons = forms.MultipleChoiceField(
-        choices=WR_GOAL_AREA['comparisons'],
-        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness Standards',
-        label_suffix='Comparisons',
-        help_text='(Check all that apply)',
-        required=False)
-    wr_goal_area_communities = forms.MultipleChoiceField(
-        choices=WR_GOAL_AREA['communities'],
-        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='World Readiness Standards',
-        label_suffix='Communities',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
 
+    element = meta_lookup('wr_goal_area_cultures')
+    wr_goal_area_cultures = forms.MultipleChoiceField(
+        choices=WR_GOAL_AREA['cultures'],
+        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
+        label=element.category_display,
+        label_suffix=element.id_display,
+        help_text='(Check all that apply)',
+        required=False)
+
+    element = meta_lookup('wr_goal_area_connections')
+    wr_goal_area_connections = forms.MultipleChoiceField(
+        choices=WR_GOAL_AREA['connections'],
+        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
+        label=element.category_display,
+        label_suffix=element.id_display,
+        help_text='(Check all that apply)',
+        required=False)
+
+    element = meta_lookup('wr_goal_area_comparisons')
+    wr_goal_area_comparisons = forms.MultipleChoiceField(
+        choices=WR_GOAL_AREA['comparisons'],
+        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
+        label=element.category_display,
+        label_suffix=element.id_display,
+        help_text='(Check all that apply)',
+        required=False)
+
+    element = meta_lookup('wr_goal_area_communities')
+    wr_goal_area_communities = forms.MultipleChoiceField(
+        choices=WR_GOAL_AREA['communities'],
+        widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
+        label=element.category_display,
+        label_suffix=element.id_display,
+        help_text='(Check all that apply)',
+        required=False)
+
+    element = meta_lookup('cs_interdisciplinary_themes')
     cs_interdisciplinary_themes = forms.MultipleChoiceField(
         choices=CENTURY_SKILLS['interdisciplinary-themes'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='21st Century Skills',
-        label_suffix='Interdisciplinary Themes',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
+
+    element = meta_lookup('cs_info_media_technology_skills')
     cs_info_media_technology_skills = forms.MultipleChoiceField(
         choices=CENTURY_SKILLS['information-media-technology-skills'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='21st Century Skills',
-        label_suffix='Information, Media, and Technology Skills',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
+
+    element = meta_lookup('cs_like_career_skills')
     cs_like_career_skills = forms.MultipleChoiceField(
         choices=CENTURY_SKILLS['like-career-skills'],
         widget=forms.CheckboxSelectMultiple(attrs={'class': ''}),
-        label='21st Century Skills',
-        label_suffix='Life and Career Skills',
+        label=element.category_display,
+        label_suffix=element.id_display,
         help_text='(Check all that apply)',
         required=False)
 
