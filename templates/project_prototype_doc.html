@@ -117,7 +117,9 @@
             </div>
             <div class="media-body">
                 {% if file.project %}<h4 class="media-heading"><a href="{% url 'view_prototype' file.project.id %}">{{ file.project }}</a></h4>{% endif %}
-                {{ file.project_file.url }}
+                
+                <a href="{{ file.project_file.url }}" target="_blank">{{ file.project_file.url }}</a>
+                
                 <div>
                     <a href="{% url 'delete_file' file.id %}" class="static_a_display">
                         <button type="button" class="btn btn btn-xs" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-close"></i> remove</button>
