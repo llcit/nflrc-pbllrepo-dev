@@ -111,14 +111,14 @@
         {% for file in filelisting %}
         <div class="media">
             <div class="media-left media-top">
-                {% if file.project_file.url %}<a href="{{ file.project_file.url }}" target="_blank">
+                {% if file.project_file and file.project_file.url %}<a href="{{ file.project_file.url }}" target="_blank">
                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
                 </a>{% endif %}
             </div>
             <div class="media-body">
-                {% if file.project_file.url %}<h4 class="media-heading"><a href="{% url 'view_prototype' file.project.id %}">{{ file.project }}</a></h4>{% endif %}
+                {% if file.project_file and file.project_file.url %}<h4 class="media-heading"><a href="{% url 'view_prototype' file.project.id %}">{{ file.project }}</a></h4>{% endif %}
                 
-                {% if file.project_file.url %}<a href="{{ file.project_file.url }}" target="_blank">{{ file.project_file.url }}</a>{% endif %}
+                {% if file.project_file and file.project_file.url %}<a href="{{ file.project_file.url }}" target="_blank">{{ file.project_file.url }}</a>{% endif %}
                 
                 <div>
                     <a href="{% url 'delete_file' file.id %}" class="static_a_display">
