@@ -108,7 +108,7 @@
     <!-- PROJECT FILES -->
     <div class="col-md-8 col-md-offset-2">
         <h2>Files</h2>
-        {% for file in filelisting %}
+        {% for file in filelisting %}{% if file.project_file %}
         <div class="media">
             <div class="media-left media-top">
                 {% if file.project_file and file.project_file.url %}<a href="{{ file.project_file.url }}" target="_blank">
@@ -139,10 +139,7 @@
                             <h4 class="modal-title" id="link_title">Click, copy, and paste  </h4>
                           </div>
                           <div class="modal-body" editable="true">
-
-                                <input type="text" name="text_area" size="40" value="{{ file.project_file.url }}" onClick="javascript:this.focus();this.select();">
-
-
+                                {% if file.project_file and file.project_file.url %}<input type="text" name="text_area" size="40" value="{{ file.project_file.url }}" onClick="javascript:this.focus();this.select();">{% endif %}
                           </div>
                         </div>
                       </div>
@@ -152,7 +149,7 @@
 
 
             </div>
-        </div>
+        </div>{% endif %}
         {% endfor %}
     </div>
 
