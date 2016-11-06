@@ -111,24 +111,23 @@
         {% for file in filelisting %}{% if file.project_file %}
         <div class="media">
             <div class="media-left media-top">
-                {% if file.project_file and file.project_file.url %}<a href="{{ file.project_file.url }}" target="_blank">
-                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-                </a>{% endif %}
+                {% if file.project_file and file.project_file.url %}<i class="fa fa-file-o"></i>{% endif %}
             </div>
             <div class="media-body">
-                {% if file.project_file and file.project_file.url %}<h4 class="media-heading"><a href="{% url 'view_prototype' file.project.id %}">{{ file.project }}</a></h4>{% endif %}
-                
-                {% if file.project_file and file.project_file.url %}<a href="{{ file.project_file.url }}" target="_blank">{{ file.project_file.url }}</a>{% endif %}
+          
+                {% if file.project_file and file.project_file.url %}
+                <h5 class="media-heading">
+                    <a href="" class="static_a_display btn btn-xs bg-default" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-clipboard"></i> copy/insert link</a>
+                    <a href="{{ file.project_file.url }}" target="_blank">{{ file.project_file.url }}</a>
+                    <a href="{% url 'delete_file' file.id %}" class="static_a_display btn btn-xs pull-right bg-danger" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-close"></i> remove</a>
+
+                </h5>
+                {% endif %}
                 
                 <div>
-                    <a href="{% url 'delete_file' file.id %}" class="static_a_display">
-                        <button type="button" class="btn btn btn-xs" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-close"></i> remove</button>
-                    </a>
-
+                    
                 <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{file.id}}_link_display">
-                      copy/insert link
-                    </button>
+                    
 
                 <!-- Modal -->
                     <div class="modal fade" id="{{file.id}}_link_display" tabindex="-1" role="dialog" aria-labelledby="link_title" aria-hidden="true">

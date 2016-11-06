@@ -9,19 +9,19 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'nflrc-pbllrepo-dev-db',
-    #     'USER': 'postgres',
-    #     'PASSWORD': '1',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
-    # }
-
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR.child('pbllrepo'), 'pbllrepo-dev-sample.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'nflrc-pbllrepo-dev-db',
+        'USER': 'postgres',
+        'PASSWORD': '1',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(PROJECT_DIR.child('pbllrepo'), 'pbllrepo-dev-sample.sqlite3'),
+    # }
 }
 
 STATIC_ROOT = '/Library/WebServer/Documents/static/pbllrepo'
@@ -50,3 +50,4 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 LOGIN_URL = '/login/google-oauth2/'
+LOGIN_REDIRECT_URL = '/'
