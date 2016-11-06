@@ -12,7 +12,7 @@ class Post(TimeStampedModel):
     subject = models.CharField(max_length=512)
     parent_post = models.ForeignKey('self', blank=True, null=True, related_name='replies')
     deleted = models.BooleanField(default=False)
-    slug = models.SlugField(null=True, blank=True)
+    slug = models.SlugField(max_length=128, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(unicode(self.subject))

@@ -95,7 +95,11 @@ class PostUpdateView(LoginRequiredMixin, CsrfExemptMixin, UpdateView):
 
     def get_success_url(self):
         thread = self.get_object().parent_post
-        project = ProjectComment.objects.get(thread=thread)
+        try:
+            project = ProjectComment.objects.get(thread=thread).project
+        except:
+            project = None
+            
         if project:
             return reverse('docview_prototype', args=[project.id])
         return reverse('list_prototypes')
