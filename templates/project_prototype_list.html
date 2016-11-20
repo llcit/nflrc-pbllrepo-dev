@@ -17,7 +17,7 @@
 
 <div class="row"><div class="col-md-10 col-md-offset-1 block-center">   
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-sm btn-link dropdown-toggle static_a_display" data-toggle="dropdown"><i class="fa fa-filter"></i> <span id="toggle-label">language</span> </button> <ul class="dropdown-menu">
+        <button type="button" class="btn btn-sm btn-link dropdown-toggle btn-color-flat static_a_display" data-toggle="dropdown"><i class="fa fa-filter"></i> <span id="toggle-label">language</span> </button> <ul class="dropdown-menu">
             <li><a href="#" class="filterbtn" data-filter="*"> show all </a></li>
             {% for k, v in languages.items %}
                 <li><a href="#" class="filterbtn" data-filter=".{{k}}"> {{ k }} ({{ v }}) </a></li>
@@ -25,22 +25,28 @@
         </ul> 
     </div>
 
-    <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="lname"> <i class="fa fa-sort-alpha-desc"></i> author</button></a>
+    <a href="#" class="sortbtn btn btn-sm btn-link btn-color-flat static_a_display" data-sort="lname"> <i class="fa fa-sort-alpha-desc"></i> author </a>
 
-    <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="title"> <i class="fa fa-sort-alpha-desc"></i> title</button></a>
+    <a href="#" class="sortbtn btn btn-sm btn-link btn-color-flat static_a_display" data-sort="title"> <i class="fa fa-sort-alpha-desc"></i> title </a>
 
-    <a href="#" class="static_a_display"><button class="filterbtn btn btn-sm btn-link static_a_display" data-filter="*">reset</button></a>
+    <a href="#" class="sortbtn btn btn-sm btn-link btn-color-flat static_a_display" data-sort="modified"><i class="fa fa-sort-alpha-asc"></i> modified </a>
+
+    <a href="#" class="filterbtn btn btn-sm btn-link btn-color-flat static_a_display" data-filter="*"> <i class="fa fa-refresh"></i> </a>
+
+    <hr height="2">
 </div></div>
 
-<div class="row"><div id="bricklist" class="col-md-10 col-md-offset-1 block-center">
+<div id="bricklist" class="row">
     {% for project_prototype in prototype_list %}
-        <div class="item {% for k in project_prototype.0.get_languages %} {{k}} {% endfor %}" data-title="{{project_prototype|slugify}}">
+        
+        <div class="col-md-10 col-md-offset-1 block-center item {% for k in project_prototype.0.get_languages %} {{k}} {% endfor %}" data-title="{{project_prototype|slugify}}" data-mod="{{ project_prototype.0.modified|date:'Ymd' }}">
 
             <p {% if not project_prototype.0.active %}class="text-muted"{% endif %}>
                 <a href="{% url 'docview_prototype' project_prototype.0.id %}" class="static_a_display lead"> <i class="fa fa-file-text-o fa-1x"></i>
-                    {{ project_prototype.0 }}
+                    {{ project_prototype.0 }} 
                 </a>
                 <span>by {{ project_prototype.0.creator.first_name }}</span> <span class="lname">{{ project_prototype.0.creator.last_name }}</span>
+                <span class="small"> {{ project_prototype.0.modified|date:'M j, Y' }} </span>
             </p>
             <p>
                 <a href="{% url 'view_prototype' project_prototype.0.id %}" class="static_a_display">
@@ -63,9 +69,10 @@
         </div>
 
     {% endfor %}
-</div></div>
+</div>
 
 {% endblock content_container %}
+
 {% block js_include %} 
     <script type="text/javascript">
         var $container = $('#bricklist');
@@ -73,8 +80,9 @@
             itemSelector: '.item',
 
             getSortData: {
-                lname: '.lname', // text from querySelector
+                lname: '.lname',
                 title: '[data-title]',
+                modified: '[data-mod]',
             }
         });
 
@@ -102,6 +110,6 @@
             $container.isotope({ filter: $v });
         });
 
-        $container.isotope({ sortBy: 'title' });
+        $container.isotope({ sortBy: 'modified', sortAscending: false });
     </script>
 {% endblock js_include %}

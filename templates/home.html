@@ -58,30 +58,34 @@
             <hr>
             <div class="col-md-12 text-left">
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-link dropdown-toggle static_a_display" data-toggle="dropdown"><i class="fa fa-filter"></i> <span id="toggle-label">language</span> </button> <ul class="dropdown-menu">
+                    <button type="button" class="btn btn-sm btn-link dropdown-toggle btn-color-flat static_a_display" data-toggle="dropdown"><i class="fa fa-filter"></i> <span id="toggle-label">language</span> </button> <ul class="dropdown-menu">
                         <li><a href="#" class="filterbtn" data-filter="*"> show all </a></li>
                         {% for k, v in languages.items %}
                             <li><a href="#" class="filterbtn" data-filter=".{{k}}"> {{ k }} ({{ v }}) </a></li>
                         {% endfor %}
                     </ul> 
                 </div>
-                <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="lname"> <i class="fa fa-sort-alpha-desc"></i> author</button></a>
+                <a href="#" class="sortbtn btn btn-sm btn-link btn-color-flat static_a_display" data-sort="lname"> <i class="fa fa-sort-alpha-asc"></i> author </a>
 
-                <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="title"> <i class="fa fa-sort-alpha-desc"></i> title</button></a>
+                <a href="#" class="sortbtn btn btn-sm btn-link btn-color-flat static_a_display" data-sort="title"> <i class="fa fa-sort-alpha-asc"></i> title </a>
 
-                <a href="#" class="static_a_display"><button class="filterbtn btn btn-sm btn-link static_a_display" data-filter="*">reset</a>
+                <a href="#" class="sortbtn btn btn-sm btn-link btn-color-flat static_a_display" data-sort="modified"><i class="fa fa-sort-alpha-asc"></i> modified </a>
+
+                <a href="#" class="filterbtn btn btn-sm btn-link btn-color-flat static_a_display" data-filter="*"> <i class="fa fa-refresh"></i> </a>
+
+                <hr height="2">
             </div>
 
             <div class="col-md-12 center-block" id="brickwall">
 
             {% for i in prototype_list %}
-                <div class="brick well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}">
-
+                <div class="brick well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd' }}">
+                    <h6 class="tiny">{{ i.modified|date:'M j, Y' }}</h6>
                     <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
                         <div>
                             <h2>
                                 {% if i.icon %}<div style="width: 220px"><img width="100%" src="{{ i.icon.url }}"></div>{% endif %}
-                                {{ i }}
+                                <h4>{{ i }}</h4>
                             </h2>
                             <h5>by {{ i.creator.first_name }} <span class="lname">{{ i.creator.last_name }}</span></h5>
                         </div>
@@ -89,6 +93,7 @@
 
                     <p></p>
                     <p>{{ i.description | truncatechars_html:140 | safe }}</p>
+                    
 
                 </div>
                 <p></p>
@@ -120,6 +125,7 @@
             getSortData: {
                 lname: '.lname',
                 title: '[data-title]',
+                modified: '[data-mod]',
             }
         });
 
