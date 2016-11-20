@@ -120,7 +120,7 @@
                     <a href="" class="static_a_display btn btn-xs bg-default" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-clipboard"></i> copy/insert link</a>
                     <a href="{{ file.project_file.url }}" target="_blank">{{ file.project_file.url }}</a>
                     {% if project_prototype.creator == user or user.is_staff %}
-                        <a href="{% url 'delete_file' file.id %}" class="static_a_display btn btn-xs pull-right bg-danger" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-close"></i> remove</a>
+                        <a href="{% url 'delete_file' file.id %}" class="static_a_display btn btn-xs pull-right bg-danger"><i class="fa fa-close"></i> remove</a>
                     {% endif %}
 
                 </h5>
