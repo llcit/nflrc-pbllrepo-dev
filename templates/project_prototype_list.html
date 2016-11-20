@@ -13,47 +13,95 @@
     </p>
 
     <hr height="5">
-
-    {% for project_prototype in prototype_list %}
-
-        <p {% if not project_prototype.0.active %}class="text-muted"{% endif %}>
-            <a href="{% url 'docview_prototype' project_prototype.0.id %}" class="static_a_display lead"> <i class="fa fa-file-text-o fa-1x"></i>
-                {{ project_prototype.0 }}
-            </a>
-            <span>by {{ project_prototype.0.creator.first_name }} {{ project_prototype.0.creator.last_name }}</span>
-        </p>
-        <p>
-            <a href="{% url 'view_prototype' project_prototype.0.id %}" class="static_a_display">
-                <button class="btn btn-xs"><i class="fa fa-info"></i> info </i></button>
-            </a>
-
-            {% comment %}
-            <a href="{% url 'flip_prototype' project_prototype.0.id %}" class="static_a_display">
-                <button class="btn btn-xs"><i class="fa fa-files-o"></i> flip</button>
-            </a>
-            {% endcomment %}
-
-            {% if project_prototype.0.creator == user %}
-            <a href="{% url 'update_prototype' project_prototype.0.id %}" class="static_a_display">
-                <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
-            </a>
-
-            <a href="{% url 'delete_prototype' project_prototype.0.id %}" class="static_a_display">
-                <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
-            </a>
-            {% endif %}
-
-        </p>
-
-
-        {% if project_prototype.0.origin %}
-            <p> derived from <a href="{% url 'view_prototype' project_prototype.0.origin.id %}" class="static_a_display">{{ project_prototype.0.origin }}</a></p>
-        {% endif %}
-
-    {% endfor %}
-
-
 </div></div>
 
+<div class="row"><div class="col-md-10 col-md-offset-1 block-center">   
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-sm btn-link dropdown-toggle static_a_display" data-toggle="dropdown"><i class="fa fa-filter"></i> <span id="toggle-label">language</span> </button> <ul class="dropdown-menu">
+            <li><a href="#" class="filterbtn" data-filter="*"> show all </a></li>
+            {% for k, v in languages.items %}
+                <li><a href="#" class="filterbtn" data-filter=".{{k}}"> {{ k }} ({{ v }}) </a></li>
+            {% endfor %}
+        </ul> 
+    </div>
+
+    <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="lname"> <i class="fa fa-sort-alpha-desc"></i> author</button></a>
+
+    <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="title"> <i class="fa fa-sort-alpha-desc"></i> title</button></a>
+
+    <a href="#" class="static_a_display"><button class="filterbtn btn btn-sm btn-link static_a_display" data-filter="*">reset</button></a>
+</div></div>
+
+<div class="row"><div id="bricklist" class="col-md-10 col-md-offset-1 block-center">
+    {% for project_prototype in prototype_list %}
+        <div class="item {% for k in project_prototype.0.get_languages %} {{k}} {% endfor %}" data-title="{{project_prototype|slugify}}">
+
+            <p {% if not project_prototype.0.active %}class="text-muted"{% endif %}>
+                <a href="{% url 'docview_prototype' project_prototype.0.id %}" class="static_a_display lead"> <i class="fa fa-file-text-o fa-1x"></i>
+                    {{ project_prototype.0 }}
+                </a>
+                <span>by {{ project_prototype.0.creator.first_name }}</span> <span class="lname">{{ project_prototype.0.creator.last_name }}</span>
+            </p>
+            <p>
+                <a href="{% url 'view_prototype' project_prototype.0.id %}" class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-info"></i> info </i></button>
+                </a>
+
+                {% if project_prototype.0.creator == user %}
+                <a href="{% url 'update_prototype' project_prototype.0.id %}" class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                </a>
+
+                <a href="{% url 'delete_prototype' project_prototype.0.id %}" class="static_a_display">
+                    <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                </a>
+                {% endif %}
+            </p>
+            {% if project_prototype.0.origin %}
+                <p> derived from <a href="{% url 'view_prototype' project_prototype.0.origin.id %}" class="static_a_display">{{ project_prototype.0.origin }}</a></p>
+            {% endif %}
+        </div>
+
+    {% endfor %}
+</div></div>
 
 {% endblock content_container %}
+{% block js_include %} 
+    <script type="text/javascript">
+        var $container = $('#bricklist');
+        $container.isotope({
+            itemSelector: '.item',
+
+            getSortData: {
+                lname: '.lname', // text from querySelector
+                title: '[data-title]',
+            }
+        });
+
+        $('.sortbtn').on('click', function() {
+            var $v = $(this).attr('data-sort');
+            var $b = $(this).children('.fa');
+            if( $b.hasClass('fa-sort-alpha-desc') ) {
+                $container.isotope({ sortBy: $v, sortAscending: false });
+                $b.toggleClass('fa-sort-alpha-desc fa-sort-alpha-asc');
+                
+            } else {
+                $container.isotope({ sortBy: $v, sortAscending: true });
+                $b.toggleClass('fa-sort-alpha-desc fa-sort-alpha-asc');
+               
+            }
+        });
+
+        $('.filterbtn').on('click', function() {
+            var $v = $(this).attr('data-filter');
+            if($v !== "*")
+                $("#toggle-label").html($v.substring(1));
+            else 
+                $("#toggle-label").html("language");
+
+            $container.isotope({ filter: $v });
+        });
+
+        $container.isotope({ sortBy: 'title' });
+    </script>
+{% endblock js_include %}

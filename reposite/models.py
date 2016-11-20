@@ -67,6 +67,9 @@ class ProjectPrototype(TimeStampedModel):
             element_type=element_type)]
         return data
 
+    def get_languages(self):
+        return self.get_element_data('language')
+
     def get_data_dict(self):
         """ Group element data by element_type. Returns a dict keyed by element_type name. """
 

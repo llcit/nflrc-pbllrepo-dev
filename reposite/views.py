@@ -22,7 +22,19 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         #context['prototype_list'] = ProjectPrototype.objects.all() <-- modified 6/23/2016 to filter by active (display on web only public ones)
-        context['prototype_list'] = ProjectPrototype.objects.all().filter(active=True)
+        prototypes = ProjectPrototype.objects.all().filter(active=True)
+        context['prototype_list'] = prototypes
+
+        languages = {}
+        for i in prototypes:
+            for j in i.get_languages():
+                try:
+                    languages[j] = languages[j] + 1
+                except:
+                    languages[j] = 1
+
+        context['languages'] = languages
+
         return context
 
 
@@ -96,7 +108,16 @@ class ProjectPrototypeListView(TemplateView):
         for i in ProjectPrototype.objects.all().filter(active=True):
             proto = (i, i.get_data_dict())
             prototypes.append(proto)
+        
+        languages = {}
+        for i in prototypes:
+            for j in i[0].get_languages():
+                try:
+                    languages[j] = languages[j] + 1
+                except:
+                    languages[j] = 1
 
+        context['languages'] = languages
         context['prototype_list'] = prototypes
         return context
 

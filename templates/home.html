@@ -11,31 +11,22 @@
     <title>NFLRC PBLL Repository</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
 
     <!-- Site-wide css -->
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
-
-    <!-- Include all site-wide javascript below -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-    <!-- Packery layout library -->
-    <script src="{% static 'js/packery.pkgd.min.js' %}"></script>
-
+    
+    <!-- Bootstrap js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <!-- Placeholder for page-level css includes -->
     {% block css_include %} {% endblock css_include %}
@@ -47,7 +38,7 @@
 
         <div class="row">
             <div class="col-xs-2">
-                <p><img src="{% static 'img/pbllrepo-icon.jpg' %}"  width="100%"></p>
+                <p><img src="{% static 'img/pbllrepo-icon.jpg' %}" width="75%"></p>
             </div>
             <div class="col-xs-10">
                 <p class="lead" style="font-size: 4.0em">Pebbles</p>
@@ -55,20 +46,36 @@
                     Project Based Language Learning Prototypes
                 </p>
                 <p>
-                    <a href="{% url 'list_prototypes' %}" class="static_a_display"><button class=" btn btn-md">browse <i class="fa fa-list"></i></button></a>
-
-                    <a href="{% url 'create_prototype' %}" class="static_a_display"><button class=" btn btn-md btn-success"><i class="fa fa-plus"></i> create</button></a>
-
+                    <a href="{% url 'list_prototypes' %}" class="static_a_display"><button type="button" class=" btn btn-md btn-primary">browse <i class="fa fa-list"></i></button></a>
+                    <a href="{% url 'create_prototype' %}" class="static_a_display"><button type="button" class=" btn btn-md btn-success"><i class="fa fa-plus"></i> create </button></a> 
                 </p>
             </div>
+
+            
         </div>
 
         <div class="row">
+            <hr>
+            <div class="col-md-12 text-left">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-link dropdown-toggle static_a_display" data-toggle="dropdown"><i class="fa fa-filter"></i> <span id="toggle-label">language</span> </button> <ul class="dropdown-menu">
+                        <li><a href="#" class="filterbtn" data-filter="*"> show all </a></li>
+                        {% for k, v in languages.items %}
+                            <li><a href="#" class="filterbtn" data-filter=".{{k}}"> {{ k }} ({{ v }}) </a></li>
+                        {% endfor %}
+                    </ul> 
+                </div>
+                <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="lname"> <i class="fa fa-sort-alpha-desc"></i> author</button></a>
+
+                <a href="#" class="static_a_display"><button class="sortbtn btn btn-sm btn-link static_a_display" data-sort="title"> <i class="fa fa-sort-alpha-desc"></i> title</button></a>
+
+                <a href="#" class="static_a_display"><button class="filterbtn btn btn-sm btn-link static_a_display" data-filter="*">reset</a>
+            </div>
 
             <div class="col-md-12 center-block" id="brickwall">
 
             {% for i in prototype_list %}
-                <div class="brick well bs-bg-white ">
+                <div class="brick well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}">
 
                     <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
                         <div>
@@ -76,21 +83,12 @@
                                 {% if i.icon %}<div style="width: 220px"><img width="100%" src="{{ i.icon.url }}"></div>{% endif %}
                                 {{ i }}
                             </h2>
-                            <h5>by {{ i.creator.first_name }} {{ i.creator.last_name }}</h5>
-                            {% comment %}
-                            <a href="{% url 'flip_prototype' i.id %}" class="static_a_display"> <button class="btn btn-xs btn-block btn-success"><i class="fa fa-files-o"></i> flip</button></a>
-                            {% endcomment %}
+                            <h5>by {{ i.creator.first_name }} <span class="lname">{{ i.creator.last_name }}</span></h5>
                         </div>
                     </a>
 
                     <p></p>
                     <p>{{ i.description | truncatechars_html:140 | safe }}</p>
-
-                    {% comment %}
-                    {% for j in i.tasks.all %}
-                        <p><a class="static_a_display" href="{{ j.get_absolute_url }}"><button class="btn btn-block">{{ j|truncatechars:24}}</button></a></p>
-                    {% endfor %}
-                    {% endcomment %}
 
                 </div>
                 <p></p>
@@ -103,12 +101,53 @@
 
     </div>
 
-<script type="text/javascript">
-    var $container = $('#brickwall');
-    // init
-    $container.packery({
-      itemSelector: '.brick',
-      gutter: 10,
-    });
-</script>
+
+    <!-- Isotope visual filtering library -->
+    <script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+
+    <!-- Packery layout library -->
+    <script src="{% static 'js/packery-mode.pkgd.min.js' %}"></script>
+
+    <script type="text/javascript">
+        var $container = $('#brickwall');
+        $container.isotope({
+            layoutMode: 'packery',
+            packery: {
+              gutter: 10,
+            },
+            itemSelector: '.brick',
+
+            getSortData: {
+                lname: '.lname',
+                title: '[data-title]',
+            }
+        });
+
+        $('.sortbtn').on('click', function() {
+            var $v = $(this).attr('data-sort');
+            var $b = $(this).children('.fa');
+            if( $b.hasClass('fa-sort-alpha-desc') ) {
+                $container.isotope({ sortBy: $v, sortAscending: false });
+                $b.toggleClass('fa-sort-alpha-desc fa-sort-alpha-asc');
+
+            } else {
+                $container.isotope({ sortBy: $v, sortAscending: true });
+                $b.toggleClass('fa-sort-alpha-desc fa-sort-alpha-asc');
+            }
+        });
+
+        $('.filterbtn').on('click', function() {
+            var $v = $(this).attr('data-filter');
+            if($v !== "*")
+                $("#toggle-label").html($v.substring(1));
+            else 
+                $("#toggle-label").html("language");
+
+            $container.isotope({ filter: $v });
+        });
+
+        $container.isotope({ sortBy: 'title' });
+
+    </script>
+
 </body>
