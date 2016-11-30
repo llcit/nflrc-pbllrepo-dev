@@ -1,7 +1,8 @@
 # forms_py
 from django import forms
+from django.forms import ClearableFileInput
 
-from filebrowser.widgets import ClearableFileInput
+# from filebrowser.widgets import ClearableFileInput
 
 from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile
 from .schema import PrototypeMetadataForm

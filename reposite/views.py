@@ -1,5 +1,7 @@
 
 from collections import OrderedDict
+import HTMLParser
+
 
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -8,6 +10,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from braces.views import LoginRequiredMixin
+from haystack.generic_views import SearchView
 
 from core.mixins import ListUserFilesMixin
 from discussions.forms import PostReplyForm
@@ -302,4 +305,15 @@ class ProjectFileDeleteView(LoginRequiredMixin, ListUserFilesMixin, DeleteView):
     template_name = 'project_file_delete_confirm.html'
     success_url = reverse_lazy('upload_file')
 
+
+class SearchHaystackView(SearchView):
+    def get_queryset(self):
+        queryset = super(SearchHaystackView, self).get_queryset()
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SearchHaystackView, self).get_context_data(*args, **kwargs)
+        context['searchmessages'] = messages.get_messages(self.request)
+        
+        return context
 

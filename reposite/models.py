@@ -70,6 +70,9 @@ class ProjectPrototype(TimeStampedModel):
     def get_languages(self):
         return self.get_element_data('language')
 
+    def get_data_list(self):
+        return {i.element_type: i.element_data for i in self.data.all().order_by('element_category')}
+                   
     def get_data_dict(self):
         """ Group element data by element_type. Returns a dict keyed by element_type name. """
 
@@ -120,6 +123,10 @@ class ProjectPrototype(TimeStampedModel):
 
     def __unicode__(self):
         return self.title
+
+    class Meta:
+        pass
+
 
 class PrototypeMetaElement(models.Model):
     prototype_project = models.ForeignKey(

@@ -26,7 +26,8 @@ from reposite.views import (
     ProjectTaskDetailView, ProjectTaskCreateView,
     ProjectTaskUpdateView, ProjectTaskDeleteView,
     ProjectTaskListView, ProjectPrototypeDocumentView,
-    FileUploadView, ProjectFileDeleteView
+    FileUploadView, ProjectFileDeleteView,
+    SearchHaystackView
 )
 
 from discussions.views import DiscussionListView, DiscussionView, PostCreateView, PostDeleteView, PostUpdateView
@@ -66,7 +67,9 @@ urlpatterns = [
     url(r'^discussions/post/delete/$', PostDeleteView.as_view(), name='delete_post'),
     url(r'^discussions/post/(?P<pk>[-\w]+)/edit/$', PostUpdateView.as_view(), name='edit_post'),
 
-
+    # Haystack search
+    # url(r'^search/', include('haystack.urls'), name='haystack_search'),
+    url(r'^search/', SearchHaystackView.as_view(), name='haystack_search'),
 
     # url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),

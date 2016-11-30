@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load highlight %}
+
+{% block content_container %}
+
+<div class="col-md-10 col-md-offset-1 text-center">
+    <form method="get" action="." class="form-inline text-" role="search">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for..." name="q" value="{{query}}">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-color-flat" type="button"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+</div>
+
+<div class="col-md-10 col-md-offset-1">
+    {% if query %}
+        <h3 class="text-center">{{ object_list | length }} results for <span class="label label-info">{{ query }}</span></h3>
+        {% for result in object_list %}
+            
+            <p>{% if result.object.icon %}<img src="{{ result.object.icon.url }}" width="50px">{% endif %}</p>
+            <p class="lead">
+                <a href="{{ result.object.get_absolute_url }}">{{ result.object.title | safe }} </a>
+
+                <a type="button" class="btn btn-link btn-color-flat btn-md morebtn" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="{{ result.object.id}}_detail" href="#{{result.object.id}}_detail">more</a>
+            </p>
+            <p>by {% highlight result.object.creator.first_name with query html_tag "span" css_class "label label-info" %} {% highlight result.object.creator.last_name with query html_tag "span" css_class "label label-info" %}</p>
+            <p>
+                {{ result.object.description | safe | truncatewords_html:40 }}
+            </p>
+            <div id="{{ result.object.id}}_detail" class="collapse">
+                <p>{% highlight result.object.description with query html_tag "div" css_class "label label-info" %}</p>
+                <h4> 
+                    {% for k, v in result.object.get_data_dict.items %}
+                        <h5>{{ v.displayname }}: {% for i in v.datalist %} {% highlight i with query html_tag "div" css_class "label label-info" %}, {% endfor %}</h5> 
+                    {% endfor %}
+                </h4>
+            </div>
+
+            <hr>
+            
+        {% empty %}
+            <p>No results found.</p>
+        {% endfor %}
+    {% else %}
+        {# Show some example queries to run, maybe query syntax, something else? #}
+    {% endif %} 
+</div>  
+
+{% endblock %}
+
+{% block js_include %} 
+<script type="text/javascript">
+    $(".morebtn").on("click", function() {
+        console.log($(this).html());
+        if($(this).html() === "more") {
+
+            $(this).html("less");
+        } else {
+            $(this).html("more");
+        }
+    });
+</script>
+{% endblock js_include %}
