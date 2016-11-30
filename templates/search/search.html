@@ -16,7 +16,7 @@
 
 <div class="col-md-10 col-md-offset-1">
     {% if query %}
-        <h3 class="text-center">{{ object_list | length }} results for <span class="label label-info">{{ query }}</span></h3>
+        <h3 class="text-center">{{ object_list | length }} result{{ object_list | length | pluralize }} for <span class="label label-info">{{ query }}</span></h3>
         {% for result in object_list %}
             
             <p>{% if result.object.icon %}<img src="{{ result.object.icon.url }}" width="50px">{% endif %}</p>
