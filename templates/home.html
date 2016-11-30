@@ -28,26 +28,30 @@
     <!-- Bootstrap js -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <!-- Placeholder for page-level css includes -->
-    {% block css_include %} {% endblock css_include %}
+    <style type="text/css">
+        body {
+          padding-top: 10px;
+        }
+    </style>
 
 </head>
 
 <body>
+    
     <div class="container">
-
+        <div class="navbar navbar-right">
+            <a href="{% url 'list_prototypes' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-list"></i> browse </a>
+            <a href="{% url 'create_prototype' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-plus"></i> create </a>
+        </div>
+        
         <div class="row">
             <div class="col-xs-2">
-                <p><img src="{% static 'img/pbllrepo-icon.jpg' %}" width="75%"></p>
+                <p><img src="{% static 'img/pbllrepo-icon.jpg' %}" width="70%"></p>
             </div>
-            <div class="col-xs-10">
+            <div class="col-xs-10" style="margin-top: -50px">
                 <p class="lead" style="font-size: 4.0em">Pebbles</p>
-                <p class="lead">
+                <p class="lead" style="font-size: 1.5em">
                     Project Based Language Learning Prototypes
-                </p>
-                <p>
-                    <a href="{% url 'list_prototypes' %}" class="static_a_display"><button type="button" class=" btn btn-md btn-primary">browse <i class="fa fa-list"></i></button></a>
-                    <a href="{% url 'create_prototype' %}" class="static_a_display"><button type="button" class=" btn btn-md btn-success"><i class="fa fa-plus"></i> create </button></a> 
                 </p>
             </div>
 
