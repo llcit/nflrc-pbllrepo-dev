@@ -4,7 +4,7 @@
 {% block content_container %}
 
 <div class="col-md-10 col-md-offset-1 text-center">
-    <form method="get" action="." class="form-inline text-" role="search">
+    <form method="get" action="{% url 'haystack_search' %}" class="form-inline text-" role="search">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search for..." name="q" value="{{query}}">
             <span class="input-group-btn">

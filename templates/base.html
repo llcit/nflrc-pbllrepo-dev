@@ -85,8 +85,8 @@
                 {% endif %}
               </li>
           </ul>
-          {% if request.path != '/search/' %}
-            <form method="get" action="/search" class="navbar-form navbar-right" role="search">
+          {% if request.path != "/pebbles/search/" %}
+            <form method="get" action="{% url 'haystack_search' %}" class="navbar-form navbar-right" role="search">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for..." name="q" value="{{query}}">
                     <span class="input-group-btn">
