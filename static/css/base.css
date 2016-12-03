@@ -62,6 +62,13 @@ dt { white-space: normal; }
 }
 .btn-color-flat:hover {color: #666; text-decoration: none; border: 1px solid gray;}
 
+.query-term {
+    font-size: 1.2em;
+    color: green;
+    text-decoration: none;
+    border-bottom: 4px solid green;
+}
+
 /*.nav-pills>li.active>a { background-color: #dff0d8; color: black; }
 .nav-pills>li>a { background-color: #eee; }
 */

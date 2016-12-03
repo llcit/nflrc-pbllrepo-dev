@@ -19,22 +19,30 @@
         <h3 class="text-center">{{ object_list | length }} result{{ object_list | length | pluralize }} for <span class="label label-info">{{ query }}</span></h3>
         {% for result in object_list %}
             
-            <p>{% if result.object.icon %}<img src="{{ result.object.icon.url }}" width="50px">{% endif %}</p>
             <p class="lead">
-                <a href="{{ result.object.get_absolute_url }}">{{ result.object.title | safe }} </a>
-
-                <a type="button" class="btn btn-link btn-color-flat btn-md morebtn" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="{{ result.object.id}}_detail" href="#{{result.object.id}}_detail">more</a>
+                {% if result.object.icon %}<img src="{{ result.object.icon.url }}" width="50px">{% endif %}
+                <a href="{{ result.object.get_absolute_url }}" class="static_a_display">{% highlight result.object.title with query html_tag "span" css_class "query-term" %} </a>
+                <span>{{ result.score }}</span>
             </p>
-            <p>by {% highlight result.object.creator.first_name with query html_tag "span" css_class "label label-info" %} {% highlight result.object.creator.last_name with query html_tag "span" css_class "label label-info" %}</p>
             <p>
-                {{ result.object.description | safe | truncatewords_html:40 }}
+                by {% highlight result.object.creator.first_name with query html_tag "span" css_class "query-term" %} {% highlight result.object.creator.last_name with query html_tag "span" css_class "query-term" %} 
+
+                {% if result.object.origin.title %}derived from {% highlight result.object.origin.title with query html_tag "span" css_class "query-term" %}{% endif %}
+            </p>
+            <p>
+                <p>
+                    {% highlight result.object.description with query html_tag "span" css_class "query-term" %}
+                    
+                    <a type="button" class="btn btn-link btn-sm btn-color-flat label label-success morebtn" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="{{ result.object.id}}_detail" href="#{{result.object.id}}_detail" data-display="more">more <i class="fa fa-caret-right"></i></a>
+                </p>
+                
             </p>
             <div id="{{ result.object.id}}_detail" class="collapse">
-                <p>{% highlight result.object.description with query html_tag "div" css_class "label label-info" %}</p>
+                
                 <h4> 
                     {% for k, v in result.object.get_data_dict.items %}
-                        <h5>{{ v.displayname }}: {% for i in v.datalist %} {% highlight i with query html_tag "div" css_class "label label-info" %}, {% endfor %}</h5> 
-                    {% endfor %}
+                        <h5>{{ v.displayname }}: {% for i in v.datalist %} {% highlight i with query html_tag "span" css_class "query-term" %}, {% endfor %}</h5> 
+                    {% endfor %} 
                 </h4>
             </div>
 
@@ -53,12 +61,12 @@
 {% block js_include %} 
 <script type="text/javascript">
     $(".morebtn").on("click", function() {
-        console.log($(this).html());
-        if($(this).html() === "more") {
-
-            $(this).html("less");
+        if($(this).attr("data-display") === "more") {
+            $(this).html("less <i class=\"fa fa-caret-up\">");
+            $(this).attr("data-display", "less");
         } else {
-            $(this).html("more");
+            $(this).html("more <i class=\"fa fa-caret-right\">");
+            $(this).attr("data-display", "more");
         }
     });
 </script>
