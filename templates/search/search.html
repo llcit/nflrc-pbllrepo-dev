@@ -22,7 +22,7 @@
             <p class="lead">
                 {% if result.object.icon %}<img src="{{ result.object.icon.url }}" width="50px">{% endif %}
                 <a href="{{ result.object.get_absolute_url }}" class="static_a_display">{% highlight result.object.title with query html_tag "span" css_class "query-term" %} </a>
-                <span>{{ result.score }}</span>
+                <span></span>
             </p>
             <p>
                 by {% highlight result.object.creator.first_name with query html_tag "span" css_class "query-term" %} {% highlight result.object.creator.last_name with query html_tag "span" css_class "query-term" %} 
