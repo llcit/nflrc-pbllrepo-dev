@@ -19,7 +19,7 @@ def auth_allowed(response, details, *args, **kwargs):
     email that matches the gmail account used to authenticate.
     """
     try:
-        print 'Google USER ==> ', details
+        # print 'Google USER ==> ', details
         nflrc_user = User.objects.get(email=details.get('email'))
         return nflrc_user
     except:
@@ -59,3 +59,5 @@ def nflrc_social_user(backend, uid, user=None, *args, **kwargs):
             'user': user,
             'is_new': user is None,
             'new_association': False}
+
+

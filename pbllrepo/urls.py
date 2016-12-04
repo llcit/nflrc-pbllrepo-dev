@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_view
 
 from filebrowser.sites import site
 
@@ -72,7 +73,7 @@ urlpatterns = [
     url(r'^search/', SearchHaystackView.as_view(), name='haystack_search'),
 
     # url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
+    url(r'^logout/$', auth_view.logout, name='logout'),
 
     url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
