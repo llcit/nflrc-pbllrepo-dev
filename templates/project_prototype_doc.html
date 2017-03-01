@@ -51,7 +51,7 @@
 
 
                 <!-- PROJECT SEQUENCE OVERVIEW TABLE OF CONTENTS -->
-                <dt id="project_sequence" class="lead"><h3>Project Overview <small><a href="#files" class="btn"><i class="fa fa-file"></i> files</a> <a href="#comments" class="btn"><i class="fa fa-comment"></i> comments</a></small></h3></dt>
+                <dt id="project_sequence" class="lead"><h3 class="lead">Overview <small><a href="#files" class="btn"><i class="fa fa-file"></i> files</a> <a href="#comments" class="btn"><i class="fa fa-comment"></i> comments</a></small></h3></dt>
                 <dd>
                     {% for category, tasks in tasks.items %}
                         <h4><a href="#{{ category|slugify }}" class="">{{ category }}</a></h4>
@@ -67,11 +67,11 @@
                 {% for category, tasks in tasks.items %}
                 <h1 id="{{ category|slugify }}"></h1>
                 
-                <dt class="lead"><h2>{{ category }}</h2></dt>
+                <dt><h2 class="lead">{{ category }}</h2></dt>
                 <dd class="well bg-success">
                     {% for task in tasks %}
                         <p>
-                            <h3>
+                            <h4>
                                 <span>{{ forloop.counter }}.</span> {{ task }}
                                 <small>
                                 {% if project_prototype.creator == user %}
@@ -85,7 +85,7 @@
                                 {% endif %}
                                 </small>
 
-                            </h3>
+                            </h4>
                             <p>{{ task.description|safe }}</p>
                             <hr>
                             <h5><em>Technology Tips</em></h5><p>{{ task.technology_tips|safe }}</p>

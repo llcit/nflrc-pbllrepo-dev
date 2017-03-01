@@ -21,7 +21,7 @@
             
             <p class="lead">
                 {% if result.object.icon %}<img src="{{ result.object.icon.url }}" width="50px">{% endif %}
-                <a href="{{ result.object.get_absolute_url }}" class="static_a_display">{% highlight result.object.title with query html_tag "span" css_class "query-term" %} </a>
+                <a href="{% url 'docview_prototype' result.object.id %}" class="static_a_display">{% highlight result.object.title with query html_tag "span" css_class "query-term" %} </a>
                 <span></span>
             </p>
             <p>
