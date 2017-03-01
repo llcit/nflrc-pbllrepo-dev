@@ -84,7 +84,7 @@
 
             {% for i in prototype_list %}
                 <div class="brick well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd' }}">
-                    <h6 class="tiny">{{ i.modified|date:'M j, Y' }}</h6>
+                    
                     <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
                         <div>
                             <h2>

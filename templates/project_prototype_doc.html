@@ -40,7 +40,7 @@
                 </small>
             </h1>
 
-            <p><h4>A Project Prototype created with love and care by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</h4></p>
+            <p><h4>A Project Prototype created with love and care by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</h4><small>created {{ project_prototype.created|date:"M j, Y"}}</small></p>
 
             {% if project_prototype.origin %}
             <p>based on <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></p>
