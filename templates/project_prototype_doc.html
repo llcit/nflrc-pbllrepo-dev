@@ -15,13 +15,6 @@
                     <a href="{% url 'view_prototype' project_prototype.id %}" class="static_a_display">
                         <button class="btn btn-xs"><i class="fa fa-info"></i> info </i></button>
                     </a>
-
-                    {% comment %}
-                    <a href="{% url 'flip_prototype' project_prototype.id %}" class="static_a_display">
-                        <button class="btn btn-xs"><i class="fa fa-files-o"></i> flip</button>
-                    </a>
-                    {% endcomment %}
-
                     {% if project_prototype.creator == user %}
                     <a href="{% url 'update_prototype' project_prototype.id %}" class="static_a_display">
                         <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
@@ -53,26 +46,29 @@
         <p>
             <dl>
                 <!-- PROJECT DESCRIPTION -->
-                <dt id="project_description" class="lead"><h2>Project Description</h2></dt>
+                <dt id="project_description" class="lead">{% comment %}<h2>Project Description</h2>{% endcomment %}</dt>
                 <dd>{{ description|safe}}</dd>
 
 
                 <!-- PROJECT SEQUENCE OVERVIEW TABLE OF CONTENTS -->
-                <dt id="project_sequence" class="lead"><h2>Project Sequence Overview</h2></dt>
+                <dt id="project_sequence" class="lead"><h3>Project Overview <small><a href="#files" class="btn"><i class="fa fa-file"></i> files</a> <a href="#comments" class="btn"><i class="fa fa-comment"></i> comments</a></small></h3></dt>
                 <dd>
                     {% for category, tasks in tasks.items %}
-                        <h3>{{ category }}</h3>
+                        <h4><a href="#{{ category|slugify }}" class="">{{ category }}</a></h4>
                         {% for task in tasks %}
-                            <p><span>{{ forloop.counter }}.</span> {{ task.title }} - <em>{{ task.short_description }}</em></p>
+                            <p><span>{{ forloop.counter }}.</span> {{ task.title }}{% comment %} - <em>{{ task.short_description }}</em>{% endcomment %}</p>
                         {% endfor %}
                     {% endfor %}
                 </dd>
+                <h5></h5>
 
 
                 <!-- PROJECT TASKS DETAIL -->
                 {% for category, tasks in tasks.items %}
-                <dt id="{{ category }}" class="lead"><h2>{{ category }}</h2></dt>
-                <dd>
+                <h1 id="{{ category|slugify }}"></h1>
+                
+                <dt class="lead"><h2>{{ category }}</h2></dt>
+                <dd class="well bg-success">
                     {% for task in tasks %}
                         <p>
                             <h3>
@@ -91,8 +87,9 @@
 
                             </h3>
                             <p>{{ task.description|safe }}</p>
-                            <h5>Technology Tips</h5><p>{{ task.technology_tips|safe }}</p>
-                            <h5>Task Extension</h5><p>{{ task.task_extension|safe }}</p>
+                            <hr>
+                            <h5><em>Technology Tips</em></h5><p>{{ task.technology_tips|safe }}</p>
+                            <h5><em>Task Extension</em></h5><p>{{ task.task_extension|safe }}</p>
                         </p>
                     {% endfor %}
                 </dd>
@@ -106,7 +103,7 @@
     </div>
 
     <!-- PROJECT FILES -->
-    <div class="col-md-8 col-md-offset-2">
+    <div id="files" class="col-md-8 col-md-offset-2">
         <h2>Files</h2>
         {% for file in filelisting %}{% if file.project_file %}
         <div class="media">
@@ -155,7 +152,7 @@
     </div>
 
     <!-- COMMENTS -->
-    <div class="col-md-8 col-md-offset-2">
+    <div id="comments" class="col-md-8 col-md-offset-2">
         <h2>Comments</h2>
         {% if user.is_authenticated %}
         <!-- comment post form -->
