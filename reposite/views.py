@@ -144,9 +144,9 @@ class ProjectPrototypeDetailView(DetailView):
                 tasks[i.get_task_category_display()] = []
                 tasks[i.get_task_category_display()].append(i)
 
-        context['user_is_coeditor'] = self.get_object().coeditors.filter(coeditor=self.request.user)
-        if not context['user_is_coeditor']:
-            context['user_is_coeditor'] = self.request.user.is_staff
+        # context['user_is_coeditor'] = self.get_object().coeditors.filter(coeditor=self.request.user)
+        # if not context['user_is_coeditor']:
+        # context['user_is_coeditor'] = self.request.user.is_staff
 
         context['prototype_tasks'] = tasks  # self.get_object().tasks.all()
         context['task_list'] = self.get_object().tasks.all()
@@ -221,9 +221,9 @@ class ProjectTaskListView(LoginRequiredMixin, DetailView):
         context['task_list'] = self.get_object().tasks.all()
         if context['task_list']:
             context['project_task'] = context['task_list'][0]
-        context['user_is_coeditor'] = context['prototype_project'].coeditors.filter(coeditor=self.request.user)
-        if not context['user_is_coeditor']:
-            context['user_is_coeditor'] = self.request.user.is_staff        
+        # context['user_is_coeditor'] = context['prototype_project'].coeditors.filter(coeditor=self.request.user)
+        # if not context['user_is_coeditor']:
+        context['user_is_coeditor'] = self.request.user.is_staff        
         return context
 
 
@@ -237,9 +237,9 @@ class ProjectTaskDetailView(LoginRequiredMixin, ListUserFilesMixin, DetailView):
             ProjectTaskDetailView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.get_object().prototype_project
         context['task_list'] = context['prototype_project'].tasks.all()
-        context['user_is_coeditor'] = context['prototype_project'].coeditors.filter(coeditor=self.request.user)
-        if not context['user_is_coeditor']:
-            context['user_is_coeditor'] = self.request.user.is_staff
+        # context['user_is_coeditor'] = context['prototype_project'].coeditors.filter(coeditor=self.request.user)
+        # if not context['user_is_coeditor']:
+        context['user_is_coeditor'] = self.request.user.is_staff
 
         return context
 

@@ -26,7 +26,7 @@
             </a>
             {% endcomment %}
 
-            {% if user == project_prototype.creator or user_is_coeditor %}
+            {% if user == project_prototype.creator or request.user.is_staff %}
 
                 <a href="{% url 'update_prototype' project_prototype.id %}"class="static_a_display">
                     <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
