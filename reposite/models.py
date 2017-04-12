@@ -221,3 +221,11 @@ class ProjectComment(models.Model):
 
     def __unicode__(self):
         return '%s --> %s' % (self.project, self.thread)
+
+
+class ProjectCoeditors(models.Model):
+    prototype_project = models.ForeignKey(
+        ProjectPrototype, null=False, related_name='coeditors')
+    coeditor = models.ForeignKey(User, related_name='coedited_projects')
+
+

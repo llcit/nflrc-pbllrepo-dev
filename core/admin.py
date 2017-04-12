@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from reposite.models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile, ProjectComment
+from reposite.models import ProjectPrototype, PrototypeMetaElement, \
+    ProjectTask, ProjectFile, ProjectComment, ProjectCoeditors
 from discussions.models import Post
 
 
@@ -25,10 +26,16 @@ class ProjectTaskAdmin(admin.ModelAdmin):
 class ProjectFileAdmin(admin.ModelAdmin):
     list_display = ('id', 'project_file', 'project')
 
+
+class ProjectCoeditorsAdmin(admin.ModelAdmin):
+    list_display = ('prototype_project', 'coeditor')
+    list_filter = ['prototype_project', 'prototype_project__creator', 'coeditor']
+
 admin.site.register(ProjectPrototype, ProjectPrototypeAdmin)
 admin.site.register(PrototypeMetaElement, PrototypeMetaElementAdmin)
 admin.site.register(ProjectTask, ProjectTaskAdmin)
 admin.site.register(ProjectFile, ProjectFileAdmin)
 admin.site.register(ProjectComment)
+admin.site.register(ProjectCoeditors, ProjectCoeditorsAdmin)
 
 admin.site.register(Post)
