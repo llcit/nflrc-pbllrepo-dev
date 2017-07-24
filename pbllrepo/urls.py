@@ -34,7 +34,8 @@ from reposite.views import (
 from discussions.views import DiscussionListView, DiscussionView, PostCreateView, PostDeleteView, PostUpdateView
 
 urlpatterns = [
-    url('', include('social.apps.django_app.urls', namespace='social')),
+    # url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('social_django.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
 
 

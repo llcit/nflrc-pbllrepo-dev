@@ -152,7 +152,8 @@ TASK_CATEGORIES = (
     ('0_preparing', 'Preparing for the Project'),
     ('1_launching', 'Launching the Project'),
     ('2_managing', 'Managing the Project'),
-    ('3_assessment', 'Assessment')
+    ('3_assessment', 'Assessment'),
+    ('4_none', 'General'),
 )
 
 TASK_TYPES = (

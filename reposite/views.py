@@ -41,6 +41,7 @@ class HomeView(TemplateView):
         return context
 
 
+# Prototype views
 class ProjectPrototypeDocumentView(DetailView):
     model = ProjectPrototype
     template_name = 'project_prototype_doc.html'
@@ -210,6 +211,7 @@ class ProjectPrototypeDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('list_prototypes')
 
 
+# Task Views
 class ProjectTaskListView(LoginRequiredMixin, DetailView):
     model = ProjectPrototype
     template_name = 'task_detail.html'
@@ -293,6 +295,7 @@ class ProjectTaskDeleteView(LoginRequiredMixin, DeleteView):
         return reverse('view_prototype', args=[self.get_object().prototype_project.id, ])
 
 
+# File handling
 class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
     model = ProjectFile
     template_name = 'file_upload.html'
@@ -317,6 +320,7 @@ class ProjectFileDeleteView(LoginRequiredMixin, ListUserFilesMixin, DeleteView):
     success_url = reverse_lazy('upload_file')
 
 
+# Search views
 class SearchHaystackView(SearchView):
     def get_queryset(self):
         queryset = super(SearchHaystackView, self).get_queryset()

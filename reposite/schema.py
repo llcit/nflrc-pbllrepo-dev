@@ -1,5 +1,5 @@
 """
-Prototype PBLL Project Metadata Scheme
+Prototype PBLL Project Metadata Schema
 
 BASE (These descriptors are defined for the model: ProjectPrototype)
 --------
@@ -14,7 +14,7 @@ BASE (These descriptors are defined for the model: ProjectPrototype)
     rights
     uri
 
-EXTENDED (These descriptors are defined here, as a metadat schema for ProjectPrototype's)
+EXTENDED (These descriptors are defined here, as a metadata schema for ProjectPrototype's)
 --------
     subject
     language

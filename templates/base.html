@@ -83,7 +83,9 @@
               {% endif %}
               <li>
                 {% if not user.is_authenticated %}
-                  <a href="/pebbles/login/google-oauth2/"  class="btn btn-link btn-md btn-color-flat"><i class="fa fa-sign-in"></i> login </a>
+                  {# <a href="/pebbles/login/google-oauth2/"  class="btn btn-link btn-md btn-color-flat"><i class="fa fa-sign-in"></i> login </a> #}
+
+                  <a href="{% url 'social:begin' 'google-oauth2' %}">
                 {% else %}
                   <a href="{% url 'logout' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-sign-out"></i> {{ user }} </a>
                 {% endif %}

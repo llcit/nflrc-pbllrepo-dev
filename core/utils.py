@@ -4,7 +4,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 
-from social.exceptions import AuthForbidden
+from social_core.exceptions import AuthForbidden
 
 
 def logout_clean(request):
