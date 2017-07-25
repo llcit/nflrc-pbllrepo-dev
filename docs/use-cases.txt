@@ -6,3 +6,4 @@ User:
 	b. required metatdata: title, publisher, subject
 
 - add a task
+	a. tasks are ordered/grouped by task type ()

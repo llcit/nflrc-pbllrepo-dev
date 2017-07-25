@@ -23,12 +23,11 @@ DATABASES = {
 }
 
 
+MEDIA_URL = 'http://localhost/media/pbllrepo/'
+MEDIA_ROOT = '/Library/WebServer/Documents/media/pbllrepo'
 
 STATIC_ROOT = '/Library/WebServer/Documents/static/pbllrepo'
 STATIC_URL = '/static/'
-
-MEDIA_ROOT = '/Library/WebServer/Documents/media/pbllrepo'
-MEDIA_URL = 'http://localhost/media/pbllrepo/'
 
 DIRECTORY = 'uploads'
 FILEBROWSER_VERSIONS_BASEDIR = '_versions'
