@@ -117,21 +117,52 @@
     <!-- Packery layout library -->
     <script src="{% static 'js/packery-mode.pkgd.min.js' %}"></script>
 
-    <script type="text/javascript">
-        var $container = $('#brickwall');
-        $container.isotope({
-            layoutMode: 'packery',
-            packery: {
-              gutter: 10,
-            },
-            itemSelector: '.brick',
+    <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
 
-            getSortData: {
-                lname: '.lname',
-                title: '[data-title]',
-                modified: '[data-mod]',
-            }
+    <script type="text/javascript">
+        // var $container = $('#brickwall').isotope({
+        //     layoutMode: 'packery',
+        //     packery: {
+        //       gutter: 10,
+        //     },
+        //     itemSelector: '.brick',
+
+        //     getSortData: {
+        //         lname: '.lname',
+        //         title: '[data-title]',
+        //         modified: '[data-mod]',
+        //     },  
+        //     // disable initial layout
+        //     // initLayout: false
+        // });
+
+        // $container.imagesLoaded().progress( function() {
+        //     $container.isotope();
+        // });
+
+        var $container = $('#brickwall').imagesLoaded( function() {
+            // init Isotope after all images have loaded
+            $('#brickwall').isotope({
+                layoutMode: 'packery',
+                
+                packery: {
+                  gutter: 10,
+                },
+                itemSelector: '.brick',
+
+                getSortData: {
+                    lname: '.lname',
+                    title: '[data-title]',
+                    modified: '[data-mod]',
+                }, 
+
+            });
         });
+        
+        
+
+
+
 
         $('.sortbtn').on('click', function() {
             var $v = $(this).attr('data-sort');
@@ -155,6 +186,8 @@
 
             $container.isotope({ filter: $v });
         });
+
+        // $container.isotope('layout');
 
         $container.isotope({ sortBy: 'title' });
 
