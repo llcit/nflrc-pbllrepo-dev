@@ -142,7 +142,7 @@
 
         var $container = $('#brickwall').imagesLoaded( function() {
             // init Isotope after all images have loaded
-            $('#brickwall').isotope({
+            $container.isotope({
                 layoutMode: 'packery',
                 
                 packery: {
@@ -154,15 +154,12 @@
                     lname: '.lname',
                     title: '[data-title]',
                     modified: '[data-mod]',
-                }, 
+                },
+
+                sortBy: 'title'
 
             });
         });
-        
-        
-
-
-
 
         $('.sortbtn').on('click', function() {
             var $v = $(this).attr('data-sort');
@@ -187,9 +184,13 @@
             $container.isotope({ filter: $v });
         });
 
+        $(document).ready(function() {
+            $container.isotope({ sortBy: 'title' });
+        });
+
         // $container.isotope('layout');
 
-        $container.isotope({ sortBy: 'title' });
+        
 
     </script>
 
