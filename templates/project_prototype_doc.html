@@ -102,6 +102,31 @@
 
     </div>
 
+    <!-- PROJECT IMPLEMENTATION INFORMATION -->
+    <div id="info_items" class="col-md-8 col-md-offset-2">
+        <h2>Implementation Info {% if project_prototype.creator == user or user.is_staff %}<a href="{% url 'create_implementation_item' project_prototype.id %}">add</a>{% endif %}</h2>
+        {% for info_item in implementation_info_items %} 
+            <p>
+                <h4>
+                    <span>{{ forloop.counter }}.</span> {{ info_item }}
+                    <small>
+                    {% if project_prototype.creator == user or user.is_staff %}
+                    <a href="{% url 'update_implementation_item' project_prototype.id info_item.id %}" class="static_a_display">
+                        <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                    </a>
+
+                    <a href="{% url 'delete_implementation_item' project_prototype.id info_item.id %}" class="static_a_display">
+                        <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                    </a>
+                    {% endif %}
+                    </small>
+                </h4>
+                <p>{{ info_item.description|safe }}</p>
+            </p>
+        {% endfor %}
+    </div>
+
+
     <!-- PROJECT FILES -->
     <div id="files" class="col-md-8 col-md-offset-2">
         <h2>Files</h2>

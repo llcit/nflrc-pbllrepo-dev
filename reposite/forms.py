@@ -1,10 +1,13 @@
 # forms_py
+
+from datetime import datetime
+
 from django import forms
 from django.forms import ClearableFileInput
 
 # from filebrowser.widgets import ClearableFileInput
 
-from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectFile
+from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectImplementationInfo, ProjectFile
 from .schema import PrototypeMetadataForm
 
 
@@ -12,29 +15,36 @@ class ProjectPrototypeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProjectPrototypeForm, self).__init__(*args, **kwargs)
-
-        """ Set up the local fields first """
+        
+        # Assign the local model fields to the 'basic' group. 
         basefields = self.Meta.fields
         for i in basefields:
-            self.fields[i].label = 'General'
+            self.fields[i].label = 'Basic Properties'
             self.fields[i].label_suffix = self.Meta.label_suffixes[i]
 
-        """ Give the description field its own group. Other fields can also be adjusted here if needed. """
-        self.fields['description'].label = 'Description'
+        # New groups can be created/adjusted here if needed
+        # E.g, self.fields['description'].label = 'Description'
 
-        """ Now set up the schema fields  """
+        # Now set up the fields derived from the schema. 
         metadata_form = PrototypeMetadataForm()
         for i, j in metadata_form.fields.items():
             self.fields[i] = j
+        
+        # Assign the subject area field to the 'basic' group
+        self.fields['subject'].label = 'Basic Properties'
+
+        # Specify the display order of the fields
+        self.order_fields(['title', 'active', 'description', 'icon', 'subject', 'creator', 'origin', 'publisher', 'publish_date', 'contributors'])
+        
 
     class Meta:
         model = ProjectPrototype
 
         """ Base model fields (i.e., these descriptors are NOT specified in schema but with the model) """
-        fields = ('title', 'icon', 'creator', 'origin', 'publisher', 'publish_date',  'contributors', 'rights', 'uri', 'active', 'description')
-
+        fields = ('title', 'active','description', 'icon', 'creator', 'origin', 'publisher', 'publish_date', 'contributors')
+        
         """ Label groups identify related groups. These are assigned in init or in PrototypeMetadataForm """
-        label_groups = ['General', 'Subject Area', 'Description', 'Language', 'Instructional Context', 'Language Proficiency', 'World Readiness Standards', '21st Century Skills']
+        label_groups = ['Basic Properties', 'Language', 'Instructional Context', 'Language Proficiency', 'World Readiness Standards', '21st Century Skills']
 
         """ Label  suffixes are used to label each item within a label group """
         label_suffixes = {
@@ -46,8 +56,6 @@ class ProjectPrototypeForm(forms.ModelForm):
             'publisher': 'Publisher',
             'publish_date': 'Publish Date',
             'contributors': 'Contributors',
-            'rights': 'Rights',
-            'uri': 'URI',
             'active': 'Public'
         }
 
@@ -65,15 +73,14 @@ class ProjectPrototypeForm(forms.ModelForm):
             'creator': forms.HiddenInput(),
             'origin': forms.HiddenInput(),
             'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'publisher': forms.TextInput(attrs={'class': 'form-control'}),
-            'publish_date': forms.DateInput(attrs={'size': '40', 'type': 'date', 'placeholder': 'MM/DD/YYY'}),
+            'publisher': forms.HiddenInput(),
+            'publish_date': forms.HiddenInput(),  # forms.DateInput(attrs={'size': '40', 'type': 'date', 'placeholder': 'MM/DD/YYY'}),
             'contributors': forms.TextInput(attrs={'class': 'form-control'}),
-            'rights': forms.TextInput(attrs={'class': 'form-control'}),
-            'uri': forms.TextInput(attrs={'class': 'form-control'}),
         }
         help_texts = {
-            'active': 'Display on Web',
-            'contributors': 'Separate names with a comma'
+            'icon': '(optional)',
+            'active': 'Publish?',
+            'contributors': 'List names of other collaborators separated by a comma. (optional)'
         }
 
 
@@ -81,6 +88,12 @@ class ProjectPrototypeCreateForm(ProjectPrototypeForm):
 
     def save(self):
         super(ProjectPrototypeCreateForm, self).save()
+        
+        if self.instance.active:
+            self.instance.publish_date = datetime.now().date()
+        else:
+            self.instance.publish_date = None
+
 
         """ Create metadata objects from form data skipping fields listed in self.Meta.fields (base fields) """
         for i, j in self.cleaned_data.items():
@@ -99,7 +112,14 @@ class ProjectPrototypeCreateForm(ProjectPrototypeForm):
 
 class ProjectPrototypeUpdateForm(ProjectPrototypeForm):
 
-    def save(self):
+    def save(self):        
+        if 'active' in self.changed_data:
+            if self.cleaned_data['active']:
+                self.instance.publish_date = datetime.now().date()
+            else:
+                self.instance.publish_date = None 
+
+        # if self.changed_data: self.instance.modified = datetime.now()
         super(ProjectPrototypeUpdateForm, self).save()
 
         prev_metadata = self.instance.data.all()
@@ -107,7 +127,7 @@ class ProjectPrototypeUpdateForm(ProjectPrototypeForm):
         """ Clear all previously assigned metadata objects """
         for i in prev_metadata:
             i.delete()
-
+   
         """ Reassign metadata objects from form data skipping fields listed in self.Meta.fields (base fields) """
         for i, j in self.cleaned_data.items():
 
@@ -156,6 +176,17 @@ class TaskUpdateForm(forms.ModelForm):
             'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'})
         }
 
+
+class ImplementationInfoCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = ProjectImplementationInfo
+        fields = ('title', 'prototype_project', 'description', 'sequence_order',)
+        labels = {'title': 'Implementation Info Item Title'}
+        widgets = {
+            'prototype_project': forms.HiddenInput(),
+            'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+        }
 
 class FileUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

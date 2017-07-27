@@ -15,8 +15,8 @@ from haystack.generic_views import SearchView
 from core.mixins import ListUserFilesMixin
 from discussions.forms import PostReplyForm
 
-from .models import ProjectPrototype, ProjectTask, ProjectFile, ProjectComment
-from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, FileUploadForm
+from .models import ProjectPrototype, ProjectTask, ProjectImplementationInfo, ProjectFile, ProjectComment
+from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, ImplementationInfoCreateForm,FileUploadForm
 
 
 class HomeView(TemplateView):
@@ -61,6 +61,8 @@ class ProjectPrototypeDocumentView(DetailView):
                 tasks[i.get_task_category_display()] = []
                 tasks[i.get_task_category_display()].append(i)
 
+        implementation_info_items = project.implementation_info.all()
+
         thread = ProjectComment.objects.get(project=project).thread or None
         initial_post_data = {}
         initial_post_data['creator'] = self.request.user
@@ -72,6 +74,7 @@ class ProjectPrototypeDocumentView(DetailView):
         context['description'] = project.description
         context['thread'] = ProjectComment.objects.get(project=project).thread
         context['comments'] = thread.replies.filter(deleted=False)
+        context['implementation_info_items'] = implementation_info_items
         context['postform'] = form
         try:
             context['filelisting'] = project.project_files.all()
@@ -293,6 +296,69 @@ class ProjectTaskDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('view_prototype', args=[self.get_object().prototype_project.id, ])
+
+
+# Implementation Info Views
+class ProjectImplementationInfoItemView(LoginRequiredMixin, ListUserFilesMixin, DetailView):
+    model = ProjectImplementationInfo
+    template_name = 'implementation_info_detail.html'
+    context_object_name = 'information_item'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ProjectImplementationInfoItemView, self).get_context_data(**kwargs)
+        context['project_prototype'] = self.get_object().prototype_project
+        return context
+
+
+class ProjectImplementationInfoItemCreateView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
+    model = ProjectImplementationInfo
+    template_name = 'implementation_info_create_update.html'
+    context_object_name = 'information_item'
+    form_class = ImplementationInfoCreateForm
+
+    def get_initial(self):
+        initial = self.initial.copy()
+        try:
+            self.project = ProjectPrototype.objects.get(
+                pk=self.kwargs['project'])
+            initial['prototype_project'] = self.project.id
+        except:
+            pass
+
+        return initial
+
+    def get_success_url(self):
+        return reverse('docview_prototype', args=[self.project.id])
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ProjectImplementationInfoItemCreateView, self).get_context_data(**kwargs)
+        context['prototype_project'] = self.project
+        context['edit_text'] = 'Adding a new information item to'
+        return context
+        
+
+class ProjectImplementationInfoItemUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateView):
+    model = ProjectImplementationInfo
+    template_name = 'implementation_info_create_update.html'
+    context_object_name = 'information_item'
+    form_class = ImplementationInfoCreateForm
+
+    def get_success_url(self):
+        return reverse('docview_prototype', args=[self.get_object().prototype_project.id])
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ProjectImplementationInfoItemUpdateView, self).get_context_data(**kwargs)
+        context['prototype_project'] = self.get_object().prototype_project
+        context['edit_text'] = 'Editing information item for '
+        return context
+
+class ProjectImplementationInfoItemDeleteView(LoginRequiredMixin, DeleteView):
+    model = ProjectImplementationInfo
+    template_name = 'task_delete_confirm.html'
+
 
 
 # File handling

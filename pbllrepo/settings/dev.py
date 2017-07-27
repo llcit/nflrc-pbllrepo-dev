@@ -15,13 +15,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
-
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(PROJECT_DIR.child('pbllrepo'), 'pbllrepo-dev-sample.sqlite3'),
-    # }
 }
-
 
 MEDIA_URL = 'http://localhost/media/pbllrepo/'
 MEDIA_ROOT = '/Library/WebServer/Documents/media/pbllrepo'

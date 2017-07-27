@@ -19,7 +19,7 @@ class ProjectPrototype(TimeStampedModel):
     creator = models.ForeignKey(User, related_name='projects')
     origin = models.ForeignKey(
         'self', null=True, blank=True, related_name='flips')
-    description = models.TextField(default='Describe your project here.')
+    description = models.TextField(default='Describe an overview of your project here.')
     publisher = models.CharField(
         max_length=512, default='National Foreign Language Resource Center')
     publish_date = models.DateField(null=True, blank=True)
@@ -222,6 +222,29 @@ class ProjectComment(models.Model):
 
     def __unicode__(self):
         return '%s --> %s' % (self.project, self.thread)
+
+
+class ProjectImplementationInfo(models.Model):
+    """Component to allow users to attach general implementation information to project."""
+
+    title = models.CharField(max_length=512)
+    description = models.TextField()
+    prototype_project = models.ForeignKey(
+        ProjectPrototype, null=False, related_name='implementation_info')
+    sequence_order = models.IntegerField(default=0)
+
+    def creator(self):
+        return self.prototype_project.creator
+
+    def get_absolute_url(self):
+        return reverse('view_implementation_item', args=[self.prototype_project.id, self.id])
+
+    def __unicode__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['sequence_order']
+
 
 
 class ProjectCoeditors(models.Model):

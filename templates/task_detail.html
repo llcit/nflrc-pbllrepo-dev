@@ -10,6 +10,7 @@
         <h3>{{ prototype_project }} Tasks 
             {% if user == prototype_project.creator or user_is_coeditor %}
             <a href="{% url 'create_task' prototype_project.id %}"><button id="addbtn" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> add a task </button></a>
+            <a href="{% url 'create_implementation_item' prototype_project.id %}"><button id="addbtn" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> add implementation info </button></a>
             {% endif %}
         </h3>
     </div>

@@ -1,4 +1,4 @@
-<!-- project_prototype_detail.html -->
+<!-- implementation_info_detail.html -->
 {% extends "base.html" %}
 {% load staticfiles %}
 
@@ -41,9 +41,9 @@
                     <button class="btn btn-xs"><i class="fa fa-close"></i> Cannot remove because there are multiple derivations</button>
                 </a>
                 {% endif %}
+            
             {% endif %}
         </p>
-        <p class="small"><em>created on</em> {{ project_prototype.created|date:'M d, Y' }} <em>modified on</em> {{ project_prototype.modified|date:'M d, Y h:i' }}</p>
 
 
         <dl class="dl-horizontal">

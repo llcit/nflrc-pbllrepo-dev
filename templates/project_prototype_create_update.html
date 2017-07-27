@@ -14,9 +14,7 @@
     {% endif %}
 
     <div class="col-xs-10 col-xs-offset-1">
-        <h2 id="project_head">{% if project_prototype %} Edit {{ project_prototype }} {% else %} New Project  {% endif %}
-            <button id="savebtn" type="submit" class="btn btn-md btn-success">Save</button>
-        </h2>
+        <h2 id="project_head">{% if project_prototype %} Edit {{ project_prototype }} {% else %} New Project  {% endif %}</h2>
     </div>
 
     <div class="col-xs-2 col-xs-offset-1 block-center">
@@ -51,9 +49,6 @@
     <div class="col-xs-8 block-center">
         <form id="projectform" method="post" action="" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
             {% for hidden in form.hidden_fields %} {{hidden}} {% endfor %}
-
-
-
         <!-- Base Fields -->
 
             <!-- Tabs container -->
@@ -144,6 +139,7 @@
                 </div>
 
             </div><!-- End Tabs container -->
+            <button id="savebtn" type="submit" class="btn btn-lg btn-block btn-success">{% if project_prototype %} Save {{ project_prototype }} {% else %} Save New Project  {% endif %}</button>
         </form>
     </div>
 

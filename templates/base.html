@@ -63,7 +63,7 @@
           </button>
 
           <a class="static_a_display navbar-left" href="{% url 'home' %}">
-            <img src="{% static 'img/pbllrepo-icon.jpg' %}"> <span class="lead" style="font-size: 2.0em;">PBLL Repository</span>
+            <img src="{% static 'img/pebbles_logo_small.jpg' %}"> <span class="lead" style="font-size: 2.0em;">PBLL Repository</span>
           </a>
         </div>
 
@@ -128,7 +128,7 @@
 
 
   <!-- TinyMCE -->
-  <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+  <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>
     tinymce.init({
       selector:'.content-editor',
@@ -138,6 +138,11 @@
       plugins: "textcolor code media image visualblocks link",
       toolbar: "undo redo | formatselect code visualblocks link unlink | alignleft aligncenter alignright alignjustify | bold italic underline strikethrough | forecolor backcolor | image media | removeformat" ,
       image_advtab: true,
+      // setup: function(editor){
+      //   editor.on('init', function(){
+      //     editor.save();
+      //   });
+      // }
     });
     tinymce.init({
       selector:'textarea.discussion-editor',
@@ -147,6 +152,7 @@
       plugins: "textcolor code media image link",
       toolbar: "undo redo | formatselect code link unlink | bold italic underline strikethrough | image media | removeformat" ,
     });
+
   </script>
 
 

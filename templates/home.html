@@ -46,12 +46,12 @@
         
         <div class="row">
             <div class="col-xs-2">
-                <p><img src="{% static 'img/pbllrepo-icon.jpg' %}" width="70%"></p>
+                <p><img src="{% static 'img/pebbles_logo_small.jpg' %}" height="100%"></p>
             </div>
             <div class="col-xs-10" style="margin-top: -50px">
                 <p class="lead" style="font-size: 4.0em">Pebbles</p>
                 <p class="lead" style="font-size: 1.5em">
-                    Project Based Language Learning Prototypes
+                    Project-Based Language Learning Repository
                 </p>
             </div>
 
@@ -83,7 +83,7 @@
             <div class="col-md-12 center-block" id="brickwall">
 
             {% for i in prototype_list %}
-                <div class="brick well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd' }}">
+                <div class="brick well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd h:i' }}">
                     
                     <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
                         <div>
@@ -120,26 +120,6 @@
     <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
 
     <script type="text/javascript">
-        // var $container = $('#brickwall').isotope({
-        //     layoutMode: 'packery',
-        //     packery: {
-        //       gutter: 10,
-        //     },
-        //     itemSelector: '.brick',
-
-        //     getSortData: {
-        //         lname: '.lname',
-        //         title: '[data-title]',
-        //         modified: '[data-mod]',
-        //     },  
-        //     // disable initial layout
-        //     // initLayout: false
-        // });
-
-        // $container.imagesLoaded().progress( function() {
-        //     $container.isotope();
-        // });
-
         var $container = $('#brickwall').imagesLoaded( function() {
             // init Isotope after all images have loaded
             $container.isotope({
@@ -159,6 +139,8 @@
                 sortBy: 'title'
 
             });
+            $container.isotope('layout');
+            $container.isotope({ sortBy: 'title'});
         });
 
         $('.sortbtn').on('click', function() {
@@ -185,7 +167,7 @@
         });
 
         $(document).ready(function() {
-            $container.isotope({ sortBy: 'title' });
+            // $container.isotope('layout');
         });
 
         // $container.isotope('layout');
