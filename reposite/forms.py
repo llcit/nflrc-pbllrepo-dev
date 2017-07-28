@@ -22,6 +22,7 @@ class ProjectPrototypeForm(forms.ModelForm):
             self.fields[i].label = 'Basic Properties'
             self.fields[i].label_suffix = self.Meta.label_suffixes[i]
 
+
         # New groups can be created/adjusted here if needed
         # E.g, self.fields['description'].label = 'Description'
 
@@ -34,8 +35,8 @@ class ProjectPrototypeForm(forms.ModelForm):
         self.fields['subject'].label = 'Basic Properties'
 
         # Specify the display order of the fields
-        self.order_fields(['title', 'active', 'description', 'icon', 'subject', 'creator', 'origin', 'publisher', 'publish_date', 'contributors'])
-        
+        self.order_fields(['title', 'description', 'subject', 'active', 'icon', 'creator', 'origin', 'publisher', 'publish_date', 'contributors'])
+
 
     class Meta:
         model = ProjectPrototype
@@ -80,6 +81,7 @@ class ProjectPrototypeForm(forms.ModelForm):
         help_texts = {
             'icon': '(optional)',
             'active': 'Publish?',
+            'description': 'Describe an overview of your project.',
             'contributors': 'List names of other collaborators separated by a comma. (optional)'
         }
 

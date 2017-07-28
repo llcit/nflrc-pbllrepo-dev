@@ -19,7 +19,7 @@ class ProjectPrototype(TimeStampedModel):
     creator = models.ForeignKey(User, related_name='projects')
     origin = models.ForeignKey(
         'self', null=True, blank=True, related_name='flips')
-    description = models.TextField(default='Describe an overview of your project here.')
+    description = models.TextField()
     publisher = models.CharField(
         max_length=512, default='National Foreign Language Resource Center')
     publish_date = models.DateField(null=True, blank=True)

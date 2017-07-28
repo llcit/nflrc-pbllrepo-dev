@@ -13,73 +13,71 @@
     </div>
     {% endif %}
 
-    <div class="col-xs-10 col-xs-offset-1">
-        <h2 id="project_head">{% if project_prototype %} Edit {{ project_prototype }} {% else %} New Project  {% endif %}</h2>
+    <div class="col-xs-8 col-xs-offset-1">
+        <h2 id="project_head">{% if project_prototype %} Editing {{ project_prototype }} {% else %} Creating a New Project  {% endif %}</h2>
     </div>
 
-    <div class="col-xs-2 col-xs-offset-1 block-center">
-
+    <div class="col-xs-10 col-xs-offset-1">
         {% if project_prototype %}
-
+            <p>
                 <a href="{% url 'view_all_tasks' project_prototype.id %}" class="static_a_display">
                     <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit/add project tasks <i class="fa fa-caret-right"></i></button>
                 </a>
-
+            </p>
         {% endif %}
-
-        <ul id="form_sects" class="nav nav-tab nav-sidebar list-unstyled" role="tablist">
-
-
-        {% for tab in form.Meta.label_groups %}
-            <li role="presentation" class="{% if forloop.first %}active{% endif %}" data-toggle="button">
-                <a href="#{{ tab|slugify }}" class="static_a_display tab" aria-controls="{{ tab|slugify }}" role="tab" data-toggle="tab">
+    </div>
+    
+    <div class="col-xs-2 col-xs-offset-1 block-center">
+        <ul id="form_sects" class="nav nav-pills" role="tablist">
+            
+            {% for tab in form.Meta.label_groups %}
+            <li role="presentation" class="{% if forloop.first %}active{% endif %}">
+                <a href="#{{ tab|slugify }}" class="tab" aria-controls="{{ tab|slugify }}" role="tab" data-toggle="tab">
                     <span class="error_indicator"></span> {{ tab }} <i class="fa fa-caret-right"></i>
                 </a>
             </li>
-        {% endfor %}
-            <li role="presentation" data-toggle="button">
-                <a href="#filebrowser" data-toggle="tab" role="tab" aria-expanded="false" aria-controls="filebrowser" class="static_a_display">Browse project files</a>
+            {% if forloop.first %}<li class="small" style="padding-top: 15px"><h5 class="text-muted">Additional Properties</h5></li>{% endif %}
+            {% endfor %}
+            <li role="presentation">
+                <a href="#filebrowser" data-toggle="tab" role="tab" aria-expanded="false" aria-controls="filebrowser" class="tab">Browse project files</a>
             </li>
 
         </ul>
-
     </div>
 
 
     <div class="col-xs-8 block-center">
         <form id="projectform" method="post" action="" class="form-horizontal" enctype="multipart/form-data">{% csrf_token %}
             {% for hidden in form.hidden_fields %} {{hidden}} {% endfor %}
-        <!-- Base Fields -->
-
             <!-- Tabs container -->
             <div class="tab-content clearfix">
             {% for f in form.visible_fields %}
-
-            <!-- Detect change in form section to generate a new section (tab)-->
+                <!-- Detect change in form section to generate a new section (tab)-->
                 {% ifchanged f.label %}
-                    {% if not forloop.first %}</div>{% endif %}<div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{f.label|slugify}}">
+                    {% if not forloop.first %}</div>{% endif %}
+                    <div role="tabpanel" class="tab-pane {% if forloop.first %}active{% endif %}" id="{{f.label|slugify}}">
                     <h3>{{f.label}}</h3>
                 {% endifchanged %}
                 <div class="row form-group"><!-- Begin form row -->
 
-        <!-- Determine what kind of input selection we need to render, opts = single choice or multiple choice -->
+                <!-- Determine what kind of input selection we need to render, opts = single choice or multiple choice -->
 
-            <!-- Single value form field -->
+                <!-- Single value form field -->
                 {% if f|length == 1 %}
                     <div class="col-md-2 {% if f.errors %}badge-important{% endif %}">
                         <h4>
-                            {{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}
+                            {{ f.field.label_suffix }} {% if f.field.required %}<span class="label label-default">*required</span>{% endif %}
                         </h4>
                         <small>{{ f.help_text }}</small>
                         <ul class="list-unstyled">{% for e in f.errors %} <li class="error"><strong>{{ e }}</strong></li> {% endfor %} </ul>
                     </div>
                     <div class="col-md-10" id="{{f.field.label_suffix|slugify}}" data-container="#{{f.field.label_suffix|slugify}}" data-toggle="popover" data-content="{% for message in messages %}{{message}}{% endfor %}" data-placement="top">{{ f }}</div>
 
-            <!-- OR Multivalue form field -->
+                <!-- OR Multivalue form field -->
                 {% else %}
                     <div class="col-md-2 {% if f.errors %}badge-important{% endif %}">
                         <h4>
-                            {{ f.field.label_suffix }} {% if f.field.required %}<small><sup>required</sup></small>{% endif %}
+                            {{ f.field.label_suffix }} {% if f.field.required %}<span class="label label-default">*required</span>{% endif %}
                         </h4>
                         <small>{{ f.help_text }}</small>
                         <ul class="list-unstyled">{% for e in f.errors %} <li class="error"><strong>{{ e }}</strong></li> {% endfor %} </ul>
@@ -96,8 +94,9 @@
                                 </div>
 
                                 <div id="form_{{f.field.label_suffix|slugify}}" class="collapse">
+                                
                                 {% if f|is_multiple %}
-                                    <label class="btn btn-sm btn-default"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
+                                    <label class="btn btn-sm btn-default"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{ f.field.widget.attrs.data_value }}"> Select all</label>
                                 {% endif %}
 
                                 <ul class="list-unstyled list-inline">
@@ -105,12 +104,13 @@
                                 </ul>
                                 </div>
                             {% else %}
+                                
                                 {% if f|is_multiple %}
-                                    <label class="btn btn-sm btn-default"><input id="{{f.0.name}}" type="checkbox" class="selectall" data-value="{{f.0.name}}"> Select all</label>
+                                    <label class="btn btn-sm btn-default"><input id="" type="checkbox" class="selectall" data-value="{{ f.field.widget.attrs.data_value }}"> Select all</label>
                                 {% endif %}
 
                                 <ul class="list-unstyled list-inline">
-                                    {% for choice in f %}<li class="selector col-xs-12 col-sm-6 col-md-4 ">{{ choice }}</li>{% endfor %}
+                                    {% for choice in f %}{{choice.items.name}} <li class="selector col-xs-12 col-sm-6 col-md-4 ">{{ choice }}</li>{% endfor %}
                                 </ul>
                             {% endif %}
 
@@ -124,9 +124,7 @@
 
                     </div>
                 {% endif %}
-
                 </div> <!-- End form row -->
-
             {% endfor %}
                 </div> <!--  Closing Tab section -->
 
@@ -156,6 +154,7 @@
 
         // Handle the select all checkbox for various fields
         $(".selectall").click(function(){
+            console.log($(this).attr("data-value"));
             $("input[name="+$(this).attr("data-value")+"]").prop( "checked", $(this).is(':checked') )
         });
 
