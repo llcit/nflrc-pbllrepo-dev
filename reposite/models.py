@@ -30,6 +30,7 @@ class ProjectPrototype(TimeStampedModel):
         default=False, help_text="Hide/unhide this project")
     icon = models.FileField(
         upload_to='uploads', null=True, blank=True)
+    featured = models.BooleanField(default=False)
 
     def clone_project(self, user):
         rstr = ''.join(
