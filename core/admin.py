@@ -6,9 +6,9 @@ from discussions.models import Post
 
 
 class ProjectPrototypeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'creator', 'origin', 'active')
-    list_filter = ['creator', 'origin', 'active']
-    list_editable = ['active']
+    list_display = ('title', 'creator', 'origin', 'active', 'featured')
+    list_filter = ['creator', 'origin', 'active', 'featured']
+    list_editable = ['active', 'featured']
 
 
 class PrototypeMetaElementAdmin(admin.ModelAdmin):

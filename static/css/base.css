@@ -27,6 +27,16 @@ dt { white-space: normal; }
 .brick { width: 250px; }
 .subbrick { width: 200px; overflow-x: nowrap; }
 
+.stamp {
+  position: relative;
+  width: 75%;
+  left: 0%;
+  top: 10px;
+
+  background: orange;
+  /*border: 4px dotted black;*/
+}
+
 .block {
     /*position: relative;*/
     width: 250px;

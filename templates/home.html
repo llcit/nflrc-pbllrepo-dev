@@ -82,6 +82,34 @@
 
             <div class="col-md-12 center-block" id="brickwall">
 
+            {% for i in prototype_featured %} 
+                <div class="stamp well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd h:i' }}">
+
+<div class="media">
+    <div class="media-left media-middle">
+        <h4 class="media-heading">Featured Project</h4>
+        <p>{{ i.featured_by_line|safe }}</p>        
+    </div>
+    
+    <div class="media-body">
+        <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
+            <div>
+                <h2>
+                    {% if i.icon %}<div style="width: 220px"><img width="100%" src="{{ i.icon.url }}"></div>{% endif %}
+                    <h4>{{ i }}</h4>
+                </h2>
+                <h5>by {{ i.creator.first_name }} <span class="lname">{{ i.creator.last_name }}</span></h5>
+            </div>
+        </a>                           
+    </div>
+</div>                   
+ 
+                    
+
+                </div>
+                <p></p>                
+            {% endfor %} 
+
             {% for i in prototype_list %}
                 <div class="brick well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd h:i' }}">
                     
@@ -128,6 +156,7 @@
                 packery: {
                   gutter: 10,
                 },
+
                 itemSelector: '.brick',
 
                 getSortData: {
@@ -136,11 +165,13 @@
                     modified: '[data-mod]',
                 },
 
+                stamp: '.stamp',
+
                 sortBy: 'title'
 
             });
-            $container.isotope('layout');
-            $container.isotope({ sortBy: 'title'});
+            // $container.isotope();
+            // $container.isotope({ sortBy: 'title'});
         });
 
         $('.sortbtn').on('click', function() {
@@ -167,7 +198,7 @@
         });
 
         $(document).ready(function() {
-            // $container.isotope('layout');
+            $container.isotope({ sortBy: 'modified'});
         });
 
         // $container.isotope('layout');

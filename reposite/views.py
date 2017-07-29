@@ -26,7 +26,8 @@ class HomeView(TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
         #context['prototype_list'] = ProjectPrototype.objects.all() <-- modified 6/23/2016 to filter by active (display on web only public ones)
         prototypes = ProjectPrototype.objects.all().filter(active=True)
-        context['prototype_list'] = prototypes
+        context['prototype_list'] = prototypes.filter(featured=False)
+        context['prototype_featured'] = prototypes.filter(featured=True)
 
         languages = {}
         for i in prototypes:

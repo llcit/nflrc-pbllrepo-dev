@@ -31,6 +31,7 @@ class ProjectPrototype(TimeStampedModel):
     icon = models.FileField(
         upload_to='uploads', null=True, blank=True)
     featured = models.BooleanField(default=False)
+    featured_by_line = models.TextField(null=True, blank=True)
 
     def clone_project(self, user):
         rstr = ''.join(
