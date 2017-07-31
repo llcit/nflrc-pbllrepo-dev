@@ -33,10 +33,10 @@
                 </small>
             </h1>
 
-            <p><h4>A Project Prototype created with love and care by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</h4><small>created {{ project_prototype.created|date:"M j, Y"}}</small></p>
+            <p><h4>A Project Prototype by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</h4><small>created {{ project_prototype.created|date:"M j, Y"}}</small></p>
 
             {% if project_prototype.origin %}
-            <p>based on <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></p>
+            <p><small>based on</small> <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></p>
             {% endif %}
 
         </p>
@@ -48,10 +48,16 @@
                 <!-- PROJECT DESCRIPTION -->
                 <dt id="project_description" class="lead">{% comment %}<h2>Project Description</h2>{% endcomment %}</dt>
                 <dd>{{ description|safe}}</dd>
-
+            </dl>
+            <dl>
 
                 <!-- PROJECT SEQUENCE OVERVIEW TABLE OF CONTENTS -->
-                <dt id="project_sequence" class="lead"><h3 class="lead">Overview <small><a href="#files" class="btn"><i class="fa fa-file"></i> files</a> <a href="#comments" class="btn"><i class="fa fa-comment"></i> comments</a></small></h3></dt>
+                <dt id="project_sequence" class="lead">
+                    <h3 class="lead">Overview 
+                        <small><a href="#files" class="btn"><i class="fa fa-file"></i> files</a> 
+                        <a href="#comments" class="btn"><i class="fa fa-comment"></i> comments</a></small>
+                    </h3>
+                </dt>
                 <dd>
                     {% for category, tasks in tasks.items %}
                         <h4><a href="#{{ category|slugify }}" class="">{{ category }}</a></h4>
@@ -59,6 +65,7 @@
                             <p><span>{{ forloop.counter }}.</span> {{ task.title }}{% comment %} - <em>{{ task.short_description }}</em>{% endcomment %}</p>
                         {% endfor %}
                     {% endfor %}
+                    <h4><a href="#info_items" class="">Implementation Info</a></h4>
                 </dd>
                 <h5></h5>
 
@@ -104,7 +111,7 @@
 
     <!-- PROJECT IMPLEMENTATION INFORMATION -->
     <div id="info_items" class="col-md-8 col-md-offset-2">
-        <h2>Implementation Info {% if project_prototype.creator == user or user.is_staff %}<a href="{% url 'create_implementation_item' project_prototype.id %}">add</a>{% endif %}</h2>
+        <h1>Implementation Info {% if project_prototype.creator %}<a href="{% url 'create_implementation_item' project_prototype.id %}"><small>add</small></a>{% endif %}</h1>
         {% for info_item in implementation_info_items %} 
             <p>
                 <h4>

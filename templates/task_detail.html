@@ -6,7 +6,9 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
-        <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display lead"> <button class="btn btn-xs"> <i class="fa fa-caret-left"></i> {{ prototype_project }}</button></a>
+        <p>
+        <i class="fa fa-caret-left"></i><a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display btn btn-link btn-md">{{ prototype_project }} Project</a>
+        </p>
         <h3>{{ prototype_project }} Tasks 
             {% if user == prototype_project.creator or user_is_coeditor %}
             <a href="{% url 'create_task' prototype_project.id %}"><button id="addbtn" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> add a task </button></a>
@@ -17,13 +19,10 @@
 </div>
 <div class="row">
     <div class="col-sm-4 col-sm-offset-1 block-center" role="tabpanel">
-
         <ul class="nav nav-pills nav-stacked">
         {% for i in task_list %}
             {% ifchanged i.get_task_category_display %}
-                <h4> {% if not i.get_task_category_display %}<small>No category specified</small>{% else %}{{ i.get_task_category_display }}{% endif %}
-                </h4>
-
+                <h4> {% if not i.get_task_category_display %}<small>No category specified</small>{% else %}{{ i.get_task_category_display }}{% endif %}</h4>
             {% endifchanged %}
 
             <li role="presentation" class="{% if i.id == project_task.id %}active{% endif %}">

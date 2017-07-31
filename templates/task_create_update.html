@@ -6,16 +6,19 @@
 {% block content_container %}
 
 <div class="row">
-    <div class="col-md-12">
-        <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display lead"> <button class="btn btn-xs"> <i class="fa fa-caret-left"></i> {{ prototype_project }}</button></a>
-    </div>
-    <div class="col-md-12">
-        <p class="lead">
-            {{ edit_text }} {{ prototype_project }}
+    <div class="col-md-10 col-md-offset-1">
+        <p>
+        <i class="fa fa-caret-left"></i><a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display btn btn-link btn-md">{{ prototype_project }} Project</a>
+        <i class="fa fa-caret-left"></i><a href="{% url 'view_all_tasks' prototype_project.id %}" class="static_a_display btn btn-link btn-md">Task List</a>
         </p>
     </div>
 
-    <div class="col-md-8 block-center">
+    <div class="col-md-10 col-md-offset-1" style="">
+        <p>{{ edit_text }}</p> 
+        <h3> {{ project_task }} in project {{ prototype_project }}</h3>
+    </div>
+
+    <div class="col-md-6  col-md-offset-1 block-center">
 
         <form id="taskform" method="post" action=".">{% csrf_token %}
             {{ form|crispy }}
@@ -33,9 +36,8 @@
         </div>
     </div>
 </div>
-
-
 {% endblock content_container %}
+
 {% block js_include %}
 <script type="text/javascript">
     $(document).ready(function(){

@@ -272,7 +272,7 @@ class ProjectTaskCreateView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
         context = super(
             ProjectTaskCreateView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.project
-        context['edit_text'] = 'Adding a new task to'
+        context['edit_text'] = 'Create a new task'
         return context
 
 
@@ -286,7 +286,7 @@ class ProjectTaskUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateView):
         context = super(
             ProjectTaskUpdateView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.get_object().prototype_project
-        context['edit_text'] = 'Updating a task for'
+        context['edit_text'] = 'Update'
         return context
 
 
