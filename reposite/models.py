@@ -32,6 +32,7 @@ class ProjectPrototype(TimeStampedModel):
         upload_to='uploads', null=True, blank=True)
     featured = models.BooleanField(default=False)
     featured_by_line = models.TextField(null=True, blank=True)
+    driving_question = models.TextField()
 
     def clone_project(self, user):
         rstr = ''.join(
@@ -168,7 +169,9 @@ TASK_FOCI = (
     ('content', 'Content'),
     ('grammar', 'Grammar'),
     ('interaction', 'Interaction'),
-    ('technology', 'Technology')
+    ('technology', 'Technology'),
+    ('feedback and/or revision', 'Feedback and/or revision'),
+    ('reflection', 'Reflection'),
 )
 
 

@@ -35,14 +35,14 @@ class ProjectPrototypeForm(forms.ModelForm):
         self.fields['subject'].label = 'Basic Properties'
 
         # Specify the display order of the fields
-        self.order_fields(['title', 'description', 'subject', 'active', 'icon', 'creator', 'origin', 'publisher', 'publish_date', 'contributors'])
+        self.order_fields(['title', 'description', 'driving_question', 'subject', 'active', 'icon', 'creator', 'origin', 'publisher', 'publish_date', 'contributors'])
 
 
     class Meta:
         model = ProjectPrototype
 
         """ Base model fields (i.e., these descriptors are NOT specified in schema but with the model) """
-        fields = ('title', 'active','description', 'icon', 'creator', 'origin', 'publisher', 'publish_date', 'contributors')
+        fields = ('title', 'active','description', 'icon', 'creator', 'origin', 'publisher', 'publish_date', 'contributors', 'driving_question')
         
         """ Label groups identify related groups. These are assigned in init or in PrototypeMetadataForm """
         label_groups = ['Basic Properties', 'Language', 'Instructional Context', 'Language Proficiency', 'World Readiness Standards', '21st Century Skills']
@@ -57,7 +57,8 @@ class ProjectPrototypeForm(forms.ModelForm):
             'publisher': 'Publisher',
             'publish_date': 'Publish Date',
             'contributors': 'Contributors',
-            'active': 'Public'
+            'active': 'Public',
+            'driving_question': 'Driving Question'
         }
 
         """
@@ -74,6 +75,7 @@ class ProjectPrototypeForm(forms.ModelForm):
             'creator': forms.HiddenInput(),
             'origin': forms.HiddenInput(),
             'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'driving_question': forms.Textarea(attrs={'class': 'form-control content-editor'}),
             'publisher': forms.HiddenInput(),
             'publish_date': forms.HiddenInput(),  # forms.DateInput(attrs={'size': '40', 'type': 'date', 'placeholder': 'MM/DD/YYY'}),
             'contributors': forms.TextInput(attrs={'class': 'form-control'}),
