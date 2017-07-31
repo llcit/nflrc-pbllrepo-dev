@@ -69,6 +69,7 @@
 
         <div id="rightnav" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right navbar-panel">
+              <li><a href="{% url 'page_view' 1 %}" class="btn btn-link btn-md btn-color-flat">about</a></li>
               <li>
                 <a href="{% url 'list_prototypes' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-list"></i> browse</a>
               </li>
@@ -85,7 +86,7 @@
                 {% if not user.is_authenticated %}
                   {# <a href="/pebbles/login/google-oauth2/"  class="btn btn-link btn-md btn-color-flat"><i class="fa fa-sign-in"></i> login </a> #}
 
-                  <a href="{% url 'social:begin' 'google-oauth2' %}">
+                  <a href="{% url 'social:begin' 'google-oauth2' %}">login</a>
                 {% else %}
                   <a href="{% url 'logout' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-sign-out"></i> {{ user }} </a>
                 {% endif %}

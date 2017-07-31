@@ -30,7 +30,8 @@ from reposite.views import (
     ProjectImplementationInfoItemView, ProjectImplementationInfoItemCreateView, 
     ProjectImplementationInfoItemUpdateView, ProjectImplementationInfoItemDeleteView,
     FileUploadView, ProjectFileDeleteView,
-    SearchHaystackView
+    SearchHaystackView,
+    RepoPageView
 )
 
 from discussions.views import DiscussionListView, DiscussionView, PostCreateView, PostDeleteView, PostUpdateView
@@ -64,6 +65,9 @@ urlpatterns = [
     url(r'^prototype/(?P<project>[-\d]+)/implementation-info/add/$', ProjectImplementationInfoItemCreateView.as_view(), name='create_implementation_item'),
     url(r'^prototype/(?P<project>[-\d]+)/implementation-info/edit/(?P<pk>[-\d]+)/$', ProjectImplementationInfoItemUpdateView.as_view(), name='update_implementation_item'),
     url(r'^prototype/(?P<project>[-\d]+)/implementation-info/delete/(?P<pk>[-\d]+)/$', ProjectImplementationInfoItemDeleteView.as_view(), name='delete_implementation_item'),
+
+    # site pages
+    url(r'^page/(?P<pk>\w+)$', RepoPageView.as_view(), name='page_view'),
 
 
     # file handling

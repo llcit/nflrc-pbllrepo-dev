@@ -15,7 +15,7 @@ from haystack.generic_views import SearchView
 from core.mixins import ListUserFilesMixin
 from discussions.forms import PostReplyForm
 
-from .models import ProjectPrototype, ProjectTask, ProjectImplementationInfo, ProjectFile, ProjectComment
+from .models import ProjectPrototype, ProjectTask, ProjectImplementationInfo, ProjectFile, ProjectComment, RepoPage
 from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, ImplementationInfoCreateForm,FileUploadForm
 
 
@@ -356,11 +356,27 @@ class ProjectImplementationInfoItemUpdateView(LoginRequiredMixin, ListUserFilesM
         context['edit_text'] = 'Editing information item for '
         return context
 
+
 class ProjectImplementationInfoItemDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectImplementationInfo
     template_name = 'task_delete_confirm.html'
 
 
+# Repo site pages
+class RepoPageView(DetailView):
+    model = RepoPage
+    template_name = 'repo_page.html'
+    context_object_name = 'page'
+
+    def get(self, request, *args, **kwargs):
+        if self.get_object().private:
+            return redirect('staff_page_view', item=self.get_object().id)
+        return super(RepoPageView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(RepoPageView, self).get_context_data(**kwargs)
+        context['admin_edit'] = reverse('admin:reposite_repopage_change', args=(self.get_object().id,))
+        return context
 
 # File handling
 class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):

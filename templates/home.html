@@ -40,6 +40,7 @@
     
     <div class="container">
         <div class="navbar navbar-right">
+            <a href="{% url 'page_view' 1 %}" class="btn btn-link btn-md btn-color-flat">about</a>
             <a href="{% url 'list_prototypes' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-list"></i> browse </a>
             <a href="{% url 'create_prototype' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-plus"></i> create </a>
         </div>
@@ -53,9 +54,7 @@
                 <p class="lead" style="font-size: 1.5em">
                     Project-Based Language Learning Repository
                 </p>
-            </div>
-
-            
+            </div>            
         </div>
 
         <div class="row">
@@ -83,28 +82,26 @@
             <div class="col-md-12 center-block" id="brickwall">
 
             {% for i in prototype_featured %} 
-                <div class="stamp well bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd h:i' }}">
+                <div class="stamp bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd h:i' }}">
 
-<div class="media">
-    <div class="media-left media-middle">
-        <h4 class="media-heading">Featured Project</h4>
-        <p>{{ i.featured_by_line|safe }}</p>        
-    </div>
-    
-    <div class="media-body">
-        <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
-            <div>
-                <h2>
-                    {% if i.icon %}<div style="width: 220px"><img width="100%" src="{{ i.icon.url }}"></div>{% endif %}
-                    <h4>{{ i }}</h4>
-                </h2>
-                <h5>by {{ i.creator.first_name }} <span class="lname">{{ i.creator.last_name }}</span></h5>
-            </div>
-        </a>                           
-    </div>
-</div>                   
- 
-                    
+                    <div class="media">
+                        <div class="media-left media-middle">
+                            <h4 class="media-heading">Featured Project</h4>
+                            <p>{{ i.featured_by_line|safe }}</p>        
+                        </div>
+                        
+                        <div class="media-body">
+                            <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
+                                <div>
+                                    <h2>
+                                        {% if i.icon %}<div style="width: 220px"><img width="100%" src="{{ i.icon.url }}"></div>{% endif %}
+                                        <h4>{{ i }}</h4>
+                                    </h2>
+                                    <h5>by {{ i.creator.first_name }} <span class="lname">{{ i.creator.last_name }}</span></h5>
+                                </div>
+                            </a>                           
+                        </div>
+                    </div>                
 
                 </div>
                 <p></p>                
@@ -132,11 +129,8 @@
             {% endfor %}
 
             </div>
-
         </div>
-
-
-    </div>
+    </div> <!-- end container -->
 
 
     <!-- Isotope visual filtering library -->
