@@ -15,7 +15,7 @@ from haystack.generic_views import SearchView
 from core.mixins import ListUserFilesMixin
 from discussions.forms import PostReplyForm
 
-from .models import ProjectPrototype, ProjectTask, ProjectImplementationInfo, ProjectFile, ProjectComment, RepoPage
+from .models import ProjectPrototype, ProjectTask, ProjectImplementationInfo, ProjectFile, ProjectComment, RepoPage, TASK_CATEGORIES
 from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, ImplementationInfoCreateForm,FileUploadForm
 
 
@@ -272,6 +272,11 @@ class ProjectTaskCreateView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
         context = super(
             ProjectTaskCreateView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.project
+        tasks = self.project.tasks.all()
+        seq_orders = {i[0]: 0 for i in TASK_CATEGORIES}
+        for i in tasks:
+            seq_orders[i.task_category] += 1
+        context['sequence_orders'] = seq_orders
         context['edit_text'] = 'Create a new task'
         return context
 

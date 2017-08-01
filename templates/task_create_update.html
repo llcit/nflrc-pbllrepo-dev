@@ -19,6 +19,11 @@
     </div>
 
     <div class="col-md-6  col-md-offset-1 block-center">
+        <div id="data">
+            {% for i, j in sequence_orders.items %}
+                <input type="hidden" id="{{ i }}" value="{{ j }}">
+            {% endfor %}
+        </div>
 
         <form id="taskform" method="post" action=".">{% csrf_token %}
             {{ form|crispy }}
@@ -41,6 +46,15 @@
 {% block js_include %}
 <script type="text/javascript">
     $(document).ready(function(){
+
+        $("#id_task_category").on("change", function(e) {
+            var cat = $("#id_task_category option:selected")[0].value;
+            var cur = $("#"+cat);
+            if (cur.length > 0){
+                $("#id_sequence_order").val(cur.val());
+            }            
+        });
+
         $("#savebtn").on("click", function(e) {
             $("#taskform").submit()
         });

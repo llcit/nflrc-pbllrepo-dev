@@ -153,7 +153,7 @@ class TaskCreateForm(forms.ModelForm):
 
     class Meta:
         model = ProjectTask
-        fields = ('title', 'prototype_project', 'short_description', 'description', 'sequence_order', 'task_category', 'task_type', 'task_focus', 'task_time', 'technology_tips',
+        fields = ('title', 'prototype_project', 'short_description', 'description', 'task_category', 'sequence_order', 'task_type', 'task_focus', 'task_time', 'technology_tips',
                   'task_extension', 'potential_hurdles')
         labels = {'title': 'Task Title'}
         widgets = {
@@ -169,7 +169,7 @@ class TaskUpdateForm(forms.ModelForm):
 
     class Meta:
         model = ProjectTask
-        fields = ('title', 'prototype_project', 'short_description', 'description', 'sequence_order', 'task_category', 'task_type', 'task_focus', 'task_time', 'technology_tips',
+        fields = ('title', 'prototype_project', 'short_description', 'description', 'task_category', 'sequence_order', 'task_type', 'task_focus', 'task_time', 'technology_tips',
                   'task_extension', 'potential_hurdles')
         labels = {'title': 'Task Title'}
         widgets = {
