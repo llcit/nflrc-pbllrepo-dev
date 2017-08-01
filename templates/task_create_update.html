@@ -8,17 +8,16 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <p>
-        <i class="fa fa-caret-left"></i><a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display btn btn-link btn-md">{{ prototype_project }} Project</a>
-        <i class="fa fa-caret-left"></i><a href="{% url 'view_all_tasks' prototype_project.id %}" class="static_a_display btn btn-link btn-md">Task List</a>
+        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display">{{ prototype_project }} </a>
+        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_all_tasks' prototype_project.id %}" class="static_a_display">Tasks</a>
         </p>
+        <h4 class="lead">{{ edit_text|safe }}
+            <button id="savebtn" type="submit" class="savebtn btn btn-md btn-success pull-right">{% if project_task %} Save {{ project_task }} {% else %} Save New Task  {% endif %}</button>
+        </h4>
     </div>
-
-    <div class="col-md-10 col-md-offset-1" style="">
-        <p>{{ edit_text }}</p> 
-        <h3> {{ project_task }} in project {{ prototype_project }}</h3>
-    </div>
-
-    <div class="col-md-6  col-md-offset-1 block-center">
+</div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-1">
         <div id="data">
             {% for i, j in sequence_orders.items %}
                 <input type="hidden" id="{{ i }}" value="{{ j }}">
@@ -28,9 +27,8 @@
         <form id="taskform" method="post" action=".">{% csrf_token %}
             {{ form|crispy }}
              <!-- workaround for nonfocusable tinymce widgets => submit handled by javascript below -->
-            <button id="savebtn" class="btn btn-success ">Save</button>
+            <button id="savebtn" class="savebtn btn btn-lg btn-block btn-success">{% if project_task %} Save {{ project_task }} {% else %} Save New Task  {% endif %}</button>
         </form>
-
     </div>
 
     <div class="col-md-4 block-center">
@@ -55,7 +53,7 @@
             }            
         });
 
-        $("#savebtn").on("click", function(e) {
+        $(".savebtn").on("click", function(e) {
             $("#taskform").submit()
         });
     });

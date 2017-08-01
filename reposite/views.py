@@ -229,7 +229,8 @@ class ProjectTaskListView(LoginRequiredMixin, DetailView):
             context['project_task'] = context['task_list'][0]
         # context['user_is_coeditor'] = context['prototype_project'].coeditors.filter(coeditor=self.request.user)
         # if not context['user_is_coeditor']:
-        context['user_is_coeditor'] = self.request.user.is_staff        
+        context['user_is_coeditor'] = self.request.user.is_staff
+        context['implementation_items'] = self.get_object().implementation_info.all()       
         return context
 
 
@@ -275,9 +276,12 @@ class ProjectTaskCreateView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
         tasks = self.project.tasks.all()
         seq_orders = {i[0]: 0 for i in TASK_CATEGORIES}
         for i in tasks:
-            seq_orders[i.task_category] += 1
+            if i.task_category:
+                seq_orders[i.task_category] += 1
         context['sequence_orders'] = seq_orders
-        context['edit_text'] = 'Create a new task'
+        context['edit_text'] = 'Add a new task to <em>' + self.project.title + '</em>'
+
+        print context['form']
         return context
 
 
@@ -291,7 +295,7 @@ class ProjectTaskUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateView):
         context = super(
             ProjectTaskUpdateView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.get_object().prototype_project
-        context['edit_text'] = 'Update'
+        context['edit_text'] = 'Modify ' + self.get_object().title + ' in project <em>' + self.get_object().prototype_project.title + '</em>'
         return context
 
 
@@ -301,7 +305,7 @@ class ProjectTaskDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'project_task'
 
     def get_success_url(self):
-        return reverse('view_prototype', args=[self.get_object().prototype_project.id, ])
+        return reverse('view_all_tasks', args=[self.get_object().prototype_project.id, ])
 
 
 # Implementation Info Views
@@ -335,13 +339,13 @@ class ProjectImplementationInfoItemCreateView(LoginRequiredMixin, ListUserFilesM
         return initial
 
     def get_success_url(self):
-        return reverse('docview_prototype', args=[self.project.id])
+        return reverse('view_all_tasks', args=[self.get_object().prototype_project.id, ])
 
     def get_context_data(self, **kwargs):
         context = super(
             ProjectImplementationInfoItemCreateView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.project
-        context['edit_text'] = 'Adding a new information item to'
+        context['edit_text'] = 'Adding a new implementation item to <em>' + self.project.title + '</em>'
         return context
         
 
@@ -352,19 +356,23 @@ class ProjectImplementationInfoItemUpdateView(LoginRequiredMixin, ListUserFilesM
     form_class = ImplementationInfoCreateForm
 
     def get_success_url(self):
-        return reverse('docview_prototype', args=[self.get_object().prototype_project.id])
+        return reverse('view_all_tasks', args=[self.get_object().prototype_project.id, ])
 
     def get_context_data(self, **kwargs):
         context = super(
             ProjectImplementationInfoItemUpdateView, self).get_context_data(**kwargs)
         context['prototype_project'] = self.get_object().prototype_project
-        context['edit_text'] = 'Editing information item for '
+        context['edit_text'] = 'Modify ' + self.get_object().title + ' in project <em>' + self.get_object().prototype_project.title + '</em>'
         return context
 
 
 class ProjectImplementationInfoItemDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectImplementationInfo
-    template_name = 'task_delete_confirm.html'
+    template_name = 'implementation_info_delete_confirm.html'
+    context_object_name = 'information_item'
+
+    def get_success_url(self):
+        return reverse('view_all_tasks', args=[self.get_object().prototype_project.id, ])
 
 
 # Repo site pages

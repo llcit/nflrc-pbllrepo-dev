@@ -161,7 +161,10 @@ class TaskCreateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
             'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor'}),
             'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'})
+            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'task_category': forms.RadioSelect(),
+            'task_type': forms.RadioSelect(),
+            'task_focus': forms.RadioSelect(),
         }
 
 
@@ -177,7 +180,10 @@ class TaskUpdateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
             'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor'}),
             'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'})
+            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'task_category': forms.RadioSelect(),
+            'task_type': forms.RadioSelect(),
+            'task_focus': forms.RadioSelect(),
         }
 
 

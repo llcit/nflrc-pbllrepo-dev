@@ -180,7 +180,7 @@ class ProjectTask(models.Model):
     short_description = models.TextField(
         default='A sentence that summarizes this task.')
     task_category = models.CharField(
-        max_length=48, blank=True, null=True, choices=TASK_CATEGORIES)
+        max_length=48, null=True, choices=TASK_CATEGORIES)
     task_type = models.CharField(max_length=48, blank=True, choices=TASK_TYPES)
     task_focus = models.CharField(max_length=48, blank=True, choices=TASK_FOCI)
     task_time = models.CharField(max_length=48, blank=True)
