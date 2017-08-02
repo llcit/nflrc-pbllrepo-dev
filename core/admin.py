@@ -4,6 +4,11 @@ from reposite.models import ProjectPrototype, PrototypeMetaElement, \
     ProjectTask, ProjectFile, ProjectComment, ProjectCoeditors, RepoPage
 from discussions.models import Post
 
+class ExtraMedia:
+    js = [
+        '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+        '/static/js/tinymce_setup.js',
+    ]
 
 class ProjectPrototypeAdmin(admin.ModelAdmin):
     list_display = ('title', 'creator', 'origin', 'active', 'featured')
@@ -42,6 +47,6 @@ admin.site.register(ProjectTask, ProjectTaskAdmin)
 admin.site.register(ProjectFile, ProjectFileAdmin)
 admin.site.register(ProjectComment)
 admin.site.register(ProjectCoeditors, ProjectCoeditorsAdmin)
-admin.site.register(RepoPage, RepoPageAdmin)
+admin.site.register(RepoPage, RepoPageAdmin, Media = ExtraMedia)
 
 admin.site.register(Post)
