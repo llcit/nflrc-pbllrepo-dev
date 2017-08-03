@@ -8,7 +8,7 @@
 
     <div class="col-md-2 col-md-offset-1 block-center">
         <p class="lead">
-            <form id="ajaxform" method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">{% csrf_token %}
+            <form id="ajaxform" method="post" action="{{ upload_target }}" enctype="multipart/form-data">{% csrf_token %}
                 {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
                 {{ form|crispy }}
                 <button type="submit" class="btn btn-lg btn-success btn-block">Upload</button>

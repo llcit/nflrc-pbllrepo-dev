@@ -7,20 +7,22 @@
 
 <div class="row">
 
-    {% if project_prototype %}
+    
     <div class="col-xs-10 col-xs-offset-1">
-        <p>
+        {% if project_prototype %}<p>
         <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_prototype' project_prototype.id %}" class="static_a_display">{{ project_prototype }} </a>
-        </p>
+        </p>{% endif %}
         <h4 class="lead">
-            {% if project_prototype %} Modify {{ project_prototype }} {% else %} Create a New Project  {% endif %}
+            {% if project_prototype %} Modify {{ project_prototype }} {% else %} Create a New Project {% endif %}
+            {% if project_prototype %}
             <a href="{% url 'view_all_tasks' project_prototype.id %}" class="static_a_display">
                 <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit/add project tasks </button>
             </a>
-            <button id="savebtn" type="submit" class="savebtn btn btn-md btn-success pull-right">{% if project_prototype %} Save {{ project_prototype }} {% else %} Save New Project  {% endif %}</button>
+            {% endif %}
+            
         </h4>
     </div>
-    {% endif %}
+
 </div>
 <div class="row">
     
@@ -39,6 +41,7 @@
             <li role="presentation">
                 <a href="#filebrowser" data-toggle="tab" role="tab" aria-expanded="false" aria-controls="filebrowser" class="static_a_display">Browse project files</a>
             </li>
+            <li><button id="savebtn" type="submit" class="savebtn btn btn-md btn-success btn-block">Save Project</button></li>
         </ul>
     </div>
 
@@ -134,7 +137,7 @@
                 </div>
 
             </div><!-- End Tabs container -->
-            <button id="savebtn" type="submit" class="savebtn btn btn-lg btn-block btn-success">{% if project_prototype %} Save {{ project_prototype }} {% else %} Save New Project  {% endif %}</button>
+
         </form>
     </div>
 

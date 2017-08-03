@@ -38,11 +38,21 @@
 
 <body>
     
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar navbar-right">
             <a href="{% url 'page_view' 1 %}" class="btn btn-link btn-md btn-color-flat">about</a>
             <a href="{% url 'list_prototypes' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-list"></i> browse </a>
             <a href="{% url 'create_prototype' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-plus"></i> create </a>
+            {% if "/search" not in request.path %}
+            <form method="get" action="{% url 'haystack_search' %}" class="navbar-form navbar-right" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." name="q" value="{{query}}">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-color-flat" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+            {% endif %}
         </div>
         
         <div class="row">
@@ -83,23 +93,20 @@
             <div class="col-md-12 center-block" id="brickwall">
 
             {% for i in prototype_featured %} 
-                <div class="stamp bs-bg-white {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd h:i' }}">
+                <div class="well stamp {% for k in i.get_languages %} {{k}} {% endfor %}" data-title="{{i|slugify}}" data-mod="{{ i.modified|date:'Ymd h:i' }}">
 
                     <div class="media">
-                        <div class="media-left media-middle">
-                            <h4 class="media-heading">Featured Project</h4>
-                            <p>{{ i.featured_by_line|safe }}</p>        
+                        <h4 class="media-heading"></h4>
+                        
+                        <div class="media-left media-top">                            
+                            <p><h4>{% if i.featured_by_line %} {{ i.featured_by_line|safe }} {% else %}{% if i.icon %}<img width="64px" src="{{ i.icon.url }}">{% endif %}{% endif %}</h4></p>    
                         </div>
                         
-                        <div class="media-body">
-                            <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">
-                                <div>
-                                    <h2>
-                                        {% if i.icon %}<div style="width: 220px"><img width="100%" src="{{ i.icon.url }}"></div>{% endif %}
-                                        <h4>{{ i }}</h4>
-                                    </h2>
+                        <div class="media-body" style="padding-right: 20px">
+                            <a href="{% url 'docview_prototype' i.id %}" class="static_a_display">                                
+                                    <h4 class="lead">{{ i }}</h4>
                                     <h5>by {{ i.creator.first_name }} <span class="lname">{{ i.creator.last_name }}</span></h5>
-                                </div>
+                                    <p>{{ i.description| truncatechars_html:340 |safe }}</p>                                
                             </a>                           
                         </div>
                     </div>                

@@ -11,9 +11,7 @@
         <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display">{{ prototype_project }} </a>
         <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_all_tasks' prototype_project.id %}" class="static_a_display">Tasks</a>
         </p>
-        <h4 class="lead">{{ edit_text|safe }}
-            <button id="savebtn" type="submit" class="savebtn btn btn-md btn-success pull-right">{% if project_task %} Save {{ project_task }} {% else %} Save New Task  {% endif %}</button>
-        </h4>
+        <h4 class="lead">{{ edit_text|safe }}</h4>
     </div>
 </div>
 <div class="row">
@@ -27,13 +25,13 @@
         <form id="taskform" method="post" action=".">{% csrf_token %}
             {{ form|crispy }}
              <!-- workaround for nonfocusable tinymce widgets => submit handled by javascript below -->
-            <button id="savebtn" class="savebtn btn btn-lg btn-block btn-success">{% if project_task %} Save {{ project_task }} {% else %} Save New Task  {% endif %}</button>
+            <button id="savebtn" class="savebtn btn btn-lg btn-block btn-success">Save Task</button>
         </form>
     </div>
 
     <div class="col-md-4 block-center">
         <a href="#filebrowser" data-toggle="collapse" aria-expanded="false" aria-controls="filebrowser" class="static_a_display"><button class="btn">Browse project files</button></a>
-        {% include "file_upload_btn_template.html" %}
+        <span id="fileuploadbtn"><a href="{% url 'upload_task_file' %}?p={{ project_task.id }}" class="static_a_display"><button class="btn">Upload a new file</button></a></span>
         <div id="filebrowser" class="collapse">
             <div>{% include "file_listing_template.html" %}</div>
         </div>

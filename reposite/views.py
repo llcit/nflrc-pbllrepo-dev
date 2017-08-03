@@ -15,8 +15,8 @@ from haystack.generic_views import SearchView
 from core.mixins import ListUserFilesMixin
 from discussions.forms import PostReplyForm
 
-from .models import ProjectPrototype, ProjectTask, ProjectImplementationInfo, ProjectFile, ProjectComment, RepoPage, TASK_CATEGORIES
-from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, ImplementationInfoCreateForm,FileUploadForm
+from .models import ProjectPrototype, ProjectTask, ProjectImplementationInfo, ProjectFile, ProjectComment, RepoPage, TaskFile, ImplementationFile, TASK_CATEGORIES
+from .forms import ProjectPrototypeCreateForm, ProjectPrototypeUpdateForm, TaskCreateForm, TaskUpdateForm, ImplementationInfoCreateForm,FileUploadForm, TaskFileUploadForm, ImplementationFileUploadForm
 
 
 class HomeView(TemplateView):
@@ -391,12 +391,16 @@ class RepoPageView(DetailView):
         context['admin_edit'] = reverse('admin:reposite_repopage_change', args=(self.get_object().id,))
         return context
 
+
 # File handling
 class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
     model = ProjectFile
     template_name = 'file_upload.html'
     form_class = FileUploadForm
     success_url = reverse_lazy('upload_file')
+
+    def get(self, request, *args, **kwargs):
+        return super(FileUploadView, self).get(request, *args, **kwargs)
 
     def get_initial(self):
         project = self.request.GET.get('p', None)
@@ -408,6 +412,69 @@ class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
         except:
             pass
         return initial
+
+    # def get_success_url(self):
+    #     return reverse('upload_file', args=[self.get_object().prototype_project.id, ])
+
+    def get_context_data(self, **kwargs):
+        context = super(FileUploadView, self).get_context_data(**kwargs)
+        context['upload_target'] = reverse('upload_file')
+        # context['filelisting'] = self.request.user.uploaded_files.all()
+        return context
+
+
+class TaskFileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
+    model = TaskFile
+    template_name = 'file_upload.html'
+    form_class = TaskFileUploadForm
+    success_url = reverse_lazy('upload_task_file')
+
+    def get(self, request, *args, **kwargs):
+        return super(TaskFileUploadView, self).get(request, *args, **kwargs)
+
+    def get_initial(self):
+        task = self.request.GET.get('p', None)
+        initial = self.initial.copy()
+        try:
+            initial['user'] = self.request.user
+            if task:
+                initial['task'] = ProjectTask.objects.get(pk=task)
+        except:
+            pass
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskFileUploadView, self).get_context_data(**kwargs)
+        context['upload_target'] = reverse('upload_task_file')
+        # context['filelisting'] = self.request.user.uploaded_task_files.all()
+        return context
+
+
+class ImplementationInfoFileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
+    model = ImplementationFile
+    template_name = 'file_upload.html'
+    form_class = ImplementationFileUploadForm
+    success_url = reverse_lazy('upload_info_file')
+
+    def get(self, request, *args, **kwargs):
+        return super(ImplementationInfoFileUploadView, self).get(request, *args, **kwargs)
+
+    def get_initial(self):
+        implementation = self.request.GET.get('p', None)
+        initial = self.initial.copy()
+        try:
+            initial['user'] = self.request.user
+            if implementation:
+                initial['project'] = ProjectImplementationInfo.objects.get(pk=implementation)
+        except:
+            pass
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super(ImplementationInfoFileUploadView, self).get_context_data(**kwargs)
+        context['upload_target'] = reverse('upload_info_file')
+        # context['filelisting'] = self.request.user.uploaded_implementation_files.all()
+        return context
 
 
 class ProjectFileDeleteView(LoginRequiredMixin, ListUserFilesMixin, DeleteView):

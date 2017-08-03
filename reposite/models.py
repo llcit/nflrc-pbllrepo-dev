@@ -211,13 +211,6 @@ class ProjectTask(models.Model):
         ordering = ['task_category', 'sequence_order']
 
 
-class ProjectFile(TimeStampedModel):
-    project_file = models.FileField(
-        upload_to='uploads', null=True, blank=True)
-    project = models.ForeignKey(ProjectPrototype, null=True, blank=True, related_name='project_files')
-    user = models.ForeignKey(User, related_name='uploaded_files')
-
-
 class ProjectComment(models.Model):
     thread = models.ForeignKey(Post, related_name='project_thread')
     project = models.ForeignKey(ProjectPrototype, related_name='project_discussion')
@@ -281,3 +274,22 @@ class RepoPage(TimeStampedModel):
     class Meta:
         app_label = 'reposite' 
 
+
+class ProjectFile(TimeStampedModel):
+    file = models.FileField(
+        upload_to='uploads')
+    project = models.ForeignKey(ProjectPrototype, related_name='project_files')
+    user = models.ForeignKey(User, related_name='uploaded_files')
+
+
+class TaskFile(TimeStampedModel):
+    file = models.FileField(upload_to='uploads')
+    task = models.ForeignKey(ProjectTask, related_name='task_files')
+    user = models.ForeignKey(User, related_name='uploaded_task_files')
+
+
+class ImplementationFile(TimeStampedModel):
+    file = models.FileField(
+        upload_to='uploads')
+    implementation = models.ForeignKey(ProjectImplementationInfo, related_name='implementation_files')
+    user = models.ForeignKey(User, related_name='uploaded_implementation_files')

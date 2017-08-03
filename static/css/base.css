@@ -11,6 +11,15 @@ body {
 .static_a_display:hover {color: #666; text-decoration: none;}
 .static_a_display:active {color: #000; text-decoration: none;}
 
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color:black;
+    background-color:#fff;
+    border: 1px solid #ccc;
+    }
+
+.label-ltgray { background-color: #eee; color: black; }
+
 .header {
     background-color: white;
     height: 80px;
@@ -29,12 +38,11 @@ dt { white-space: normal; }
 
 .stamp {
   position: relative;
-  width: 75%;
-  height: 400px;
-  left: 0%;
-  top: 10px;
-
-  background: orange;
+  width: 800px;
+  height: 300px;
+  /*left: 0%;
+  top: 10px;*/
+  background: #fff;
   /*border: 4px dotted black;*/
 }
 

@@ -9,7 +9,7 @@
         <p>
         <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display">{{ prototype_project }} </a>
         </p>
-        <h4 class="lead">Tasks for {{ prototype_project }}  
+        <h4 class="lead">Tasks  
             {% if user == prototype_project.creator or user_is_coeditor %}
             
             <a href="{% url 'create_task' prototype_project.id %}" class="static_a_display"><button class="btn btn-xs"><i class="fa fa-plus"></i> new task </button></a>
@@ -27,13 +27,13 @@
         <ul class="nav nav-pills nav-stacked">
         {% for i in task_list %}
             {% ifchanged i.get_task_category_display %}
-                <li><h4>{% if not i.get_task_category_display %}<small>No category specified</small>{% else %}{{ i.get_task_category_display }}{% endif %}</h4></li>
+                <li class=""><h4>{% if not i.get_task_category_display %}<small>No category specified</small>{% else %}{{ i.get_task_category_display }}{% endif %}</h4></li>
             {% endifchanged %}
 
             <li role="presentation" class="{% if i.id == project_task.id %}active{% endif %}">
                 <a href="#task_detail_{{i.id}}" aria-controls="task_detail_{{i.id}}" role="tab" data-toggle="tab" class="static_a_display">
-                    <h5><span>{{ forloop.counter }}. {{ i.title }}</span> <span class="pull-right"><i class="fa fa-caret-right fa-2x"></i></span></h5>
-                    <p style="padding: 0 5% 0 5%"><em> {{ i.short_description }} </em></p>
+                    <h5><span>{{ forloop.counter }}. {{ i.title }}</span> <span class="pull-right"><i class="fa fa-caret-right"></i></span></h5>
+                    
                 </a>
             </li>
 

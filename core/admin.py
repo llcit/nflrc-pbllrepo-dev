@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from reposite.models import ProjectPrototype, PrototypeMetaElement, \
-    ProjectTask, ProjectFile, ProjectComment, ProjectCoeditors, RepoPage
+    ProjectTask, ProjectFile, ProjectComment, ProjectCoeditors, RepoPage, \
+    TaskFile, ImplementationFile
 from discussions.models import Post
 
 class ExtraMedia:
@@ -29,7 +30,15 @@ class ProjectTaskAdmin(admin.ModelAdmin):
 
 
 class ProjectFileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'project_file', 'project')
+    list_display = ('id', 'file', 'project')
+
+
+class TaskFileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'file', 'task')
+
+
+class ImplementationFileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'file', 'implementation')
 
 
 class ProjectCoeditorsAdmin(admin.ModelAdmin):
@@ -41,12 +50,16 @@ class RepoPageAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'featured', 'get_absolute_url')
     list_display_links = ('pk',)
 
-admin.site.register(ProjectPrototype, ProjectPrototypeAdmin)
+admin.site.register(ProjectPrototype, ProjectPrototypeAdmin, Media=ExtraMedia)
 admin.site.register(PrototypeMetaElement, PrototypeMetaElementAdmin)
 admin.site.register(ProjectTask, ProjectTaskAdmin)
+
 admin.site.register(ProjectFile, ProjectFileAdmin)
+admin.site.register(TaskFile, TaskFileAdmin)
+admin.site.register(ImplementationFile, ImplementationFileAdmin)
+
 admin.site.register(ProjectComment)
 admin.site.register(ProjectCoeditors, ProjectCoeditorsAdmin)
-admin.site.register(RepoPage, RepoPageAdmin, Media = ExtraMedia)
+admin.site.register(RepoPage, RepoPageAdmin, Media=ExtraMedia)
 
 admin.site.register(Post)

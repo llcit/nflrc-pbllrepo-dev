@@ -137,17 +137,17 @@
     <!-- PROJECT FILES -->
     <div id="files" class="col-md-8 col-md-offset-2">
         <h2>Files</h2>
-        {% for file in filelisting %}{% if file.project_file %}
+        {% for file in filelisting %}{% if file.file %}
         <div class="media">
             <div class="media-left media-top">
-                {% if file.project_file and file.project_file.url %}<i class="fa fa-file-o"></i>{% endif %}
+                {% if file.file and file.file.url %}<i class="fa fa-file-o"></i>{% endif %}
             </div>
             <div class="media-body">
           
-                {% if file.project_file and file.project_file.url %}
+                {% if file.file and file.file.url %}
                 <h5 class="media-heading">
                     <a href="" class="static_a_display btn btn-xs bg-default" data-toggle="modal" data-target="#{{file.id}}_link_display"><i class="fa fa-clipboard"></i> copy/insert link</a>
-                    <a href="{{ file.project_file.url }}" target="_blank">{{ file.project_file.url }}</a>
+                    <a href="{{ file.file.url }}" target="_blank">{{ file.file.url }}</a>
                     {% if project_prototype.creator == user or user.is_staff %}
                         <a href="{% url 'delete_file' file.id %}" class="static_a_display btn btn-xs pull-right bg-danger"><i class="fa fa-close"></i> remove</a>
                     {% endif %}
@@ -169,7 +169,7 @@
                             <h4 class="modal-title" id="link_title">Click, copy, and paste  </h4>
                           </div>
                           <div class="modal-body" editable="true">
-                                {% if file.project_file and file.project_file.url %}<input type="text" name="text_area" size="40" value="{{ file.project_file.url }}" onClick="javascript:this.focus();this.select();">{% endif %}
+                                {% if file.file and file.file.url %}<input type="text" name="text_area" size="40" value="{{ file.file.url }}" onClick="javascript:this.focus();this.select();">{% endif %}
                           </div>
                         </div>
                       </div>

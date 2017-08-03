@@ -7,7 +7,7 @@ from django.forms import ClearableFileInput
 
 # from filebrowser.widgets import ClearableFileInput
 
-from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectImplementationInfo, ProjectFile
+from .models import ProjectPrototype, PrototypeMetaElement, ProjectTask, ProjectImplementationInfo, ProjectFile, TaskFile, ImplementationFile
 from .schema import PrototypeMetadataForm
 
 
@@ -198,6 +198,7 @@ class ImplementationInfoCreateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
         }
 
+
 class FileUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
@@ -206,8 +207,30 @@ class FileUploadForm(forms.ModelForm):
 
     class Meta:
         model = ProjectFile
-        fields = ('project_file', 'project', 'user')
-        widgets = {'user': forms.HiddenInput(), 'project_file': ClearableFileInput()}
+        fields = ('file', 'project', 'user')
+        widgets = {'user': forms.HiddenInput(), 'file': ClearableFileInput()}
 
 
+class TaskFileUploadForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+
+        super(TaskFileUploadForm, self).__init__(*args, **kwargs)
+        # self.Meta.fields['project'].choices = self.request.user.projects.all()
+
+    class Meta:
+        model = TaskFile
+        fields = ('file', 'task', 'user')
+        widgets = {'user': forms.HiddenInput(), 'file': ClearableFileInput()}
+
+
+class ImplementationFileUploadForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+
+        super(ImplementationFileUploadForm, self).__init__(*args, **kwargs)
+        # self.Meta.fields['project'].choices = self.request.user.projects.all()
+
+    class Meta:
+        model = ImplementationFile
+        fields = ('file', 'implementation', 'user')
+        widgets = {'user': forms.HiddenInput(), 'file': ClearableFileInput()}
 
