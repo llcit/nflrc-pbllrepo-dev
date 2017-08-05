@@ -29,8 +29,8 @@ from reposite.views import (
     ProjectTaskListView, ProjectPrototypeDocumentView,
     ProjectImplementationInfoItemView, ProjectImplementationInfoItemCreateView, 
     ProjectImplementationInfoItemUpdateView, ProjectImplementationInfoItemDeleteView,
-    FileUploadView, ProjectFileDeleteView,
-    ImplementationInfoFileUploadView, TaskFileUploadView,
+    FileUploadView, ImplementationInfoFileUploadView, TaskFileUploadView,
+    ProjectFileDeleteView, TaskFileDeleteView, ImplementationFileDeleteView,
     SearchHaystackView,
     RepoPageView
 )
@@ -73,12 +73,12 @@ urlpatterns = [
 
     # file handling
     url(r'^prototype/file-upload/$', FileUploadView.as_view(), name='upload_file'),
-    url(r'^prototype/task-file-upload/$', TaskFileUploadView.as_view(), name='upload_task_file'),
-    url(r'^prototype/info-file-upload/$', ImplementationInfoFileUploadView.as_view(), name='upload_info_file'),
+    url(r'^prototype/task-file-upload/(?P<task_pk>[-\d]+)/$', TaskFileUploadView.as_view(), name='upload_task_file'),
+    url(r'^prototype/info-file-upload/(?P<info_pk>[-\d]+)/$', ImplementationInfoFileUploadView.as_view(), name='upload_info_file'),
     
     url(r'^prototype/project-file/delete/(?P<pk>[-\d]+)/$', ProjectFileDeleteView.as_view(), name='delete_file'),
-    # url(r'^prototype/task-file/delete/(?P<pk>[-\d]+)/$', FileUploadView.as_view(), name='upload_task_file'),
-    # url(r'^prototype/info-file/delete/(?P<pk>[-\d]+)/$', FileUploadView.as_view(), name='upload_info_file'),
+    url(r'^prototype/task-file/delete/(?P<pk>[-\d]+)/$', TaskFileDeleteView.as_view(), name='delete_task_file'),
+    url(r'^prototype/info-file/delete/(?P<pk>[-\d]+)/$', ImplementationFileDeleteView.as_view(), name='delete_info_file'),
     
 
     # url(r'^prototype/project-file-upload/(?P<project>[-\d]+)/$', ProjectFileUploadView.as_view(), name='upload_project_file'),

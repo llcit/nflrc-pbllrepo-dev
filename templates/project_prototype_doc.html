@@ -49,57 +49,85 @@
                 <dt id="project_description" class="lead">{% comment %}<h2>Project Description</h2>{% endcomment %}</dt>
                 <dd>{{ description|safe}}</dd>
             </dl>
+            
             <dl>
 
                 <!-- PROJECT SEQUENCE OVERVIEW TABLE OF CONTENTS -->
                 <dt id="project_sequence" class="lead">
-                    <h3 class="lead">Overview 
-                        <small><a href="#files" class="btn"><i class="fa fa-file"></i> files</a> 
-                        <a href="#comments" class="btn"><i class="fa fa-comment"></i> comments</a></small>
+                    <h2>Overview 
+                        <small><a href="#files" class="static_a_display btn btn-link"><i class="fa fa-file"></i> files</a> 
+                        <a href="#comments" class="static_a_display btn btn-link"><i class="fa fa-comment"></i> comments</a></small>
                     </h3>
                 </dt>
                 <dd>
+                    <div class="row">
                     {% for category, tasks in tasks.items %}
-                        <h4><a href="#{{ category|slugify }}" class="">{{ category }}</a></h4>
-                        {% for task in tasks %}
-                            <p><span>{{ forloop.counter }}.</span> {{ task.title }}{% comment %} - <em>{{ task.short_description }}</em>{% endcomment %}</p>
-                        {% endfor %}
+                        <div class="col-md-2">
+                            <h4> 
+                                {% if not tasks %}<i class="fa fa-square-o"></i>
+                                {% else %}<i class="fa fa-check-square"></i>{% endif %}
+                                <a href="#{{ category|slugify }}" class="static_a_display">{{ category }}</a>
+                            </h4>
+                            {% for task in tasks %}
+                                <p class="text-muted"> {{ task.title }}</p>
+                            {% empty %}
+                                <p class="small"><i class="fa fa-warning" style="font-color: black; color: #ffcd42"></i>Tasks not specified.</p>
+                            {% endfor %}
+                        </div>
+                                                       
                     {% endfor %}
-                    <h4><a href="#info_items" class="">Implementation Info</a></h4>
+                        <div class="col-md-3">
+                            <h4>
+                                <a href="#info_items" class="static_a_display">Implementation Info</a>
+                            </h4>
+                            {% for info in implementation_info_items %}
+                                <p>{{ info.title }}</p>
+                            {% empty %}
+                                <p class="small">Implementation information not specified.</p>
+                            {% endfor %}
+                        </div>                        
+                    </div>
                 </dd>
+                
                 <h5></h5>
 
 
                 <!-- PROJECT TASKS DETAIL -->
                 {% for category, tasks in tasks.items %}
-                <h1 id="{{ category|slugify }}"></h1>
-                
-                <dt><h2 class="lead">{{ category }}</h2></dt>
-                <dd class="well bg-success">
-                    {% for task in tasks %}
-                        <p>
-                            <h4>
-                                <span>{{ forloop.counter }}.</span> {{ task }}
-                                <small>
-                                {% if project_prototype.creator == user %}
-                                <a href="{% url 'update_task' task.prototype_project.id task.id %}" class="static_a_display">
-                                    <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
-                                </a>
+                    <h1 id="{{ category|slugify }}"></h1>
+                    
+                    <dt><h2>
+                        {% if not tasks %}<i class="fa fa-square-o fa-0"></i>
+                        {% else %}<i class="fa fa-check-square fa-0"></i>{% endif %}
+                        {{ category }}
+                        <a href="{% url 'create_task' project_prototype.id %}?cat={{ tasks.0.task_category }}" class="static_a_display">
+                            <button class="btn btn-xs"><i class="fa fa-plus"></i> add task</button>
+                        </a>
+                    </h2></dt>
+                    <dd class="well" style="background: #fff; border: None">
+                        {% for task in tasks %}
+                            <p>
+                                <h4>
+                                    {{ task }}
+                                    <small>
+                                    {% if project_prototype.creator == user %}
+                                    <a href="{% url 'update_task' task.prototype_project.id task.id %}" class="static_a_display">
+                                        <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
+                                    </a>
 
-                                <a href="{% url 'delete_task' task.prototype_project.id task.id %}" class="static_a_display">
-                                    <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
-                                </a>
-                                {% endif %}
-                                </small>
+                                    <a href="{% url 'delete_task' task.prototype_project.id task.id %}" class="static_a_display pull-right">
+                                        <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
+                                    </a>
+                                    {% endif %}
+                                    </small>
 
-                            </h4>
-                            <p>{{ task.description|safe }}</p>
-                            <hr>
-                            <h5><em>Technology Tips</em></h5><p>{{ task.technology_tips|safe }}</p>
-                            <h5><em>Task Extension</em></h5><p>{{ task.task_extension|safe }}</p>
-                        </p>
-                    {% endfor %}
-                </dd>
+                                </h4>
+                                <p>{{ task.description|safe }}</p>
+                                <h5>Technology Tips</h5><p>{{ task.technology_tips|safe }}</p>
+                                <h5>Task Extension</h5><p>{{ task.task_extension|safe }}</p>
+                            </p>
+                        {% endfor %}
+                    </dd>
                 {% endfor %}
 
             </dl>
@@ -111,26 +139,34 @@
 
     <!-- PROJECT IMPLEMENTATION INFORMATION -->
     <div id="info_items" class="col-md-8 col-md-offset-2">
-        <h1>Implementation Info {% if project_prototype.creator %}<a href="{% url 'create_implementation_item' project_prototype.id %}"><small>add</small></a>{% endif %}</h1>
+        <h1>Implementation Info 
+            {% if project_prototype.creator %}
+            <a href="{% url 'create_implementation_item' project_prototype.id %}" class="static_a_display">
+                <button class="btn btn-xs"><i class="fa fa-plus"></i> add information item</button>
+            </a>
+            {% endif %}
+        </h1>
+        
         {% for info_item in implementation_info_items %} 
-            <p>
+            <div class="well" style="background: #fff; border: none">
                 <h4>
-                    <span>{{ forloop.counter }}.</span> {{ info_item }}
+                    <span>{{ info_item }}
                     <small>
                     {% if project_prototype.creator == user or user.is_staff %}
                     <a href="{% url 'update_implementation_item' project_prototype.id info_item.id %}" class="static_a_display">
                         <button class="btn btn-xs"><i class="fa fa-pencil"></i> edit</button>
                     </a>
 
-                    <a href="{% url 'delete_implementation_item' project_prototype.id info_item.id %}" class="static_a_display">
+                    <a href="{% url 'delete_implementation_item' project_prototype.id info_item.id %}" class="static_a_display pull-right">
                         <button class="btn btn-xs"><i class="fa fa-close"></i> remove</button>
                     </a>
                     {% endif %}
                     </small>
                 </h4>
                 <p>{{ info_item.description|safe }}</p>
-            </p>
+            </div>
         {% endfor %}
+
     </div>
 
 
@@ -188,7 +224,7 @@
         <h2>Comments</h2>
         {% if user.is_authenticated %}
         <!-- comment post form -->
-        <div class="well" style="background: #fff">
+        <div class="well" style="background: #fff; border: None">
             <form id="{{project_prototype.id}}-postform" class="postform" action="{% url 'create_post'%}" method="post" data-reply_target="{{project_prototype.id}}-replies">{% csrf_token %}
                 {{ postform|crispy }}
                 <p></p>

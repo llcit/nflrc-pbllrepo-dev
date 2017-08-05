@@ -39,19 +39,38 @@
 <body>
     
     <div class="container-fluid">
-        <div class="navbar navbar-right">
-            <a href="{% url 'page_view' 1 %}" class="btn btn-link btn-md btn-color-flat">about</a>
-            <a href="{% url 'list_prototypes' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-list"></i> browse </a>
-            <a href="{% url 'create_prototype' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-plus"></i> create </a>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#rightnav" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="rightnav" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right navbar-panel">
+                <li><a href="{% url 'page_view' 1 %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-info"></i> about</a></li>
+                <li><a href="{% url 'list_prototypes' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-list"></i> browse </a></li>
+                <li><a href="{% url 'create_prototype' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-plus"></i> create </a></li>
+                <li>
+                {% if not user.is_authenticated %}
+                  {# <a href="/pebbles/login/google-oauth2/"  class="btn btn-link btn-md btn-color-flat"><i class="fa fa-sign-in"></i> login </a> #}
+    
+                  <a href="{% url 'social:begin' 'google-oauth2' %}" class="static_a_display"><i class="fa fa-sign-in"></i> login</a>
+                {% else %}
+                  <a href="{% url 'logout' %}" class="btn btn-link btn-md btn-color-flat"><i class="fa fa-sign-out"></i> logout</a>
+                {% endif %}
+                </li>                    
+            </ul>
             {% if "/search" not in request.path %}
-            <form method="get" action="{% url 'haystack_search' %}" class="navbar-form navbar-right" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for..." name="q" value="{{query}}">
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-color-flat" type="button"><i class="fa fa-search"></i></button>
-                    </span>
-                </div>
-            </form>
+                <form method="get" action="{% url 'haystack_search' %}" class="navbar-form navbar-right" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for..." name="q" value="{{query}}">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-color-flat" type="button"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>            
             {% endif %}
         </div>
         
@@ -59,11 +78,9 @@
             <div class="col-xs-2">
                 <p><img src="{% static 'img/pebbles_logo_small.jpg' %}" width="100%"></p>
             </div>
-            <div class="col-xs-10" style="margin-top: -50px">
+            <div class="col-xs-10" style="">
                 <p class="lead" style="font-size: 4.0em">Pebbles
-                <h3 class="lead" style="margin-top: -20px">
-                    Project-Based Language Learning Repository
-                    </h3>
+                <h3 class="lead" style="margin-top: -20px">Project-Based Language Learning Repository</h3>
                 </p>
             </div>            
         </div>

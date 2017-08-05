@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <p>
-        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_prototype' prototype_project.id %}" class="static_a_display">{{ prototype_project }} </a>
+        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'docview_prototype' prototype_project.id %}" class="static_a_display">{{ prototype_project }} </a>
         <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_all_tasks' prototype_project.id %}" class="static_a_display">Tasks</a>
         </p>
         <h4 class="lead">{{ edit_text|safe }}
@@ -26,7 +26,13 @@
 
     <div class="col-md-4 block-center">
         <a href="#filebrowser" data-toggle="collapse" aria-expanded="false" aria-controls="filebrowser" class="static_a_display"><button class="btn">Browse implementation files</button></a>
-        {% include "file_upload_btn_template.html" %}
+        
+        {% if information_item %}
+        <span id="fileuploadbtn"><a href="{% url 'upload_info_file' information_item.pk %}" class="static_a_display"><button class="btn">Upload a new file</button></a></span>
+        {% else %}
+        <span>Save your new implementation item before adding new files.</span>
+        {% endif %}
+
         <div id="filebrowser" class="collapse">
             <div>{% include "file_listing_template.html" %}</div>
         </div>

@@ -158,10 +158,11 @@ class TaskCreateForm(forms.ModelForm):
         labels = {'title': 'Task Title'}
         widgets = {
             'prototype_project': forms.HiddenInput(),
-            'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'short_description': forms.Textarea(attrs={'rows': '2'}),
+            'description': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
+            'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
+            'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
+            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
             'task_category': forms.RadioSelect(),
             'task_type': forms.RadioSelect(),
             'task_focus': forms.RadioSelect(),
@@ -177,10 +178,11 @@ class TaskUpdateForm(forms.ModelForm):
         labels = {'title': 'Task Title'}
         widgets = {
             'prototype_project': forms.HiddenInput(),
-            'description': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor'}),
-            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor'}),
+            'short_description': forms.Textarea(attrs={'rows': '2'}),
+            'description': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
+            'technology_tips': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
+            'task_extension': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
+            'potential_hurdles': forms.Textarea(attrs={'class': 'form-control content-editor', 'rows': '3'}),
             'task_category': forms.RadioSelect(),
             'task_type': forms.RadioSelect(),
             'task_focus': forms.RadioSelect(),
@@ -208,7 +210,7 @@ class FileUploadForm(forms.ModelForm):
     class Meta:
         model = ProjectFile
         fields = ('file', 'project', 'user')
-        widgets = {'user': forms.HiddenInput(), 'file': ClearableFileInput()}
+        widgets = {'user': forms.HiddenInput(), 'project': forms.HiddenInput(), 'file': ClearableFileInput()}
 
 
 class TaskFileUploadForm(forms.ModelForm):
@@ -220,7 +222,7 @@ class TaskFileUploadForm(forms.ModelForm):
     class Meta:
         model = TaskFile
         fields = ('file', 'task', 'user')
-        widgets = {'user': forms.HiddenInput(), 'file': ClearableFileInput()}
+        widgets = {'user': forms.HiddenInput(), 'task': forms.HiddenInput(),'file': ClearableFileInput()}
 
 
 class ImplementationFileUploadForm(forms.ModelForm):
@@ -232,5 +234,5 @@ class ImplementationFileUploadForm(forms.ModelForm):
     class Meta:
         model = ImplementationFile
         fields = ('file', 'implementation', 'user')
-        widgets = {'user': forms.HiddenInput(), 'file': ClearableFileInput()}
+        widgets = {'user': forms.HiddenInput(), 'implementation': forms.HiddenInput(),'file': ClearableFileInput()}
 

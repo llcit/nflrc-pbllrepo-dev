@@ -8,11 +8,11 @@
     <p class="lead">
         <form method="post" action=".">{% csrf_token %}
             <p class="lead well">
-                Are you sure you want to delete <strong>{{ object.project_file.name }}</strong>?
+                Are you sure you want to delete <strong>{{ object.file.name }}</strong> from {{ project }}?
             </p>
             <p class="text-center">
-            <button type="submit" class="btn btn-md btn-danger">Yes, I want to permanently delete {{ object.project_file.name }} now!</button>
-            <a href="{% url 'docview_prototype' object.project.id %}" type="button" class="btn btn-md btn-link btn-color-flat static_a_display">Cancel</a>
+            <button type="submit" class="btn btn-md btn-danger">Yes, I want to permanently delete {{ object.file.name }} now!</button>
+            <a href="{% url 'view_all_tasks' project.pk %}" type="button" class="btn btn-md btn-link btn-color-flat static_a_display">Cancel</a>
             </p>
         </form>
     </p>
