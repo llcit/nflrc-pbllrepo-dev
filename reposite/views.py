@@ -24,10 +24,14 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        #context['prototype_list'] = ProjectPrototype.objects.all() <-- modified 6/23/2016 to filter by active (display on web only public ones)
         prototypes = ProjectPrototype.objects.all().filter(active=True)
         context['prototype_list'] = prototypes.filter(featured=False)
         context['prototype_featured'] = prototypes.filter(featured=True)
+
+        try:
+            context['prototypes_by_creator'] = ProjectPrototype.objects.filter(creator=self.request.user)
+        except:
+            pass
 
         languages = {}
         for i in prototypes:
@@ -111,13 +115,21 @@ class ProjectPrototypeListView(TemplateView):
     template_name = 'project_prototype_list.html'
 
     def get_context_data(self, **kwargs):
-        context = super(
-            ProjectPrototypeListView, self).get_context_data(**kwargs)
+        context = super(ProjectPrototypeListView, self).get_context_data(**kwargs)
         prototypes = []
-        #for i in ProjectPrototype.objects.all().order_by('-active'): <-- modified 6/23/2016 filter by active (display on web only public ones)
-        for i in ProjectPrototype.objects.all().filter(active=True):
+        for i in ProjectPrototype.objects.filter(active=True):
             proto = (i, i.get_data_dict())
             prototypes.append(proto)
+
+        if self.request.user.is_staff:
+            for i in ProjectPrototype.objects.filter(active=False):
+                proto = (i, i.get_data_dict())
+                prototypes.append(proto)
+
+        try:
+            context['prototypes_by_creator'] = ProjectPrototype.objects.filter(creator=self.request.user)
+        except:
+            pass
         
         languages = {}
         for i in prototypes:

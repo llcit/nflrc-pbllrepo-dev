@@ -104,6 +104,16 @@
 
                 <a href="#" class="filterbtn btn btn-sm btn-link btn-color-flat static_a_display" data-filter="*"> <i class="fa fa-refresh"></i> </a>
 
+                {% if user.is_authenticated %}
+                <div class="btn-group pull-right" role="group">
+                    <button type="button" class="btn btn-sm btn-link dropdown-toggle btn-color-flat static_a_display" data-toggle="dropdown"><i class="fa fa-folder"></i> <span id="toggle-label">your prototypes</span> </button>
+                    <ul class="dropdown-menu">
+                        {% for user_prj in prototypes_by_creator %}
+                            <li><a href="{% url 'docview_prototype' user_prj.pk %}">{{ user_prj }} </a></li>
+                        {% endfor %}
+                    </ul> 
+                </div>
+                {% endif %}
                 <hr height="2">
             </div>
 
