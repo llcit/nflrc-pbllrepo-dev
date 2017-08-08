@@ -423,13 +423,14 @@ class RepoPageView(DetailView):
 
 
 # File handling
-class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
+class FileUploadView(LoginRequiredMixin, CreateView):
     model = ProjectFile
     template_name = 'file_upload.html'
     form_class = FileUploadForm
-    success_url = reverse_lazy('upload_file')
+    # success_url = reverse_lazy('upload_file')
 
     def get(self, request, *args, **kwargs):
+        self.project_obj = ProjectPrototype.objects.get(pk=kwargs.get('proj_pk'))
         return super(FileUploadView, self).get(request, *args, **kwargs)
 
     def get_initial(self):
@@ -437,18 +438,25 @@ class FileUploadView(LoginRequiredMixin, ListUserFilesMixin, CreateView):
         initial = self.initial.copy()
         try:
             initial['user'] = self.request.user
-            if project:
-                initial['project'] = ProjectPrototype.objects.get(pk=project)
+            initial['project'] = self.project_obj
         except:
             pass
         return initial
 
-    # def get_success_url(self):
-    #     return reverse('upload_file', args=[self.get_object().prototype_project.id, ])
+    def get_success_url(self):
+        return reverse('upload_file', args=[self.object.project.pk])
 
     def get_context_data(self, **kwargs):
         context = super(FileUploadView, self).get_context_data(**kwargs)
-        context['upload_target'] = reverse('upload_file')
+       
+        file_tree = {}
+        file_tree['project'] = self.request.user.uploaded_files.filter(project=self.project_obj)
+        context['filelisting'] = file_tree
+        context['upload_target'] = 'Project Prototype'
+        context['upload_target_object'] = self.project_obj
+        context['project_obj'] = self.project_obj
+
+        # context['upload_target'] = reverse('upload_file')
         # context['filelisting'] = self.request.user.uploaded_files.all()
         return context
 
@@ -474,17 +482,20 @@ class TaskFileUploadView(LoginRequiredMixin, CreateView):
         return initial
 
     def get_success_url(self):
-        return reverse('view_all_tasks', args=[self.object.task.prototype_project.pk ])
+        return reverse('upload_task_file', args=[self.object.task.pk ])
 
     def get_context_data(self, **kwargs):
         context = super(TaskFileUploadView, self).get_context_data(**kwargs)
         
         project = self.task_obj.prototype_project
         file_tree = {}
-        file_tree['project'] = self.request.user.uploaded_files.filter(project=project)
+        # file_tree['project'] = self.request.user.uploaded_files.filter(project=project)
         file_tree['task'] = self.request.user.uploaded_task_files.filter(task=self.task_obj)
 
         context['filelisting'] = file_tree 
+        context['upload_target'] = 'Task'
+        context['upload_target_object'] = self.task_obj
+        context['project_obj'] = project
         return context
 
 
@@ -509,17 +520,20 @@ class ImplementationInfoFileUploadView(LoginRequiredMixin, CreateView):
         return initial
 
     def get_success_url(self):
-        return reverse('view_all_tasks', args=[self.object.implementation.prototype_project.pk ])
+        return reverse('upload_info_file', args=[self.object.implementation.pk ])
 
     def get_context_data(self, **kwargs):
         context = super(ImplementationInfoFileUploadView, self).get_context_data(**kwargs)
         
         project = self.info_obj.prototype_project
         file_tree = {}
-        file_tree['project'] = self.request.user.uploaded_files.filter(project=project)
-        file_tree['task'] = self.request.user.uploaded_implementation_files.filter(implementation=self.info_obj)
+        # file_tree['project'] = self.request.user.uploaded_files.filter(project=project)
+        file_tree['implementation'] = self.request.user.uploaded_implementation_files.filter(implementation=self.info_obj)
 
         context['filelisting'] = file_tree
+        context['upload_target'] = 'Implementation Information Item'
+        context['upload_target_object'] = self.info_obj
+        context['project_obj'] = project
         return context
 
 
@@ -528,7 +542,7 @@ class ProjectFileDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'project_file_delete_confirm.html'
 
     def get_success_url(self):
-        return reverse('view_all_tasks', args=[self.get_object().project.pk ])
+        return reverse('update_prototype', args=[self.get_object().project.pk])+ '#filebrowser'
 
     def get_context_data(self, **kwargs):
         context = super(ProjectFileDeleteView, self).get_context_data(**kwargs)

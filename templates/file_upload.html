@@ -7,13 +7,17 @@
 <div class="row">
 
     <div class="col-md-2 col-md-offset-1 block-center">
-        <p class="lead">
+        <p>
+        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'docview_prototype' project_obj.id %}" class="static_a_display">{{ project_obj }} </a>
+        </p>
+        <p>Adding a file to {{ upload_target }}:</p>
+        <p class="lead">{{ upload_target_object }}</p>
             <form id="ajaxform" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
                 {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
                 {{ form|crispy }}
                 <button type="submit" class="btn btn-lg btn-success btn-block">Upload</button>
             </form>
-        </p>
+        
     </div>
 
     <div class="col-md-6 col-md-offset-2 block-center">{% include 'file_listing_template.html' %}</div>

@@ -72,7 +72,7 @@ urlpatterns = [
 
 
     # file handling
-    url(r'^prototype/file-upload/$', FileUploadView.as_view(), name='upload_file'),
+    url(r'^prototype/file-upload/(?P<proj_pk>[-\d]+)/$', FileUploadView.as_view(), name='upload_file'),
     url(r'^prototype/task-file-upload/(?P<task_pk>[-\d]+)/$', TaskFileUploadView.as_view(), name='upload_task_file'),
     url(r'^prototype/info-file-upload/(?P<info_pk>[-\d]+)/$', ImplementationInfoFileUploadView.as_view(), name='upload_info_file'),
     
