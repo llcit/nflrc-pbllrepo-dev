@@ -59,7 +59,7 @@
 
     <div class="col-sm-6 tab-content block-center">
         {% for i in task_list %}
-        <div id="task_detail_{{i.id}}" class="affix tab-pane {% if i.id == project_task.id %}active{% endif %}" role="tabpanel"  >
+        <div id="task_detail_{{i.id}}" class="tab-pane {% if i.id == project_task.id %}active{% endif %}" role="tabpanel"  >
             {% if i.title %}
                 <h3>    
                     <span class="" style="padding: 5px"><strong>{{ i.title }}</strong></span>
@@ -106,7 +106,7 @@
 
 <!-- Implementation content display -->
         {% for i in implementation_items %}
-         <div id="info_detail_{{i.id}}" class="affix tab-pane {% if i.id == project_task.id %}active{% endif %}" role="tabpanel">
+         <div id="info_detail_{{i.id}}" class="tab-pane {% if i.id == project_task.id %}active{% endif %}" role="tabpanel">
             <h3>    
                 <span class="" style="padding: 5px"><strong>{{ i.title }}</strong></span>
                 {% if user == i.prototype_project.creator or user_is_coeditor %}
