@@ -9,6 +9,9 @@
     <div class="col-md-2 col-md-offset-1 block-center">
         <p>
         <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'docview_prototype' project_obj.id %}" class="static_a_display">{{ project_obj }} </a>
+        {% if upload_target == "Task" or upload_target == "Implementation Information Item" %}
+        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_all_tasks' project_obj.id %}" class="static_a_display">Tasks</a>
+        {% endif %}
         </p>
         <p>Adding a file to {{ upload_target }}:</p>
         <p class="lead">{{ upload_target_object }}</p>
