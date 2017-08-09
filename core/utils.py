@@ -60,4 +60,3 @@ def nflrc_social_user(backend, uid, user=None, *args, **kwargs):
             'is_new': user is None,
             'new_association': False}
 
-

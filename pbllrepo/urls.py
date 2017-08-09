@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_view
 
 from filebrowser.sites import site
 
+from core.views import UpdateIndexView
 from reposite.views import (
     HomeView,
     ProjectPrototypeCreateView, ProjectPrototypeDetailView,
@@ -94,6 +95,7 @@ urlpatterns = [
     # haystack search
     # url(r'^search/', include('haystack.urls'), name='haystack_search'),
     url(r'^search/', SearchHaystackView.as_view(), name='haystack_search'),
+    url(r'^update_index/$', UpdateIndexView.as_view(), name='haystack_update_index'),
 
     # administration
     url(r'^logout/$', auth_view.logout, name='logout'),

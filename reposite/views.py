@@ -172,7 +172,7 @@ class ProjectPrototypeDetailView(DetailView):
         return context
 
 
-class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, ListUserFilesMixin, CreateView):
+class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
     form_class = ProjectPrototypeCreateForm
@@ -190,7 +190,7 @@ class ProjectPrototypeCreateView(LoginRequiredMixin, SuccessMessageMixin, ListUs
         return context
 
 
-class ProjectPrototypeUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateView):
+class ProjectPrototypeUpdateView(LoginRequiredMixin, UpdateView):
     model = ProjectPrototype
     template_name = 'project_prototype_create_update.html'
     context_object_name = 'project_prototype'
@@ -216,9 +216,12 @@ class ProjectPrototypeUpdateView(LoginRequiredMixin, ListUserFilesMixin, UpdateV
 
     def get_context_data(self, **kwargs):
         context = super(
-            ProjectPrototypeUpdateView, self).get_context_data(**kwargs)        
-        # context['tasks'] = self.get_object().tasks.all()
-        # context['edit_text'] = 'Edit'
+            ProjectPrototypeUpdateView, self).get_context_data(**kwargs)
+        file_tree = {}      
+        file_tree['project'] = self.request.user.uploaded_files.filter(project=self.get_object())
+        file_tree['task'] = self.request.user.uploaded_task_files.filter(task__prototype_project=self.get_object())
+        file_tree['implementation'] = self.request.user.uploaded_implementation_files.filter(implementation__prototype_project=self.get_object())
+        context['filelisting'] = file_tree
         return context
 
 

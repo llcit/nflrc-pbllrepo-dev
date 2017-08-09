@@ -4,6 +4,8 @@
 {% block content_container %}
 
 <div class="col-md-10 col-md-offset-1 text-center">
+    {% if user.is_staff %}<a href="{% url 'haystack_update_index' %}" class="btn btn-md btn-link">Update Search Index</a> {% endif %}
+    <p>{% for message in messages %}<p>{{message}}</p>{% endfor %}</p>
     <form method="get" action="{% url 'haystack_search' %}" class="form-inline text-" role="search">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search for..." name="q" value="{{query}}">
@@ -21,7 +23,11 @@
             
             <p class="lead">
                 {% if result.object.icon %}<img src="{{ result.object.icon.url }}" width="50px">{% endif %}
+                {% if result.object.active %}
                 <a href="{% url 'docview_prototype' result.object.id %}" class="static_a_display">{% highlight result.object.title with query html_tag "span" css_class "query-term" %} </a>
+                {% else %}
+                <span class="small label label-sm label-danger">unpublished</span> {% highlight result.object.title with query html_tag "span" css_class "query-term" %}
+                {% endif %}
                 <span></span>
             </p>
             <p>

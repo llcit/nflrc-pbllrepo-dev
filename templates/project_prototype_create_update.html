@@ -130,11 +130,17 @@
 
 
                 <!-- File Browser Tab content -->
+                
                 <div class="tab-pane" id="filebrowser" id="filebroswer">
+                    {% if project_prototype %}
                     <div><a href="{% url 'upload_file' project_prototype.id %}" class="static_a_display btn btn-xs btn-default">Upload a new project file</a></div>
+                    {% else %}
+                    <div>Please create and save your project before adding files. </div>
+                    {% endif %}
                     <div>{% include "file_listing_template.html" %}</div>
 
                 </div>
+                
 
             </div><!-- End Tabs container -->
 
