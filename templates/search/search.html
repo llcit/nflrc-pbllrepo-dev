@@ -30,6 +30,7 @@
                 {% endif %}
                 <span></span>
             </p>
+            {% if result.object.active %}
             <p>
                 by {% highlight result.object.creator.first_name with query html_tag "span" css_class "query-term" %} {% highlight result.object.creator.last_name with query html_tag "span" css_class "query-term" %} 
 
@@ -51,7 +52,7 @@
                     {% endfor %} 
                 </h4>
             </div>
-
+            {% endif %}
             <hr>
             
         {% empty %}
