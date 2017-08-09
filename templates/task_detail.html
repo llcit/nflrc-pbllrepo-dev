@@ -86,7 +86,11 @@
                 {% if i.potential_hurdles %}<dt>Potential Hurdles:</dt> <dd>{{ i.potential_hurdles|safe }} </dd>{% endif %}
             </dl>
             
-            <p><strong>Files</strong> <a href="{% url 'upload_task_file' i.pk %}" class="static_a_display"><button class="btn btn-xs btn-success"><i class="fa fa-plus"></i> Add A File</button></a></p>
+            <p><strong>Files</strong>
+                {% if user == i.prototype_project.creator or user_is_coeditor %}
+                <a href="{% url 'upload_task_file' i.pk %}" class="static_a_display"><button class="btn btn-xs btn-success"><i class="fa fa-plus"></i> Add A File</button></a>
+                {% endif %}
+            </p>
             {% for file in i.task_files.all %}
             <div class="media">                
                 <div class="media-left media-top">
@@ -120,7 +124,11 @@
                 {% endif %}
             </h3>
             <p><em> {{ i.description|safe }} </em></p>
-            <p><strong>Files</strong> <a href="{% url 'upload_info_file' i.pk %}" class="static_a_display"><button class="btn btn-xs btn-success"><i class="fa fa-plus"></i> Add A File</button></a></p>
+            <p><strong>Files</strong> 
+            {% if user == i.prototype_project.creator or user_is_coeditor %}
+                <a href="{% url 'upload_info_file' i.pk %}" class="static_a_display"><button class="btn btn-xs btn-success"><i class="fa fa-plus"></i> Add A File</button></a>
+            {% endif %}
+            </p>
             {% for file in i.implementation_files.all %}
             <div class="media">                
                 <div class="media-left media-top">

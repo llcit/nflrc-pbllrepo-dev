@@ -10,7 +10,7 @@
     
     <div class="col-xs-10 col-xs-offset-1">
         {% if project_prototype %}<p>
-        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'view_prototype' project_prototype.id %}" class="static_a_display">{{ project_prototype }} </a>
+        <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> <a href="{% url 'docview_prototype' project_prototype.id %}" class="static_a_display">{{ project_prototype }} </a>
         </p>{% endif %}
         <h4 class="lead">
             {% if project_prototype %} Modify {{ project_prototype }} {% else %} Create a New Project {% endif %}

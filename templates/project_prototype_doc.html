@@ -100,9 +100,11 @@
                         {% if not tasks %}<i class="fa fa-square-o fa-0"></i>
                         {% else %}<i class="fa fa-check-square fa-0"></i>{% endif %}
                         {{ category }}
+                        {% if project_prototype.creator == user %}
                         <a href="{% url 'create_task' project_prototype.id %}?cat={{ tasks.0.task_category }}" class="static_a_display">
                             <button class="btn btn-xs"><i class="fa fa-plus"></i> add task</button>
                         </a>
+                        {% endif %}
                     </h2></dt>
                     <dd class="well" style="background: #fff; border: None">
                         {% for task in tasks %}
@@ -140,7 +142,7 @@
     <!-- PROJECT IMPLEMENTATION INFORMATION -->
     <div id="info_items" class="col-md-8 col-md-offset-2">
         <h1>Implementation Info 
-            {% if project_prototype.creator %}
+            {% if project_prototype.creator == user %}
             <a href="{% url 'create_implementation_item' project_prototype.id %}" class="static_a_display">
                 <button class="btn btn-xs"><i class="fa fa-plus"></i> add information item</button>
             </a>
