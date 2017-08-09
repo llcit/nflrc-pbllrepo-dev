@@ -3,6 +3,24 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block meta_block %}
+    <meta property="og:title" content="NFLRC Project-Based Language Learning: {{ project_prototype.title }}" />
+    <meta property="og:description" content="{{ project_prototype.description }}" />
+    <meta property="og:image" content="{% if project_prototype.icon %}{{ project_prototype.icon.url }} {% else %} http://nflrc.hawaii.edu/static/nflrc-pbllrepo/img/pebbles_logo_small.jpg{% endif %}" />
+    <meta property="og:url" content="http://nflrc.hawaii.edu{{ request.path }}" />
+{% endblock meta_block %}
+
+{% block socialplugs %}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=849311455108932&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{% endblock socialplugs %}
+
 {% block content_container %}
 
 <div class="row">
@@ -33,11 +51,18 @@
                 </small>
             </h1>
 
-            <p><h4>A Project Prototype by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</h4><small>created {{ project_prototype.created|date:"M j, Y"}}</small></p>
+            <p>
+                <h4>A Project Prototype by {{ project_prototype.creator.first_name }} {{ project_prototype.creator.last_name }}</h4>
+                <small>published on {{ project_prototype.publish_date|date:"M j, Y"}}</small>
+            </p>
 
             {% if project_prototype.origin %}
             <p><small>based on</small> <a href="{% url 'view_prototype' project_prototype.origin.id %}">{{ project_prototype.origin }}</a></p>
             {% endif %}
+            <p>
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_sharing_toolbox"></div>
+            </p>
 
         </p>
         <!-- END PROJECT HEAD -->

@@ -8,6 +8,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta_block %}{% endblock meta_block %}
+
     <title>NFLRC {% block page_title %}PBLL Repository{% endblock page_title %}</title>
 
     <!-- Latest compiled and minified CSS -->
@@ -41,7 +43,8 @@
     <!-- Packery layout library -->
     <script src="{% static 'js/packery.pkgd.min.js' %}"></script>
 
-
+    <!--"Add This" Setup-->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54079f8001334926"></script>
 
     <!-- Placeholder for page-level includes -->
     {% block local_head %} {% endblock local_head %}
@@ -49,7 +52,7 @@
 </head>
 
 <body>
-
+    {% block socialplugs %}{% endblock socialplugs %}
     <!-- Fixed navbar content -->
     <div class="navbar navbar-fixed-top header bs-bg-white" role="navigation">
       <div class="container-fluid ">
