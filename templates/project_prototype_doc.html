@@ -5,7 +5,7 @@
 
 {% block meta_block %}
     <meta property="og:title" content="NFLRC Project-Based Language Learning: {{ project_prototype.title }}" />
-    <meta property="og:description" content="{{ project_prototype.description|truncatechars_html:80 }}" />
+    <meta property="og:description" content="{{ project_prototype.description|truncatechars:80 }}" />
     <meta property="og:image" content="{% if project_prototype.icon %}{{ project_prototype.icon.url }} {% else %} http://nflrc.hawaii.edu/static/nflrc-pbllrepo/img/pebbles_logo_small.jpg{% endif %}" />
     <meta property="og:url" content="http://nflrc.hawaii.edu{{ request.path }}" />
 {% endblock meta_block %}
