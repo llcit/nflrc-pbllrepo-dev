@@ -44,3 +44,10 @@ SOCIAL_AUTH_PIPELINE = (
 
 LOGIN_URL = '/login/google-oauth2/'
 LOGIN_REDIRECT_URL = '/'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.environ['WHOOSH_PATH'],
+    },
+}
