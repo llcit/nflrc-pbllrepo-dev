@@ -23,5 +23,5 @@ six==1.10.0
 social-auth-app-django==1.2.0
 social-auth-core==1.4.0
 Unipath==1.1
-urllib3==1.21.1
+urllib3==1.24.2
 Whoosh==2.7.4
