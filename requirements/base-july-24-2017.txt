@@ -27,7 +27,7 @@ pyOpenSSL==16.2.0
 python-openid==2.2.5
 python-social==0.1
 python-social-auth==0.2.7
-requests==2.6.2
+requests==2.20.0
 requests-oauthlib==0.4.2
 six==1.9.0
 Unipath==1.1
