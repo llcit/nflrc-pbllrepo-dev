@@ -22,7 +22,7 @@ psycopg2==2.6
 pyasn1==0.1.9
 pycparser==2.17
 pycrypto==2.6.1
-PyJWT==1.1.0
+PyJWT==2.4.0
 pyOpenSSL==16.2.0
 python-openid==2.2.5
 python-social==0.1
